@@ -47,6 +47,14 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
+    public EventDto findActiveEvent() {
+        Event event = eventRepository.findActiveEvent();
+        if (event == null) return null;
+
+        event.setTasks(eventRepository.listTasks(event.getId()));
+        return eventMapper.toEventDto(event);
+    }
+
     public TaskDto addTask(TaskDto dto) {
         Task task = eventMapper.toTask(dto);
         int id = eventRepository.addTask(task);

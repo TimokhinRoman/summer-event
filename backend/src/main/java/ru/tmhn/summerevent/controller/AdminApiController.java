@@ -34,7 +34,7 @@ public class AdminApiController {
     }
 
     @GetMapping("/events/{id}")
-    public EventDto showEvent(@PathVariable int id) {
+    public EventDto getEvent(@PathVariable int id) {
         return eventService.findEvent(id);
     }
 
@@ -52,7 +52,7 @@ public class AdminApiController {
     }
 
     @GetMapping("/events/{eventId}/tasks/{taskId}")
-    public TaskDto showTask(@PathVariable int eventId, @PathVariable int taskId) {
+    public TaskDto getTask(@PathVariable int eventId, @PathVariable int taskId) {
         return eventService.findTask(eventId, taskId);
     }
 

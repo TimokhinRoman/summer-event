@@ -1,11 +1,11 @@
-CREATE TABLE `Event`
+CREATE TABLE Event
 (
     id          INT PRIMARY KEY AUTO_INCREMENT,
     name        VARCHAR(255) NOT NULL,
     description MEDIUMTEXT   NOT NULL
 );
 
-CREATE TABLE `Task`
+CREATE TABLE Task
 (
     id          INT PRIMARY KEY AUTO_INCREMENT,
     eventId     INT                         NOT NULL,
@@ -16,4 +16,12 @@ CREATE TABLE `Task`
 
     INDEX (eventId),
     FOREIGN KEY (eventId) REFERENCES Event (id) ON DELETE CASCADE
-)
+);
+
+CREATE TABLE ActiveEvent
+(
+    active  ENUM ('ACTIVE') NOT NULL PRIMARY KEY DEFAULT 'ACTIVE',
+    eventId INT             NOT NULL,
+
+    FOREIGN KEY (eventId) REFERENCES Event (id) ON DELETE CASCADE
+);

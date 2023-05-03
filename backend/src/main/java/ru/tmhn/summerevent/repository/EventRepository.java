@@ -9,10 +9,7 @@ import ru.tmhn.summerevent.model.Task;
 
 import java.util.List;
 
-import static ru.tmhn.summerevent.jooq.Tables.EVENT;
-import static ru.tmhn.summerevent.jooq.Tables.TASK;
-import static ru.tmhn.summerevent.utils.Utils.bool2byte;
-import static ru.tmhn.summerevent.utils.Utils.byte2bool;
+import static ru.tmhn.summerevent.jooq.Tables.*;
 
 @Repository
 public class EventRepository {
@@ -49,6 +46,13 @@ public class EventRepository {
         return context.select(EVENT.ID, EVENT.NAME, EVENT.DESCRIPTION)
                 .from(EVENT)
                 .fetch(this::mapEvent);
+    }
+
+    public Event findActiveEvent() {
+        return context.select(EVENT.ID, EVENT.NAME, EVENT.DESCRIPTION)
+                .from(ACTIVEEVENT)
+                .leftJoin(EVENT).on(ACTIVEEVENT.EVENTID.eq(EVENT.ID))
+                .fetchOne(this::mapEvent);
     }
 
     private Event mapEvent(Record record) {
