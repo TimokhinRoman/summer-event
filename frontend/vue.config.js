@@ -5,6 +5,18 @@ module.exports = defineConfig({
   assetsDir: "static",
 
   pages: {
+    login: {
+      entry: "src/login/main.js",
+      template: "public/login.html",
+      filename: "login.html",
+      title: "Login"
+    },
+    register: {
+      entry: "src/register/main.js",
+      template: "public/register.html",
+      filename: "register.html",
+      title: "Register"
+    },
     main: {
       entry: "src/main/main.js",
       template: "public/index.html",

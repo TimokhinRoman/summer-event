@@ -5,6 +5,7 @@ import ru.tmhn.summerevent.dto.EventDto;
 import ru.tmhn.summerevent.dto.TaskDto;
 import ru.tmhn.summerevent.mapper.EventMapper;
 import ru.tmhn.summerevent.model.Event;
+import ru.tmhn.summerevent.model.EventTeamUser;
 import ru.tmhn.summerevent.model.Task;
 import ru.tmhn.summerevent.repository.EventRepository;
 
@@ -38,6 +39,15 @@ public class EventService {
     public EventDto findEvent(int id) {
         Event event = eventRepository.findEvent(id);
         event.setTasks(eventRepository.listTasks(id));
+        List<EventTeamUser> eventTeamUsers = eventRepository.listTeamsAndUsers(id);
+        event.setTeams(eventTeamUsers.stream()
+                .map(EventTeamUser::getTeam)
+                .distinct()
+                .collect(Collectors.toList()));
+        event.setUsers(eventTeamUsers.stream()
+                .map(EventTeamUser::getUser)
+                .distinct()
+                .collect(Collectors.toList()));
         return eventMapper.toEventDto(event);
     }
 
@@ -51,8 +61,7 @@ public class EventService {
         Event event = eventRepository.findActiveEvent();
         if (event == null) return null;
 
-        event.setTasks(eventRepository.listTasks(event.getId()));
-        return eventMapper.toEventDto(event);
+        return findEvent(event.getId());
     }
 
     public TaskDto addTask(TaskDto dto) {

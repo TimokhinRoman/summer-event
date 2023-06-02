@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     loadEvent() {
-      axios.get("/api/public/event")
+      axios.get("/api/event")
         .then(response => {
           console.log(response);
           this.event = response.data;

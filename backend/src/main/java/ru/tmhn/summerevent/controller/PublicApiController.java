@@ -7,7 +7,7 @@ import ru.tmhn.summerevent.dto.EventDto;
 import ru.tmhn.summerevent.service.EventService;
 
 @RestController
-@RequestMapping("/api/public")
+@RequestMapping("/api")
 public class PublicApiController {
 
     private final EventService eventService;

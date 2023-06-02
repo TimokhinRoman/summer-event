@@ -4,13 +4,13 @@ import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.springframework.stereotype.Repository;
 import ru.tmhn.summerevent.jooq.enums.TaskType;
-import ru.tmhn.summerevent.model.Event;
-import ru.tmhn.summerevent.model.Task;
+import ru.tmhn.summerevent.model.*;
 
 import java.util.List;
 
 import static ru.tmhn.summerevent.jooq.Tables.*;
 
+@SuppressWarnings("ConstantConditions")
 @Repository
 public class EventRepository {
 
@@ -49,18 +49,16 @@ public class EventRepository {
     }
 
     public Event findActiveEvent() {
-        return context.select(EVENT.ID, EVENT.NAME, EVENT.DESCRIPTION)
+        return context.select(ACTIVEEVENT.EVENTID)
                 .from(ACTIVEEVENT)
-                .leftJoin(EVENT).on(ACTIVEEVENT.EVENTID.eq(EVENT.ID))
-                .fetchOne(this::mapEvent);
+                .fetchOne(record -> new Event(record.get(ACTIVEEVENT.EVENTID)));
     }
 
-    private Event mapEvent(Record record) {
-        Event event = new Event();
-        event.setId(record.get(EVENT.ID));
-        event.setName(record.get(EVENT.NAME));
-        event.setDescription(record.get(EVENT.DESCRIPTION));
-        return event;
+    public List<EventTeamUser> listTeamsAndUsers(int eventId) {
+        return context.select(EVENTTEAMUSER, EVENTTEAMUSER.ID, EVENTTEAMUSER.EVENT, EVENTTEAMUSER.TEAM, EVENTTEAMUSER.USER)
+                .from(EVENTTEAMUSER)
+                .where(EVENTTEAMUSER.EVENT.eq(eventId))
+                .fetch(this::mapEventTeamUser);
     }
 
     public int addTask(Task task) {
@@ -100,6 +98,14 @@ public class EventRepository {
                 .fetch(this::mapTask);
     }
 
+    private Event mapEvent(Record record) {
+        Event event = new Event();
+        event.setId(record.get(EVENT.ID));
+        event.setName(record.get(EVENT.NAME));
+        event.setDescription(record.get(EVENT.DESCRIPTION));
+        return event;
+    }
+
     private Task mapTask(Record record) {
         Task task = new Task();
         task.setId(record.get(TASK.ID));
@@ -109,5 +115,17 @@ public class EventRepository {
         task.setDescription(record.get(TASK.DESCRIPTION));
         task.setAnswer(record.get(TASK.ANSWER));
         return task;
+    }
+
+    private EventTeamUser mapEventTeamUser(Record record) {
+        EventTeamUser eventTeamUser = new EventTeamUser();
+        eventTeamUser.setId(record.get(EVENTTEAMUSER.ID));
+        eventTeamUser.setEvent(new Event());
+        eventTeamUser.getEvent().setId(record.get(EVENTTEAMUSER.EVENT));
+        eventTeamUser.setTeam(new Team());
+        eventTeamUser.getTeam().setId(record.get(EVENTTEAMUSER.TEAM));
+        eventTeamUser.setUser(new User());
+        eventTeamUser.getUser().setId(record.get(EVENTTEAMUSER.USER));
+        return eventTeamUser;
     }
 }

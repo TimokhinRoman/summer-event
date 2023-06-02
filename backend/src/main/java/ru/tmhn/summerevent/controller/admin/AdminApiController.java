@@ -1,14 +1,16 @@
-package ru.tmhn.summerevent.controller;
+package ru.tmhn.summerevent.controller.admin;
 
 import org.springframework.web.bind.annotation.*;
 import ru.tmhn.summerevent.dto.EventDto;
 import ru.tmhn.summerevent.dto.TaskDto;
+import ru.tmhn.summerevent.model.RoleAdmin;
 import ru.tmhn.summerevent.service.EventService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin")
+@RoleAdmin
 public class AdminApiController {
 
     private final EventService eventService;
