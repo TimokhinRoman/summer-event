@@ -36,14 +36,14 @@ public class EventRepository {
     }
 
     public Event findEvent(int id) {
-        return context.select(EVENT.ID, EVENT.NAME, EVENT.DESCRIPTION)
+        return context.select(EVENT.ID, EVENT.NAME, EVENT.DESCRIPTION, EVENT.STATUS)
                 .from(EVENT)
                 .where(EVENT.ID.eq(id))
                 .fetchSingle(this::mapEvent);
     }
 
     public List<Event> listEvents() {
-        return context.select(EVENT.ID, EVENT.NAME, EVENT.DESCRIPTION)
+        return context.select(EVENT.ID, EVENT.NAME, EVENT.DESCRIPTION, EVENT.STATUS)
                 .from(EVENT)
                 .fetch(this::mapEvent);
     }
@@ -52,13 +52,6 @@ public class EventRepository {
         return context.select(ACTIVEEVENT.EVENTID)
                 .from(ACTIVEEVENT)
                 .fetchOne(record -> new Event(record.get(ACTIVEEVENT.EVENTID)));
-    }
-
-    public List<EventTeamUser> listTeamsAndUsers(int eventId) {
-        return context.select(EVENTTEAMUSER, EVENTTEAMUSER.ID, EVENTTEAMUSER.EVENT, EVENTTEAMUSER.TEAM, EVENTTEAMUSER.USER)
-                .from(EVENTTEAMUSER)
-                .where(EVENTTEAMUSER.EVENT.eq(eventId))
-                .fetch(this::mapEventTeamUser);
     }
 
     public int addTask(Task task) {
@@ -98,11 +91,55 @@ public class EventRepository {
                 .fetch(this::mapTask);
     }
 
+    public int addEventTeamUser(int eventId, int teamId, int userId) {
+        return context.insertInto(EVENTTEAMUSER, EVENTTEAMUSER.EVENT, EVENTTEAMUSER.TEAM, EVENTTEAMUSER.USER)
+                .values(eventId, teamId, userId)
+                .execute();
+    }
+
+    public int deleteEventTeamUser(int eventId, int userId) {
+        return context.deleteFrom(EVENTTEAMUSER)
+                .where(EVENTTEAMUSER.EVENT.eq(eventId).and(EVENTTEAMUSER.USER.eq(userId)))
+                .execute();
+    }
+
+    public Team findUserTeam(int eventId, int userId) {
+        return context.select(TEAM.ID, TEAM.NAME)
+                .from(EVENTTEAMUSER)
+                .leftJoin(TEAM).on(EVENTTEAMUSER.TEAM.eq(TEAM.ID))
+                .where(EVENTTEAMUSER.EVENT.eq(eventId).and(EVENTTEAMUSER.USER.eq(userId)))
+                .fetchOne(this::mapTeam);
+    }
+
+    public List<Team> listTeams(int eventId) {
+        return context.selectDistinct(TEAM.ID, TEAM.NAME)
+                .from(EVENTTEAMUSER)
+                .leftJoin(TEAM).on(EVENTTEAMUSER.TEAM.eq(TEAM.ID))
+                .where(EVENTTEAMUSER.EVENT.eq(eventId))
+                .fetch(this::mapTeam);
+    }
+
+    public List<User> listTeamUsers(int eventId, int teamId) {
+        return context.select(USER.ID, USER.NAME)
+                .from(EVENTTEAMUSER)
+                .leftJoin(USER).on(EVENTTEAMUSER.USER.eq(USER.ID))
+                .where(EVENTTEAMUSER.EVENT.eq(eventId).and(EVENTTEAMUSER.TEAM.eq(teamId)))
+                .fetch(this::mapUser);
+    }
+
+    public List<EventTeamUser> listTeamsAndUsers(int eventId) {
+        return context.select(EVENTTEAMUSER.ID, EVENTTEAMUSER.EVENT, EVENTTEAMUSER.TEAM, EVENTTEAMUSER.USER)
+                .from(EVENTTEAMUSER)
+                .where(EVENTTEAMUSER.EVENT.eq(eventId))
+                .fetch(this::mapEventTeamUser);
+    }
+
     private Event mapEvent(Record record) {
         Event event = new Event();
         event.setId(record.get(EVENT.ID));
         event.setName(record.get(EVENT.NAME));
         event.setDescription(record.get(EVENT.DESCRIPTION));
+        event.setStatus(EventStatus.valueOf(record.get(EVENT.STATUS).name()));
         return event;
     }
 
@@ -115,6 +152,20 @@ public class EventRepository {
         task.setDescription(record.get(TASK.DESCRIPTION));
         task.setAnswer(record.get(TASK.ANSWER));
         return task;
+    }
+
+    private Team mapTeam(Record record) {
+        Team team = new Team();
+        team.setId(record.get(TEAM.ID));
+        team.setName(record.get(TEAM.NAME));
+        return team;
+    }
+
+    private User mapUser(Record record) {
+        User user = new User();
+        user.setId(record.get(USER.ID));
+        user.setName(record.get(USER.NAME));
+        return user;
     }
 
     private EventTeamUser mapEventTeamUser(Record record) {

@@ -23,4 +23,14 @@ public class TeamService {
         team.setId(id);
         return teamMapper.map(team);
     }
+
+    public TeamDto findTeam(int id) {
+        Team team = teamRepository.findTeam(id);
+        return teamMapper.map(team);
+    }
+
+    public TeamDto findTeamByName(String name) {
+        Team team = teamRepository.findTeamByName(name);
+        return teamMapper.map(team);
+    }
 }

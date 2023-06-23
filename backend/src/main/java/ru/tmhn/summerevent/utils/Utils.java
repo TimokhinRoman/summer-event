@@ -11,4 +11,8 @@ public class Utils {
         if (value == null) return null;
         return value == 1 ? Boolean.TRUE : Boolean.FALSE;
     }
+
+    public static boolean isEmpty(String str) {
+        return str == null || str.isBlank();
+    }
 }

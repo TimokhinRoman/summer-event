@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class EntityDto {
 
-    private int id;
+    private Integer id;
 }

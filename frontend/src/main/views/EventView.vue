@@ -18,14 +18,14 @@
 import axios from "axios";
 
 export default {
-  name: "MainView",
-  data() {
-    return {
-      event: null
+  name: "EventView",
+  computed: {
+    event() {
+      return this.$store.state.event
     }
   },
   created() {
-    this.loadEvent();
+    //this.loadEvent();
   },
   methods: {
     loadEvent() {

@@ -1,8 +1,9 @@
 CREATE TABLE Event
 (
     id          INT PRIMARY KEY AUTO_INCREMENT,
-    name        VARCHAR(255) NOT NULL,
-    description MEDIUMTEXT   NOT NULL
+    name        VARCHAR(255)                                    NOT NULL,
+    description MEDIUMTEXT                                      NOT NULL,
+    status      ENUM ('CREATED', 'PENDING', 'STARTED', 'ENDED') NOT NULL DEFAULT 'CREATED'
 );
 
 CREATE TABLE Task

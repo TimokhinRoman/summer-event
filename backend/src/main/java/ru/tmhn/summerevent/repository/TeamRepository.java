@@ -32,6 +32,13 @@ public class TeamRepository {
                 .fetchSingle(this::mapTeam);
     }
 
+    public Team findTeamByName(String name) {
+        return context.select(TEAM.ID, TEAM.NAME, TEAM.OWNER)
+                .from(TEAM)
+                .where(TEAM.NAME.eq(name))
+                .fetchOne(this::mapTeam);
+    }
+
     private Team mapTeam(Record record) {
         Team team = new Team();
         team.setId(record.get(TEAM.ID));

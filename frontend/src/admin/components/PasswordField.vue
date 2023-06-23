@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-4">
+  <div :class="classes">
     <span class="p-float-label">
       <password :id="name" class="p-inputtext-lg" v-model="value" :feedback="false" toggleMask
                 :class="{ 'p-invalid': errorMessage }"/>
@@ -23,6 +23,9 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  classes: {
+    type: String
+  }
 });
 
 const {errorMessage, value} = useField(() => props.name);

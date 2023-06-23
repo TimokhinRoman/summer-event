@@ -16,9 +16,12 @@ public class EventMapper {
     public Event toEvent(EventDto dto) {
         if (dto == null) return null;
         Event event = new Event();
-        event.setId(dto.getId());
+        if (dto.getId() != null) {
+            event.setId(dto.getId());
+        }
         event.setName(dto.getName());
         event.setDescription(dto.getDescription());
+        event.setStatus(dto.getStatus());
         event.setTasks(toTaskList(dto.getTasks()));
         return event;
     }
@@ -29,6 +32,7 @@ public class EventMapper {
         dto.setId(event.getId());
         dto.setName(event.getName());
         dto.setDescription(event.getDescription());
+        dto.setStatus(event.getStatus());
         dto.setTasks(toTaskDtoList(event.getTasks()));
         return dto;
     }
@@ -44,7 +48,9 @@ public class EventMapper {
     public Task toTask(TaskDto dto) {
         if (dto == null) return null;
         Task task = new Task();
-        task.setId(dto.getId());
+        if (dto.getId() != null) {
+            task.setId(dto.getId());
+        }
         task.setEvent(new Event(dto.getEventId()));
         task.setType(dto.getType());
         task.setName(dto.getName());

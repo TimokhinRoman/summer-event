@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-4">
+  <div :class="classes">
     <span class="p-float-label">
       <input-text :type="type" :id="name" class="p-inputtext-lg" v-model="value"
                   :class="{ 'p-invalid': errorMessage }"/>
@@ -28,6 +28,9 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  classes: {
+    type: String
+  }
 });
 
 const {errorMessage, value} = useField(() => props.name);

@@ -1,15 +1,15 @@
 <template>
-  <div class="login-body">
-    <div class="login-panel p-fluid">
+  <div class="full-screen login-body">
+    <div class="container login-panel p-fluid">
       <div class="flex flex-column">
         <form @submit="onSubmit">
-          <div class="form-container mb-4">
-            <input-text-field name="name" label="Имя"/>
-            <input-text-field type="email" name="email" label="Email"/>
-            <password-field name="password" label="Пароль"/>
+          <div class="form-container">
+            <input-text-field name="name" label="Имя" classes="mb-4"/>
+            <input-text-field type="email" name="email" label="Email" classes="mb-4"/>
+            <password-field name="password" label="Пароль" classes="mb-4"/>
             <password-field name="passwordConfirmation" label="Ещё раз пароль"/>
           </div>
-          <div class="button-container">
+          <div class="button-container mt-3">
             <Button type="submit" label="Зарегистрироваться" class="text-xl font-medium"/>
           </div>
           <small class="p-error" v-if="error">{{ error }}</small>
@@ -66,15 +66,7 @@ const onSubmit = handleSubmit((values) => {
 </script>
 
 <style>
-body {
-  font-family: var(--font-family);
-}
-
-.login-body {
-  display: flex;
-  box-sizing: border-box;
-  min-height: 100vh;
-}
+@import "../assets/app.css";
 
 .login-body .login-panel {
   margin: auto;
@@ -106,18 +98,5 @@ body {
 .login-body .login-panel .button-container > span a {
   cursor: pointer;
   margin-left: 0.25rem;
-}
-
-@media (max-width: 991px) {
-  .login-body .login-image {
-    display: none;
-  }
-
-  .login-body .login-panel {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 60px 50px;
-  }
 }
 </style>

@@ -7,11 +7,20 @@ import ru.tmhn.summerevent.model.Team;
 @Component
 public class TeamMapper {
 
+    private final UserMapper userMapper;
+
+    public TeamMapper(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
+
     public Team map(TeamDto dto) {
         if (dto == null) return null;
 
         Team team = new Team();
-        team.setId(dto.getId());
+        if (dto.getId() != null) {
+            team.setId(dto.getId());
+        }
+        team.setOwner(userMapper.map(dto.getOwner()));
         team.setName(dto.getName());
         return team;
     }
@@ -22,6 +31,7 @@ public class TeamMapper {
         TeamDto dto = new TeamDto();
         dto.setId(team.getId());
         dto.setName(team.getName());
+        dto.setOwner(userMapper.map(team.getOwner()));
         return dto;
     }
 }

@@ -11,7 +11,9 @@ public class UserMapper {
         if (dto == null) return null;
 
         User user = new User();
-        user.setId(dto.getId());
+        if (dto.getId() != null) {
+            user.setId(dto.getId());
+        }
         user.setName(dto.getName());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());

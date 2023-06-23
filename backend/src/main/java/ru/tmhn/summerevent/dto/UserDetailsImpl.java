@@ -13,6 +13,7 @@ public class UserDetailsImpl implements UserDetails {
     private final String username;
     private final String password;
     private final Collection<GrantedAuthority> authorities;
+    private final User user;
 
     public UserDetailsImpl(User user) {
         username = user.getEmail();
@@ -22,6 +23,7 @@ public class UserDetailsImpl implements UserDetails {
         } else {
             authorities = List.of(new SimpleGrantedAuthority("USER"));
         }
+        this.user = user;
     }
 
     @Override
@@ -66,5 +68,9 @@ public class UserDetailsImpl implements UserDetails {
                 ", password='" + password + '\'' +
                 ", authorities=" + authorities +
                 '}';
+    }
+
+    public User getUser() {
+        return user;
     }
 }

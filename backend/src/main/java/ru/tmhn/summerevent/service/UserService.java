@@ -1,5 +1,7 @@
 package ru.tmhn.summerevent.service;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -42,6 +44,12 @@ public class UserService implements UserDetailsService {
         int id = userRepository.addUser(user);
         user.setId(id);
         return userMapper.map(user);
+    }
+
+    public UserDto getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        return userMapper.map(userDetails.getUser());
     }
 
     @Override
