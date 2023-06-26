@@ -51,7 +51,7 @@ public class PublicApiController {
         LobbyDto dto = new LobbyDto();
         dto.setUser(user);
         dto.setSelectedTeam(userTeam);
-        dto.setTeams(eventService.listTeams(event.getId()));
+        dto.setTeams(eventService.listEventTeams(event.getId()));
 
         return dto;
     }

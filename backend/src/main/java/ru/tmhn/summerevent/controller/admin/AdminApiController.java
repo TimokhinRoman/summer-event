@@ -3,6 +3,8 @@ package ru.tmhn.summerevent.controller.admin;
 import org.springframework.web.bind.annotation.*;
 import ru.tmhn.summerevent.dto.EventDto;
 import ru.tmhn.summerevent.dto.TaskDto;
+import ru.tmhn.summerevent.dto.TeamDto;
+import ru.tmhn.summerevent.model.EventStatus;
 import ru.tmhn.summerevent.model.RoleAdmin;
 import ru.tmhn.summerevent.service.EventService;
 
@@ -62,5 +64,30 @@ public class AdminApiController {
     public EventDto deleteTask(@PathVariable int eventId, @PathVariable int taskId) {
         eventService.deleteTask(eventId, taskId);
         return eventService.findEvent(eventId);
+    }
+
+    @PostMapping("/events/{eventId}/pending")
+    public void setEventPending(@PathVariable int eventId) {
+        eventService.updateEventStatus(eventId, EventStatus.PENDING);
+    }
+
+    @PostMapping("/events/{eventId}/start")
+    public void startEvent(@PathVariable int eventId) {
+        eventService.updateEventStatus(eventId, EventStatus.STARTED);
+    }
+
+    @PostMapping("/events/{eventId}/finish")
+    public void finishEvent(@PathVariable int eventId) {
+        eventService.updateEventStatus(eventId, EventStatus.ENDED);
+    }
+
+    @GetMapping("/events/{eventId}/teams")
+    public List<TeamDto> listEventTeams(@PathVariable int eventId) {
+        return eventService.listEventTeams(eventId);
+    }
+
+    @DeleteMapping("/events/{eventId}/teams/{teamId}")
+    public void deleteEventTeam(@PathVariable int eventId, @PathVariable int teamId) {
+        eventService.deleteEventTeam(eventId, teamId);
     }
 }

@@ -54,6 +54,13 @@ public class EventRepository {
                 .fetchOne(record -> new Event(record.get(ACTIVEEVENT.EVENTID)));
     }
 
+    public int updateEventStatus(int id, EventStatus status) {
+        return context.update(EVENT)
+                .set(EVENT.STATUS, ru.tmhn.summerevent.jooq.enums.EventStatus.valueOf(status.name()))
+                .where(EVENT.ID.eq(id))
+                .execute();
+    }
+
     public int addTask(Task task) {
         return context.insertInto(TASK, TASK.EVENTID, TASK.TYPE, TASK.NAME, TASK.DESCRIPTION, TASK.ANSWER)
                 .values(task.getEvent().getId(), TaskType.valueOf(task.getType().name()), task.getName(), task.getDescription(), task.getAnswer())
@@ -100,6 +107,12 @@ public class EventRepository {
     public int deleteEventTeamUser(int eventId, int userId) {
         return context.deleteFrom(EVENTTEAMUSER)
                 .where(EVENTTEAMUSER.EVENT.eq(eventId).and(EVENTTEAMUSER.USER.eq(userId)))
+                .execute();
+    }
+
+    public int deleteEventTeam(int eventId, int teamId) {
+        return context.deleteFrom(EVENTTEAMUSER)
+                .where(EVENTTEAMUSER.EVENT.eq(eventId).and(EVENTTEAMUSER.TEAM.eq(teamId)))
                 .execute();
     }
 

@@ -9,10 +9,7 @@ import ru.tmhn.summerevent.dto.UserDto;
 import ru.tmhn.summerevent.mapper.EventMapper;
 import ru.tmhn.summerevent.mapper.TeamMapper;
 import ru.tmhn.summerevent.mapper.UserMapper;
-import ru.tmhn.summerevent.model.Event;
-import ru.tmhn.summerevent.model.EventTeamUser;
-import ru.tmhn.summerevent.model.Task;
-import ru.tmhn.summerevent.model.Team;
+import ru.tmhn.summerevent.model.*;
 import ru.tmhn.summerevent.repository.EventRepository;
 import ru.tmhn.summerevent.utils.Utils;
 
@@ -86,6 +83,11 @@ public class EventService {
         return findEvent(event.getId());
     }
 
+    public int updateEventStatus(int eventId, EventStatus status) {
+        Objects.requireNonNull(status);
+        return eventRepository.updateEventStatus(eventId, status);
+    }
+
     public TaskDto addTask(TaskDto dto) {
         Task task = eventMapper.toTask(dto);
         int id = eventRepository.addTask(task);
@@ -113,7 +115,7 @@ public class EventService {
         return teamMapper.map(team);
     }
 
-    public List<TeamDto> listTeams(int eventId) {
+    public List<TeamDto> listEventTeams(int eventId) {
         return eventRepository.listTeams(eventId).stream()
                 .map(teamMapper::map)
                 .collect(Collectors.toList());
@@ -123,6 +125,10 @@ public class EventService {
         return eventRepository.listTeamUsers(eventId, teamId).stream()
                 .map(userMapper::map)
                 .collect(Collectors.toList());
+    }
+
+    public int deleteEventTeam(int eventId, int teamId) {
+        return eventRepository.deleteEventTeam(eventId, teamId);
     }
 
     @Transactional
