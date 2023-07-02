@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import ru.tmhn.summerevent.model.Team;
 import ru.tmhn.summerevent.model.User;
 
+import java.util.List;
+
 import static ru.tmhn.summerevent.jooq.Tables.TEAM;
 
 @SuppressWarnings("ConstantConditions")
@@ -37,6 +39,12 @@ public class TeamRepository {
                 .from(TEAM)
                 .where(TEAM.NAME.eq(name))
                 .fetchOne(this::mapTeam);
+    }
+
+    public List<Team> listTeams() {
+        return context.select(TEAM.ID, TEAM.NAME, TEAM.OWNER)
+                .from(TEAM)
+                .fetch(this::mapTeam);
     }
 
     private Team mapTeam(Record record) {

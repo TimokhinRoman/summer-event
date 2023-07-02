@@ -30,9 +30,9 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
 
         String error;
         if (exception instanceof BadCredentialsException) {
-            error = "Такого пользователя не существует";
+            error = "такого пользователя не существует";
         } else {
-            error = "Что-то пошло не так";
+            error = "что-то пошло не так";
         }
 
         HashMap<String, String> responseBody = new HashMap<>();

@@ -1,17 +1,16 @@
 <template>
-  <router-link :to="{name: 'EventAdd'}" class="btn btn-success mb-2"
-               role="button">Добавить событие
-  </router-link>
-  <div v-if="events !== null && events.length > 0" class="box">
-    <div class="list-group">
-      <router-link v-for="event in events" :key="event.id" :to="viewLink(event)"
-                   class="list-group-item list-group-item-action d-flex gap-3 py-3">
-        <div>
-          <h6 class="mb-0">{{ event.name }}</h6>
-          <p class="mb-0 opacity-75">{{ event.description }}</p>
-        </div>
-      </router-link>
-    </div>
+  <p class="text-3xl font-bold">События</p>
+
+  <div v-if="events && events.length > 0" class="w-full">
+    <router-link v-for="event in events" :key="event.id" :to="eventLink(event)"
+                 class="no-underline">
+      <div class="w-full border-1 border-x-none py-3">
+        <div class="text-3xl text-white font-bold">{{ event.name }}</div>
+        <div class="text-color">{{ event.description }}</div>
+        <div class="text-color">{{ event.active ? 'Активно' : 'Неактивно' }}</div>
+        <div class="text-color">{{ event.status }}</div>
+      </div>
+    </router-link>
   </div>
 </template>
 
@@ -36,7 +35,7 @@ export default {
           this.events = response.data;
         })
     },
-    viewLink(event) {
+    eventLink(event) {
       return {
         name: "Event",
         params: {
@@ -47,3 +46,7 @@ export default {
   }
 }
 </script>
+
+<style>
+
+</style>

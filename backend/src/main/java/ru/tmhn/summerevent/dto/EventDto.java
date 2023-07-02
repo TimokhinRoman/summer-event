@@ -13,5 +13,6 @@ public class EventDto extends EntityDto {
     private String name;
     private String description;
     private EventStatus status;
+    private boolean active;
     private List<TaskDto> tasks;
 }

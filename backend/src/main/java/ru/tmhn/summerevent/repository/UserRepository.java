@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import ru.tmhn.summerevent.model.EventTeamUser;
 import ru.tmhn.summerevent.model.User;
 
+import java.util.List;
+
 import static ru.tmhn.summerevent.jooq.Tables.EVENTTEAMUSER;
 import static ru.tmhn.summerevent.jooq.Tables.USER;
 
@@ -27,24 +29,23 @@ public class UserRepository {
     }
 
     public User findUser(int id) {
-        return context.select(USER.ID, USER.NAME, USER.EMAIL, USER.PASSWORD)
+        return context.select(USER.ID, USER.NAME, USER.EMAIL, USER.PASSWORD, USER.ADMIN)
                 .from(USER)
                 .where(USER.ID.eq(id))
                 .fetchOne(this::mapUser);
     }
 
     public User findUserByEmail(String email) {
-        return context.select(USER.ID, USER.NAME, USER.EMAIL, USER.PASSWORD)
+        return context.select(USER.ID, USER.NAME, USER.EMAIL, USER.PASSWORD, USER.ADMIN)
                 .from(USER)
                 .where(USER.EMAIL.eq(email))
                 .fetchOne(this::mapUser);
     }
 
-    public int addEventTeamUser(EventTeamUser eventTeamUser) {
-        return context.insertInto(EVENTTEAMUSER, EVENTTEAMUSER.EVENT, EVENTTEAMUSER.TEAM, EVENTTEAMUSER.USER)
-                .values(eventTeamUser.getEvent().getId(), eventTeamUser.getTeam().getId(), eventTeamUser.getUser().getId())
-                .returning(EVENTTEAMUSER.ID)
-                .fetchOne(EVENTTEAMUSER.ID);
+    public List<User> listUsers() {
+        return context.select(USER.ID, USER.NAME, USER.EMAIL, USER.PASSWORD, USER.ADMIN)
+                .from(USER)
+                .fetch(this::mapUser);
     }
 
     private User mapUser(Record record) {
@@ -53,6 +54,7 @@ public class UserRepository {
         user.setName(record.get(USER.NAME));
         user.setEmail(record.get(USER.EMAIL));
         user.setPassword(record.get(USER.PASSWORD));
+        user.setAdmin(record.get(USER.ADMIN) == 1);
         return user;
     }
 }

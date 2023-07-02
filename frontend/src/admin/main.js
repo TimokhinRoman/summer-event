@@ -2,7 +2,28 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-//import 'bootstrap'
-//import 'bootstrap/dist/css/bootstrap.min.css'
+import PrimeVue from "primevue/config";
 
-createApp(App).use(store).use(router).mount('#app')
+import "primevue/resources/primevue.min.css";
+import "primevue/resources/themes/bootstrap4-dark-blue/theme.css";
+import "primeicons/primeicons.css"
+import "primeflex/primeflex.css"
+import Button from "primevue/button";
+
+
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faUser, faUsersLine, faCalendarDays, faDice } from '@fortawesome/free-solid-svg-icons'
+
+/* add icons to the library */
+library.add(faUser, faUsersLine, faCalendarDays, faDice)
+
+const app = createApp(App)
+  .use(store)
+  .use(router)
+  .use(PrimeVue);
+
+app.component("Button", Button)
+app.component('font-awesome-icon', FontAwesomeIcon)
+
+app.mount('#app')

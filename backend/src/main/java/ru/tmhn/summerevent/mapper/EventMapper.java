@@ -33,6 +33,7 @@ public class EventMapper {
         dto.setName(event.getName());
         dto.setDescription(event.getDescription());
         dto.setStatus(event.getStatus());
+        dto.setActive(event.isActive());
         dto.setTasks(toTaskDtoList(event.getTasks()));
         return dto;
     }

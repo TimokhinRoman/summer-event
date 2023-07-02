@@ -1,27 +1,19 @@
 <template>
-  <div v-if="event" class="card box">
-    <div class="card-body">
-      <h4 class="card-title mb-2">{{ event.name }}</h4>
-      <p class="card-text">{{ event.description }}</p>
-
-      <div>
-        <router-link :to="{name: 'EventModify', params: event.id}" class="btn btn-primary me-2" role="button">
-          Редактировать
-        </router-link>
-        <router-link :to="{name: 'TaskAdd', params: event.id}" class="btn btn-success" role="button">
-          Добавить задание
-        </router-link>
-      </div>
-
-      <div class="mt-4">
-        <h5>Задания</h5>
-        <div class="list-group">
-          <router-link v-for="task in event.tasks" :key="task.id" :to=taskViewLink(task)
-                       class="list-group-item list-group-item-action">
-            {{ task.name }}
-          </router-link>
-        </div>
-      </div>
+  <div v-if="event" class="w-full">
+    <p class="text-4xl text-white font-bold">{{ event.name }}</p>
+    <p class="text-color">{{ event.description }}</p>
+    <p class="text-color">{{ event.active ? 'Активно' : 'Неактивно' }}</p>
+    <p class="text-color">{{ event.status }}</p>
+    <div class="flex flex-column">
+      <Button v-if="!event.active" label="Сделать активным" class="my-1" @click="activateEvent"/>
+      <Button v-if="event.active" label="Сделать неактивным" class="my-1" @click="deactivateEvent"/>
+      <Button label="Подготовка" class="my-1" @click="setPending"/>
+      <Button label="Начать" class="my-1" @click="setStarted"/>
+      <Button label="Завершить" class="my-1" @click="setEnded"/>
+      <div class="mt-4"/>
+      <Button label="Список заданий" class="my-1" @click="showTaskList"/>
+      <Button label="Список команд" class="my-1" @click="showTeamList"/>
+      <Button label="Список участников" class="my-1" @click="showUserList"/>
     </div>
   </div>
 </template>
@@ -42,20 +34,46 @@ export default {
   methods: {
     loadEvent() {
       const eventId = this.$route.params.eventId;
-      axios.get("/api/admin/events/" + eventId)
+      this.handleEventRequest(axios.get("/api/admin/events/" + eventId));
+    },
+    activateEvent() {
+      this.handleEventRequest(axios.post(`/api/admin/events/${this.event.id}/activate`));
+    },
+    deactivateEvent() {
+      this.handleEventRequest(axios.post(`/api/admin/events/${this.event.id}/deactivate`));
+    },
+    setPending() {
+      this.handleEventRequest(axios.post(`/api/admin/events/${this.event.id}/pending`));
+    },
+    setStarted() {
+      this.handleEventRequest(axios.post(`/api/admin/events/${this.event.id}/started`));
+    },
+    setEnded() {
+      this.handleEventRequest(axios.post(`/api/admin/events/${this.event.id}/ended`));
+    },
+    handleEventRequest(promise) {
+      return promise
         .then(response => {
           console.log(response);
           this.event = response.data;
         })
     },
-    taskViewLink(task) {
-      return {
-        name: "Task",
+    showTaskList() {
+      this.routeTo('EventTaskList');
+    },
+    showTeamList() {
+      this.routeTo('EventTeamList');
+    },
+    showUserList() {
+      this.routeTo('EventUserList');
+    },
+    routeTo(name) {
+      this.$router.push({
+        name: name,
         params: {
-          eventId: task.eventId,
-          taskId: task.id
+          eventId: this.event.id
         }
-      };
+      })
     }
   }
 }

@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.tmhn.summerevent.dto.UserDetailsImpl;
 import ru.tmhn.summerevent.dto.UserDto;
 import ru.tmhn.summerevent.exception.PasswordDoesNotMatchException;
@@ -14,6 +15,9 @@ import ru.tmhn.summerevent.exception.UserAlreadyExistException;
 import ru.tmhn.summerevent.mapper.UserMapper;
 import ru.tmhn.summerevent.model.User;
 import ru.tmhn.summerevent.repository.UserRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -28,6 +32,7 @@ public class UserService implements UserDetailsService {
         this.encoder = encoder;
     }
 
+    @Transactional
     public UserDto register(UserDto dto) {
         // todo: validate
 
@@ -46,12 +51,6 @@ public class UserService implements UserDetailsService {
         return userMapper.map(user);
     }
 
-    public UserDto getCurrentUser() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
-        return userMapper.map(userDetails.getUser());
-    }
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findUserByEmail(email);
@@ -59,6 +58,18 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException(email);
         }
         return new UserDetailsImpl(user);
+    }
+
+    public UserDto getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        UserDetailsImpl userDetails = (UserDetailsImpl) auth.getPrincipal();
+        return userMapper.map(userDetails.getUser());
+    }
+
+    public List<UserDto> listUsers() {
+        return userRepository.listUsers().stream()
+                .map(userMapper::map)
+                .collect(Collectors.toList());
     }
 
     private boolean isEmailExist(String email) {

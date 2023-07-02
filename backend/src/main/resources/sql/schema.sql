@@ -6,6 +6,14 @@ CREATE TABLE Event
     status      ENUM ('CREATED', 'PENDING', 'STARTED', 'ENDED') NOT NULL DEFAULT 'CREATED'
 );
 
+CREATE TABLE ActiveEvent
+(
+    active  ENUM ('ACTIVE') NOT NULL PRIMARY KEY DEFAULT 'ACTIVE',
+    eventId INT             NOT NULL,
+
+    FOREIGN KEY (eventId) REFERENCES Event (id) ON DELETE CASCADE
+);
+
 CREATE TABLE Task
 (
     id          INT PRIMARY KEY AUTO_INCREMENT,
@@ -19,20 +27,13 @@ CREATE TABLE Task
     FOREIGN KEY (eventId) REFERENCES Event (id) ON DELETE CASCADE
 );
 
-CREATE TABLE ActiveEvent
-(
-    active  ENUM ('ACTIVE') NOT NULL PRIMARY KEY DEFAULT 'ACTIVE',
-    eventId INT             NOT NULL,
-
-    FOREIGN KEY (eventId) REFERENCES Event (id) ON DELETE CASCADE
-);
-
 CREATE TABLE User
 (
     id       INT PRIMARY KEY AUTO_INCREMENT,
     name     VARCHAR(100) NOT NULL,
     email    VARCHAR(100) NOT NULL,
     password VARCHAR(100) NOT NULL,
+    `admin`  BOOLEAN      NOT NULL DEFAULT FALSE,
 
     UNIQUE (email)
 );
@@ -59,4 +60,15 @@ CREATE TABLE EventTeamUser
     FOREIGN KEY (event) REFERENCES Event (id),
     FOREIGN KEY (team) REFERENCES Team (id),
     FOREIGN KEY (user) REFERENCES User (id)
-)
+);
+
+CREATE TABLE EventTeamChooser
+(
+    event INT NOT NULL,
+    team  INT NOT NULL,
+
+    UNIQUE (event),
+
+    FOREIGN KEY (event) REFERENCES Event (id),
+    FOREIGN KEY (team) REFERENCES Team (id)
+);

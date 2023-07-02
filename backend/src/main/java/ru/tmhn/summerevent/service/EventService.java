@@ -9,7 +9,10 @@ import ru.tmhn.summerevent.dto.UserDto;
 import ru.tmhn.summerevent.mapper.EventMapper;
 import ru.tmhn.summerevent.mapper.TeamMapper;
 import ru.tmhn.summerevent.mapper.UserMapper;
-import ru.tmhn.summerevent.model.*;
+import ru.tmhn.summerevent.model.Event;
+import ru.tmhn.summerevent.model.EventStatus;
+import ru.tmhn.summerevent.model.Task;
+import ru.tmhn.summerevent.model.Team;
 import ru.tmhn.summerevent.repository.EventRepository;
 import ru.tmhn.summerevent.utils.Utils;
 
@@ -57,7 +60,7 @@ public class EventService {
     public EventDto findEvent(int id) {
         Event event = eventRepository.findEvent(id);
         // todo: вынести в отдельный метод
-        event.setTasks(eventRepository.listTasks(id));
+        /*event.setTasks(eventRepository.listTasks(id));
         List<EventTeamUser> eventTeamUsers = eventRepository.listTeamsAndUsers(id);
         event.setTeams(eventTeamUsers.stream()
                 .map(EventTeamUser::getTeam)
@@ -66,7 +69,7 @@ public class EventService {
         event.setUsers(eventTeamUsers.stream()
                 .map(EventTeamUser::getUser)
                 .distinct()
-                .collect(Collectors.toList()));
+                .collect(Collectors.toList()));*/
         return eventMapper.toEventDto(event);
     }
 
@@ -74,6 +77,16 @@ public class EventService {
         return eventRepository.listEvents().stream()
                 .map(eventMapper::toEventDto)
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void activateEvent(int eventId) {
+        eventRepository.deleteActiveEvent();
+        eventRepository.addActiveEvent(eventId);
+    }
+
+    public void deactivateEvent(int eventId) {
+        eventRepository.deleteActiveEvent(eventId);
     }
 
     public EventDto findActiveEvent() {
@@ -110,14 +123,26 @@ public class EventService {
         return eventMapper.toTaskDto(task);
     }
 
+    public List<TaskDto> listTasks(int eventId) {
+        return eventRepository.listTasks(eventId).stream()
+                .map(eventMapper::toTaskDto)
+                .collect(Collectors.toList());
+    }
+
     public TeamDto findUserTeam(int eventId, int userId) {
         Team team = eventRepository.findUserTeam(eventId, userId);
         return teamMapper.map(team);
     }
 
-    public List<TeamDto> listEventTeams(int eventId) {
+    public List<TeamDto> listTeams(int eventId) {
         return eventRepository.listTeams(eventId).stream()
                 .map(teamMapper::map)
+                .collect(Collectors.toList());
+    }
+
+    public List<UserDto> listUsers(int eventId) {
+        return eventRepository.listUsers(eventId).stream()
+                .map(userMapper::map)
                 .collect(Collectors.toList());
     }
 
@@ -127,8 +152,31 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
-    public int deleteEventTeam(int eventId, int teamId) {
-        return eventRepository.deleteEventTeam(eventId, teamId);
+    public int deleteTeam(int eventId, int teamId) {
+        EventDto event = findEvent(eventId);
+        if (event != null && event.getStatus() == EventStatus.PENDING) {
+            return eventRepository.deleteEventTeam(eventId, teamId);
+        }
+        return 0;
+    }
+
+    @Transactional
+    public void setTeamChooser(int eventId, int teamId) {
+        eventRepository.deleteTeamChooser(eventId);
+        eventRepository.addTeamChooser(eventId, teamId);
+    }
+
+    public void deleteTeamChooser(int eventId, int teamId) {
+        eventRepository.deleteTeamChooser(eventId, teamId);
+    }
+
+    public TeamDto findTeamChooser(int eventId) {
+        return teamMapper.map(eventRepository.findTeamChooser(eventId));
+    }
+
+    public boolean isTeamChooser(int eventId, int teamId) {
+        Team team = eventRepository.findTeamChooser(eventId);
+        return team != null && team.getId() == teamId;
     }
 
     @Transactional

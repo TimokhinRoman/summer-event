@@ -36,16 +36,35 @@ public class EventRepository {
     }
 
     public Event findEvent(int id) {
-        return context.select(EVENT.ID, EVENT.NAME, EVENT.DESCRIPTION, EVENT.STATUS)
+        return context.select(EVENT.ID, EVENT.NAME, EVENT.DESCRIPTION, EVENT.STATUS, ACTIVEEVENT.ACTIVE)
                 .from(EVENT)
+                .leftJoin(ACTIVEEVENT).on(ACTIVEEVENT.EVENTID.eq(EVENT.ID))
                 .where(EVENT.ID.eq(id))
                 .fetchSingle(this::mapEvent);
     }
 
     public List<Event> listEvents() {
-        return context.select(EVENT.ID, EVENT.NAME, EVENT.DESCRIPTION, EVENT.STATUS)
+        return context.select(EVENT.ID, EVENT.NAME, EVENT.DESCRIPTION, EVENT.STATUS, ACTIVEEVENT.ACTIVE)
                 .from(EVENT)
+                .leftJoin(ACTIVEEVENT).on(ACTIVEEVENT.EVENTID.eq(EVENT.ID))
                 .fetch(this::mapEvent);
+    }
+
+    public int addActiveEvent(int eventId) {
+        return context.insertInto(ACTIVEEVENT, ACTIVEEVENT.EVENTID)
+                .values(eventId)
+                .execute();
+    }
+
+    public int deleteActiveEvent() {
+        return context.deleteFrom(ACTIVEEVENT)
+                .execute();
+    }
+
+    public int deleteActiveEvent(int eventId) {
+        return context.deleteFrom(ACTIVEEVENT)
+                .where(ACTIVEEVENT.EVENTID.eq(eventId))
+                .execute();
     }
 
     public Event findActiveEvent() {
@@ -132,6 +151,14 @@ public class EventRepository {
                 .fetch(this::mapTeam);
     }
 
+    public List<User> listUsers(int eventId) {
+        return context.select(USER.ID, USER.NAME)
+                .from(EVENTTEAMUSER)
+                .leftJoin(USER).on(EVENTTEAMUSER.USER.eq(USER.ID))
+                .where(EVENTTEAMUSER.EVENT.eq(eventId))
+                .fetch(this::mapUser);
+    }
+
     public List<User> listTeamUsers(int eventId, int teamId) {
         return context.select(USER.ID, USER.NAME)
                 .from(EVENTTEAMUSER)
@@ -147,12 +174,38 @@ public class EventRepository {
                 .fetch(this::mapEventTeamUser);
     }
 
+    public int addTeamChooser(int eventId, int teamId) {
+        return context.insertInto(EVENTTEAMCHOOSER, EVENTTEAMCHOOSER.EVENT, EVENTTEAMCHOOSER.TEAM)
+                .values(eventId, teamId)
+                .execute();
+    }
+
+    public int deleteTeamChooser(int eventId) {
+        return context.deleteFrom(EVENTTEAMCHOOSER)
+                .where(EVENTTEAMCHOOSER.EVENT.eq(eventId))
+                .execute();
+    }
+
+    public int deleteTeamChooser(int eventId, int teamId) {
+        return context.deleteFrom(EVENTTEAMCHOOSER)
+                .where(EVENTTEAMCHOOSER.EVENT.eq(eventId).and(EVENTTEAMCHOOSER.TEAM.eq(teamId)))
+                .execute();
+    }
+
+    public Team findTeamChooser(int eventId) {
+        return context.select(EVENTTEAMCHOOSER.TEAM)
+                .from(EVENTTEAMCHOOSER)
+                .where(EVENTTEAMCHOOSER.EVENT.eq(eventId))
+                .fetchOne(record -> new Team(record.get(EVENTTEAMCHOOSER.TEAM)));
+    }
+
     private Event mapEvent(Record record) {
         Event event = new Event();
         event.setId(record.get(EVENT.ID));
         event.setName(record.get(EVENT.NAME));
         event.setDescription(record.get(EVENT.DESCRIPTION));
         event.setStatus(EventStatus.valueOf(record.get(EVENT.STATUS).name()));
+        event.setActive(record.get(ACTIVEEVENT.ACTIVE) != null);
         return event;
     }
 

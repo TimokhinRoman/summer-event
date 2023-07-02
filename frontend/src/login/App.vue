@@ -1,19 +1,17 @@
 <template>
-  <div class="full-screen login-body">
-    <div class="container login-panel p-fluid">
-      <div class="flex flex-column">
-        <form @submit="onSubmit">
-          <div class="form-container">
-            <input-text-field type="email" name="email" label="Email" classes="mb-4"/>
-            <password-field name="password" label="Пароль"/>
-          </div>
-          <div class="button-container mt-3">
-            <Button type="submit" label="Войти" class="text-xl font-medium"/>
-          </div>
-          <small class="p-error" v-if="error">{{ error }}</small>
-        </form>
-        <a class="link" href="/register">Зарегистрироваться</a>
-      </div>
+  <div class="container">
+    <div class="content p-fluid">
+      <form class="w-full" @submit="onSubmit">
+        <div class="form-container">
+          <input-text-field type="email" name="email" label="Email" classes="mb-4"/>
+          <password-field name="password" label="Пароль"/>
+        </div>
+        <div class="button-container mt-3">
+          <Button type="submit" label="Войти" class="text-xl font-medium"/>
+        </div>
+        <small class="p-error" v-if="error">{{ error }}</small>
+      </form>
+      <a class="link" href="/register">Зарегистрироваться</a>
     </div>
   </div>
 </template>
@@ -52,51 +50,41 @@ const onSubmit = handleSubmit((values) => {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded"
     }
-  }).then(_ => {
-    window.location.href = "/";
+  }).then(response => {
+    console.log(response);
+    const user = response.data;
+    if (user.admin) {
+      window.location.href = "/admin#/events";
+    } else {
+      window.location.href = "/";
+    }
   }).catch(e => {
     error.value = e.response.data.error
   });
 });
 </script>
 
-<style>
+<style scoped>
 @import "../assets/app.css";
 
-.login-body .login-panel {
-  margin: auto;
-  box-sizing: border-box;
-}
-
-.login-body .login-panel .form-container input {
-  display: block;
-  max-width: 320px;
-  min-width: 270px;
-}
-
-.login-body .login-panel .form-container a {
+.form-container a {
   color: #868C9B;
   margin-bottom: 20px;
   font-size: 11px;
 }
 
-.login-body .login-panel .button-container button {
-  display: block;
-  max-width: 320px;
-}
-
-.login-body .login-panel .button-container > span {
+.button-container > span {
   display: flex;
   font-size: 11px;
   color: #868C9B;
 }
 
-.login-body .login-panel .button-container > span a {
+.button-container > span a {
   cursor: pointer;
   margin-left: 0.25rem;
 }
 
-.login-body .link {
+.link {
   text-decoration: none;
   text-align: center;
   color: #8dd0ff;

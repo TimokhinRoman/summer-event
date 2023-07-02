@@ -14,6 +14,7 @@ public class Event extends Entity {
 
     private String name;
     private String description;
+    private boolean active;
     private EventStatus status;
     private List<Task> tasks;
     private List<Team> teams;

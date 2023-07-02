@@ -1,20 +1,18 @@
 <template>
-  <div class="full-screen login-body">
-    <div class="container login-panel p-fluid">
-      <div class="flex flex-column">
-        <form @submit="onSubmit">
-          <div class="form-container">
-            <input-text-field name="name" label="Имя" classes="mb-4"/>
-            <input-text-field type="email" name="email" label="Email" classes="mb-4"/>
-            <password-field name="password" label="Пароль" classes="mb-4"/>
-            <password-field name="passwordConfirmation" label="Ещё раз пароль"/>
-          </div>
-          <div class="button-container mt-3">
-            <Button type="submit" label="Зарегистрироваться" class="text-xl font-medium"/>
-          </div>
-          <small class="p-error" v-if="error">{{ error }}</small>
-        </form>
-      </div>
+  <div class="container">
+    <div class="content p-fluid">
+      <form class="w-full" @submit="onSubmit">
+        <div class="form-container">
+          <input-text-field name="name" label="Имя" classes="mb-4"/>
+          <input-text-field type="email" name="email" label="Email" classes="mb-4"/>
+          <password-field name="password" label="Пароль" classes="mb-4"/>
+          <password-field name="passwordConfirmation" label="Ещё раз пароль"/>
+        </div>
+        <div class="button-container mt-3">
+          <Button type="submit" label="Зарегистрироваться" class="text-xl font-medium"/>
+        </div>
+        <small class="p-error" v-if="error">{{ error }}</small>
+      </form>
     </div>
   </div>
 </template>
@@ -65,37 +63,22 @@ const onSubmit = handleSubmit((values) => {
 });
 </script>
 
-<style>
+<style scoped>
 @import "../assets/app.css";
 
-.login-body .login-panel {
-  margin: auto;
-  box-sizing: border-box;
-}
-
-.login-body .login-panel .form-container input {
-  display: block;
-  width: 300px;
-}
-
-.login-body .login-panel .form-container a {
+.form-container a {
   color: #868C9B;
   margin-bottom: 20px;
   font-size: 11px;
 }
 
-.login-body .login-panel .button-container button {
-  display: block;
-  width: 300px;
-}
-
-.login-body .login-panel .button-container > span {
+.button-container > span {
   display: flex;
   font-size: 11px;
   color: #868C9B;
 }
 
-.login-body .login-panel .button-container > span a {
+.button-container > span a {
   cursor: pointer;
   margin-left: 0.25rem;
 }

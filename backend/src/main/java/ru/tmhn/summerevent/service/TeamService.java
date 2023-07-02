@@ -6,6 +6,9 @@ import ru.tmhn.summerevent.mapper.TeamMapper;
 import ru.tmhn.summerevent.model.Team;
 import ru.tmhn.summerevent.repository.TeamRepository;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class TeamService {
 
@@ -32,5 +35,11 @@ public class TeamService {
     public TeamDto findTeamByName(String name) {
         Team team = teamRepository.findTeamByName(name);
         return teamMapper.map(team);
+    }
+
+    public List<TeamDto> listTeams() {
+        return teamRepository.listTeams().stream()
+                .map(teamMapper::map)
+                .collect(Collectors.toList());
     }
 }

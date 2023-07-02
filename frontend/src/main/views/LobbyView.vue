@@ -1,51 +1,46 @@
 <template>
-  <div class="full-screen">
-    <div class="container p-fluid">
-      <template v-if="loading">
-        <p class="m-auto">загрузка...</p>
-      </template>
-      <template v-else-if="selectedTeam">
-        <div class="content">
-          <div class="text-xl">Твоя команда</div>
-          <p class="selected-team-name">{{ selectedTeam.name }}</p>
-          <span class="text-xl">Участники</span>
-          <div class="selected-team-user-list">
-            <div class="selected-team-user" v-for="user in selectedTeam.users" :key="user.id">
-              {{ user.name }}
-            </div>
-          </div>
+  <template v-if="loading">
+    <p class="m-auto">загрузка...</p>
+  </template>
+  <template v-else-if="selectedTeam">
+    <div class="content">
+      <span class="text-xl">Твоя команда</span>
+      <p class="selected-team-name">{{ selectedTeam.name }}</p>
+      <span class="text-xl">Участники</span>
+      <div class="selected-team-user-list">
+        <div class="selected-team-user" v-for="user in selectedTeam.users" :key="user.id">
+          {{ user.name }}
         </div>
-        <div>
-          ожидайте начала...
-        </div>
-        <div class="mt-4 mb-6">
-          <Button type="button" label="Покинуть команду" class="text-lg font-medium" @click="leaveTeam"/>
-        </div>
-      </template>
-      <template v-else>
-        <div class="content">
-          <div>
-            <p class="text-3xl">Привет, <b>{{ user.name }}</b>!</p>
-            <p>введи название своей команды</p>
-          </div>
-          <Form ref="form" @submit="onSubmit" :validation-schema="schema">
-            <div class="form-container mt-2">
-              <input-text-field type="text" name="name" label="Название команды"/>
-            </div>
-            <div class="button-container mt-3">
-              <Button type="submit" label="Присоединиться" class="text-xl font-medium"/>
-            </div>
-          </Form>
-          <div class="team-list" v-if="teams && teams.length > 0">
-            <p>или выбери одну из списка</p>
-            <template v-for="team in teams" :key="team.id">
-              <Button :label="team.name" plain text class="text-2xl text-white font-medium" @click="joinTeam({id: team.id})"/>
-            </template>
-          </div>
-        </div>
+      </div>
+    </div>
+    <div>
+      ожидайте начала...
+    </div>
+    <div class="w-full mt-4">
+      <Button type="button" label="Покинуть команду" class="text-lg font-medium" @click="leaveTeam"/>
+    </div>
+  </template>
+  <template v-else>
+    <div>
+      <p class="text-3xl">Привет, <b>{{ user.name }}</b>!</p>
+      <p>введи название своей команды</p>
+    </div>
+    <Form ref="form" @submit="onSubmit" :validation-schema="schema" class="w-full">
+      <div class="form-container mt-2">
+        <input-text-field type="text" name="name" label="Название команды"/>
+      </div>
+      <div class="button-container mt-3">
+        <Button type="submit" label="Присоединиться" class="text-xl font-medium"/>
+      </div>
+    </Form>
+    <div class="team-list" v-if="teams && teams.length > 0">
+      <p>или выбери одну из списка</p>
+      <template v-for="team in teams" :key="team.id">
+        <Button :label="team.name" plain text class="text-2xl text-white font-medium"
+                @click="joinTeam({id: team.id})"/>
       </template>
     </div>
-  </div>
+  </template>
 </template>
 
 <script setup>
@@ -105,10 +100,6 @@ onMounted(() => {
 
 <style scoped>
 @import "../../assets/app.css";
-
-form {
-  width: 300px
-}
 
 .team-list {
   margin-top: 20px;

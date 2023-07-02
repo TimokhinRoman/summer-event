@@ -1,17 +1,15 @@
 <template>
-  <div class="d-flex h-100 text-center text-bg-dark">
-    <template v-if="event">
-      <header>
-        <div>
-          <nav></nav>
-        </div>
-      </header>
-      <main>
-        <h1>{{ event.name }}</h1>
-        <p>{{ event.description }}</p>
-      </main>
-    </template>
-  </div>
+  <!--div v-if="event">
+    <header>
+      <div>
+        <nav></nav>
+      </div>
+    </header>
+    <main>
+      <h1>{{ event.name }}</h1>
+      <p>{{ event.description }}</p>
+    </main>
+  </div-->
 </template>
 
 <script>

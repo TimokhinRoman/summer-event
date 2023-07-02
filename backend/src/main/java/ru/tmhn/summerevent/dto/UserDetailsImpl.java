@@ -3,6 +3,7 @@ package ru.tmhn.summerevent.dto;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.tmhn.summerevent.model.Authority;
 import ru.tmhn.summerevent.model.User;
 
 import java.util.Collection;
@@ -19,9 +20,9 @@ public class UserDetailsImpl implements UserDetails {
         username = user.getEmail();
         password = user.getPassword();
         if (user.isAdmin()) {
-            authorities = List.of(new SimpleGrantedAuthority("ADMIN"));
+            authorities = List.of(new SimpleGrantedAuthority(Authority.ADMIN));
         } else {
-            authorities = List.of(new SimpleGrantedAuthority("USER"));
+            authorities = List.of(new SimpleGrantedAuthority(Authority.USER));
         }
         this.user = user;
     }

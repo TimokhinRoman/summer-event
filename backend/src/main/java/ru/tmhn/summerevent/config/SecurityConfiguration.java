@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import ru.tmhn.summerevent.model.Authority;
 
 @Configuration
 @EnableWebSecurity
@@ -33,6 +34,8 @@ public class SecurityConfiguration {
                         "static/**",
                         "/register")
                 .permitAll()
+                .requestMatchers("admin.html", "/admin", "/api/admin/**")
+                .hasAuthority(Authority.ADMIN)
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
