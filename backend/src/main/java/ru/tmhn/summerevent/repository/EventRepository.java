@@ -104,99 +104,118 @@ public class EventRepository {
     }
 
     public Task findTask(int eventId, int taskId) {
-        return context.select(TASK.ID, TASK.EVENTID, TASK.TYPE, TASK.NAME, TASK.DESCRIPTION, TASK.ANSWER)
+        return context.select(TASK.ID, TASK.EVENTID, TASK.TYPE, TASK.NAME, TASK.DESCRIPTION, TASK.ANSWER, TASK.MAPX, TASK.MAPY)
                 .from(TASK)
                 .where(TASK.EVENTID.eq(eventId).and(TASK.ID.eq(taskId)))
                 .fetchSingle(this::mapTask);
     }
 
     public List<Task> listTasks(int eventId) {
-        return context.select(TASK.ID, TASK.EVENTID, TASK.TYPE, TASK.NAME, TASK.DESCRIPTION, TASK.ANSWER)
+        return context.select(TASK.ID, TASK.EVENTID, TASK.TYPE, TASK.NAME, TASK.DESCRIPTION, TASK.ANSWER, TASK.MAPX, TASK.MAPY)
                 .from(TASK)
                 .where(TASK.EVENTID.eq(eventId))
                 .fetch(this::mapTask);
     }
 
+    public void addTaskSelected(int eventId, int taskId) {
+        context.insertInto(TASKSELECTED, TASKSELECTED.EVENTID, TASKSELECTED.TASKID)
+                .values(eventId, taskId)
+                .execute();
+    }
+
+    public void deleteTaskSelected(int eventId) {
+        context.deleteFrom(TASKSELECTED)
+                .where(TASKSELECTED.EVENTID.eq(eventId))
+                .execute();
+    }
+
+    public Task findTaskSelected(int eventId) {
+        return context.select(TASKSELECTED.TASKID)
+                .from(TASKSELECTED)
+                .where(TASKSELECTED.EVENTID.eq(eventId))
+                .fetchOne(record -> new Task(record.get(TASKSELECTED.TASKID)));
+    }
+
     public int addEventTeamUser(int eventId, int teamId, int userId) {
-        return context.insertInto(EVENTTEAMUSER, EVENTTEAMUSER.EVENT, EVENTTEAMUSER.TEAM, EVENTTEAMUSER.USER)
+        return context.insertInto(EVENTTEAMUSER, EVENTTEAMUSER.EVENTID, EVENTTEAMUSER.TEAMID, EVENTTEAMUSER.USERID)
                 .values(eventId, teamId, userId)
                 .execute();
     }
 
     public int deleteEventTeamUser(int eventId, int userId) {
         return context.deleteFrom(EVENTTEAMUSER)
-                .where(EVENTTEAMUSER.EVENT.eq(eventId).and(EVENTTEAMUSER.USER.eq(userId)))
+                .where(EVENTTEAMUSER.EVENTID.eq(eventId).and(EVENTTEAMUSER.USERID.eq(userId)))
                 .execute();
     }
 
     public int deleteEventTeam(int eventId, int teamId) {
         return context.deleteFrom(EVENTTEAMUSER)
-                .where(EVENTTEAMUSER.EVENT.eq(eventId).and(EVENTTEAMUSER.TEAM.eq(teamId)))
+                .where(EVENTTEAMUSER.EVENTID.eq(eventId).and(EVENTTEAMUSER.TEAMID.eq(teamId)))
                 .execute();
     }
 
     public Team findUserTeam(int eventId, int userId) {
         return context.select(TEAM.ID, TEAM.NAME)
                 .from(EVENTTEAMUSER)
-                .leftJoin(TEAM).on(EVENTTEAMUSER.TEAM.eq(TEAM.ID))
-                .where(EVENTTEAMUSER.EVENT.eq(eventId).and(EVENTTEAMUSER.USER.eq(userId)))
+                .leftJoin(TEAM).on(EVENTTEAMUSER.TEAMID.eq(TEAM.ID))
+                .where(EVENTTEAMUSER.EVENTID.eq(eventId).and(EVENTTEAMUSER.USERID.eq(userId)))
                 .fetchOne(this::mapTeam);
     }
 
     public List<Team> listTeams(int eventId) {
         return context.selectDistinct(TEAM.ID, TEAM.NAME)
                 .from(EVENTTEAMUSER)
-                .leftJoin(TEAM).on(EVENTTEAMUSER.TEAM.eq(TEAM.ID))
-                .where(EVENTTEAMUSER.EVENT.eq(eventId))
+                .leftJoin(TEAM).on(EVENTTEAMUSER.TEAMID.eq(TEAM.ID))
+                .where(EVENTTEAMUSER.EVENTID.eq(eventId))
                 .fetch(this::mapTeam);
     }
 
     public List<User> listUsers(int eventId) {
         return context.select(USER.ID, USER.NAME)
                 .from(EVENTTEAMUSER)
-                .leftJoin(USER).on(EVENTTEAMUSER.USER.eq(USER.ID))
-                .where(EVENTTEAMUSER.EVENT.eq(eventId))
+                .leftJoin(USER).on(EVENTTEAMUSER.USERID.eq(USER.ID))
+                .where(EVENTTEAMUSER.EVENTID.eq(eventId))
                 .fetch(this::mapUser);
     }
 
     public List<User> listTeamUsers(int eventId, int teamId) {
         return context.select(USER.ID, USER.NAME)
                 .from(EVENTTEAMUSER)
-                .leftJoin(USER).on(EVENTTEAMUSER.USER.eq(USER.ID))
-                .where(EVENTTEAMUSER.EVENT.eq(eventId).and(EVENTTEAMUSER.TEAM.eq(teamId)))
+                .leftJoin(USER).on(EVENTTEAMUSER.USERID.eq(USER.ID))
+                .where(EVENTTEAMUSER.EVENTID.eq(eventId).and(EVENTTEAMUSER.TEAMID.eq(teamId)))
                 .fetch(this::mapUser);
     }
 
     public List<EventTeamUser> listTeamsAndUsers(int eventId) {
-        return context.select(EVENTTEAMUSER.ID, EVENTTEAMUSER.EVENT, EVENTTEAMUSER.TEAM, EVENTTEAMUSER.USER)
+        return context.select(EVENTTEAMUSER.ID, EVENTTEAMUSER.EVENTID, EVENTTEAMUSER.TEAMID, EVENTTEAMUSER.USERID)
                 .from(EVENTTEAMUSER)
-                .where(EVENTTEAMUSER.EVENT.eq(eventId))
+                .where(EVENTTEAMUSER.EVENTID.eq(eventId))
                 .fetch(this::mapEventTeamUser);
     }
 
     public int addTeamChooser(int eventId, int teamId) {
-        return context.insertInto(EVENTTEAMCHOOSER, EVENTTEAMCHOOSER.EVENT, EVENTTEAMCHOOSER.TEAM)
+        return context.insertInto(EVENTTEAMCHOOSER, EVENTTEAMCHOOSER.EVENTID, EVENTTEAMCHOOSER.TEAMID)
                 .values(eventId, teamId)
                 .execute();
     }
 
     public int deleteTeamChooser(int eventId) {
         return context.deleteFrom(EVENTTEAMCHOOSER)
-                .where(EVENTTEAMCHOOSER.EVENT.eq(eventId))
+                .where(EVENTTEAMCHOOSER.EVENTID.eq(eventId))
                 .execute();
     }
 
     public int deleteTeamChooser(int eventId, int teamId) {
         return context.deleteFrom(EVENTTEAMCHOOSER)
-                .where(EVENTTEAMCHOOSER.EVENT.eq(eventId).and(EVENTTEAMCHOOSER.TEAM.eq(teamId)))
+                .where(EVENTTEAMCHOOSER.EVENTID.eq(eventId).and(EVENTTEAMCHOOSER.TEAMID.eq(teamId)))
                 .execute();
     }
 
     public Team findTeamChooser(int eventId) {
-        return context.select(EVENTTEAMCHOOSER.TEAM)
+        return context.select(EVENTTEAMCHOOSER.TEAMID)
                 .from(EVENTTEAMCHOOSER)
-                .where(EVENTTEAMCHOOSER.EVENT.eq(eventId))
-                .fetchOne(record -> new Team(record.get(EVENTTEAMCHOOSER.TEAM)));
+                .where(EVENTTEAMCHOOSER.EVENTID.eq(eventId))
+                .fetchOne(record -> new Team(record.get(EVENTTEAMCHOOSER.TEAMID)));
     }
 
     private Event mapEvent(Record record) {
@@ -217,6 +236,8 @@ public class EventRepository {
         task.setName(record.get(TASK.NAME));
         task.setDescription(record.get(TASK.DESCRIPTION));
         task.setAnswer(record.get(TASK.ANSWER));
+        task.setMapX(record.get(TASK.MAPX));
+        task.setMapY(record.get(TASK.MAPY));
         return task;
     }
 
@@ -238,11 +259,11 @@ public class EventRepository {
         EventTeamUser eventTeamUser = new EventTeamUser();
         eventTeamUser.setId(record.get(EVENTTEAMUSER.ID));
         eventTeamUser.setEvent(new Event());
-        eventTeamUser.getEvent().setId(record.get(EVENTTEAMUSER.EVENT));
+        eventTeamUser.getEvent().setId(record.get(EVENTTEAMUSER.EVENTID));
         eventTeamUser.setTeam(new Team());
-        eventTeamUser.getTeam().setId(record.get(EVENTTEAMUSER.TEAM));
+        eventTeamUser.getTeam().setId(record.get(EVENTTEAMUSER.TEAMID));
         eventTeamUser.setUser(new User());
-        eventTeamUser.getUser().setId(record.get(EVENTTEAMUSER.USER));
+        eventTeamUser.getUser().setId(record.get(EVENTTEAMUSER.USERID));
         return eventTeamUser;
     }
 }

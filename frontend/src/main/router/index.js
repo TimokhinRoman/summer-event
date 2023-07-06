@@ -1,18 +1,18 @@
 import {createRouter, createWebHashHistory} from "vue-router"
-import EventView from "@/main/views/EventView";
 import LobbyView from "@/main/views/LobbyView";
+import MapView from "@/main/views/MapView";
 import EndView from "@/main/views/EndView";
 
 const routes = [
   {
-    path: "/event",
-    name: "Event",
-    component: EventView,
-  },
-  {
     path: "/lobby",
     name: "Lobby",
     component: LobbyView,
+  },
+  {
+    path: "/map",
+    name: "Map",
+    component: MapView,
   },
   {
     path: "/end",

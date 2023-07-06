@@ -129,6 +129,16 @@ public class EventService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
+    public void selectTask(int eventId, int taskId) {
+        //eventRepository.deleteTaskSelected(eventId);
+        eventRepository.addTaskSelected(eventId, taskId);
+    }
+
+    public TaskDto findSelectedTask(int eventId) {
+        return eventMapper.toTaskDto(eventRepository.findTaskSelected(eventId));
+    }
+
     public TeamDto findUserTeam(int eventId, int userId) {
         Team team = eventRepository.findUserTeam(eventId, userId);
         return teamMapper.map(team);

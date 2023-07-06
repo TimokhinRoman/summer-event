@@ -22,9 +22,22 @@ CREATE TABLE Task
     name        VARCHAR(255)                NOT NULL,
     description MEDIUMTEXT   DEFAULT NULL,
     answer      VARCHAR(255) DEFAULT NULL,
+    mapX        INT                         NOT NULL,
+    mapY        INT                         NOT NULL,
 
     INDEX (eventId),
     FOREIGN KEY (eventId) REFERENCES Event (id) ON DELETE CASCADE
+);
+
+CREATE TABLE TaskSelected
+(
+    eventId INT NOT NULL,
+    taskId  INT NOT NULL,
+
+    UNIQUE (eventId),
+
+    FOREIGN KEY (eventId) REFERENCES Event (id) ON DELETE CASCADE,
+    FOREIGN KEY (taskId) REFERENCES Task (id) ON DELETE CASCADE
 );
 
 CREATE TABLE User
@@ -50,25 +63,25 @@ CREATE TABLE Team
 
 CREATE TABLE EventTeamUser
 (
-    id    INT PRIMARY KEY AUTO_INCREMENT,
-    event INT NOT NULL,
-    team  INT NOT NULL,
-    user  INT NOT NULL,
+    id      INT PRIMARY KEY AUTO_INCREMENT,
+    eventId INT NOT NULL,
+    teamId  INT NOT NULL,
+    userId  INT NOT NULL,
 
-    UNIQUE (event, user),
+    UNIQUE (eventId, userId),
 
-    FOREIGN KEY (event) REFERENCES Event (id),
-    FOREIGN KEY (team) REFERENCES Team (id),
-    FOREIGN KEY (user) REFERENCES User (id)
+    FOREIGN KEY (eventId) REFERENCES Event (id) ON DELETE CASCADE,
+    FOREIGN KEY (teamId) REFERENCES Team (id) ON DELETE CASCADE,
+    FOREIGN KEY (userId) REFERENCES User (id) ON DELETE CASCADE
 );
 
 CREATE TABLE EventTeamChooser
 (
-    event INT NOT NULL,
-    team  INT NOT NULL,
+    eventId INT NOT NULL,
+    teamId  INT NOT NULL,
 
-    UNIQUE (event),
+    UNIQUE (eventId),
 
-    FOREIGN KEY (event) REFERENCES Event (id),
-    FOREIGN KEY (team) REFERENCES Team (id)
+    FOREIGN KEY (eventId) REFERENCES Event (id) ON DELETE CASCADE,
+    FOREIGN KEY (teamId) REFERENCES Team (id) ON DELETE CASCADE
 );

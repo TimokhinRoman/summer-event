@@ -6,6 +6,9 @@ import ru.tmhn.summerevent.service.EventService;
 import ru.tmhn.summerevent.service.TeamService;
 import ru.tmhn.summerevent.service.UserService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api")
 public class PublicApiController {
@@ -68,5 +71,39 @@ public class PublicApiController {
     @DeleteMapping("/team/leave")
     public void leaveTeam() {
         eventService.leaveTeam();
+    }
+
+    @GetMapping("/map")
+    public MapDto getMapData() {
+        EventDto event = eventService.findActiveEvent();
+        List<TaskDto> tasks = eventService.listTasks(event.getId());
+        MapDto map = new MapDto();
+        map.setPoints(tasks.stream()
+                .map(PointDto::create)
+                .collect(Collectors.toList()));
+
+        UserDto user = userService.getCurrentUser();
+        TeamDto team = eventService.findUserTeam(event.getId(), user.getId());
+        TeamDto teamChooser = eventService.findTeamChooser(event.getId());
+
+        if (teamChooser != null && team.getId().equals(teamChooser.getId())) {
+            map.setCanSelect(true);
+        }
+
+        return map;
+    }
+
+    @PostMapping("/task/{taskId}/select")
+    public TaskDto selectTask(@PathVariable int taskId) {
+        EventDto event = eventService.findActiveEvent();
+
+        try {
+            eventService.selectTask(event.getId(), taskId);
+            TaskDto task = new TaskDto();
+            task.setId(taskId);
+            return task;
+        } catch (Exception e) {
+            return eventService.findSelectedTask(event.getId());
+        }
     }
 }

@@ -50,7 +50,6 @@ import axios from 'axios';
 
 import {Form} from 'vee-validate';
 import InputTextField from '@/admin/components/InputTextField';
-import Button from 'primevue/button';
 
 const loading = ref(true);
 const user = ref(null);

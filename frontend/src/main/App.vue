@@ -46,7 +46,7 @@ export default {
       this.$router.push("/lobby");
     },
     showEvent() {
-      this.$router.push("/event");
+      this.$router.push("/map");
     },
     showEnd() {
       this.$router.push("/end");

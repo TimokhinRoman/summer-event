@@ -13,4 +13,6 @@ public class TaskDto extends EntityDto {
     private String name;
     private String description;
     private String answer;
+    private int mapX;
+    private int mapY;
 }
