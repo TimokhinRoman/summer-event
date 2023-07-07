@@ -7,4 +7,5 @@ public class BriefingDto {
 
     private UserDto user;
     private EventDto event;
+    private TaskDto task;
 }

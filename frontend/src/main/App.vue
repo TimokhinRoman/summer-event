@@ -13,19 +13,27 @@ export default {
   created() {
     this.loadBriefing();
   },
+  data() {
+    return {
+      user: null,
+      event: null,
+      task: null
+    }
+  },
   methods: {
     loadBriefing() {
       axios.get("/api/briefing")
         .then(response => {
-          this.$store.commit("event", response.data.event);
-          this.$store.commit("user", response.data.user);
+          console.log(response);
+          this.user = response.data.user;
+          this.event = response.data.event;
+          this.task = response.data.task;
         })
         .finally(() => {
-          const event = this.$store.state.event;
-          if (!event) {
+          if (!this.event) {
             console.log("There is no active event.");
           } else {
-            switch (event.status) {
+            switch (this.event.status) {
               case "CREATED":
                 console.log("There is no active event.");
                 break;
@@ -46,7 +54,11 @@ export default {
       this.$router.push("/lobby");
     },
     showEvent() {
-      this.$router.push("/map");
+      if (this.task) {
+        this.$router.push("/task/current");
+      } else {
+        this.$router.push("/map");
+      }
     },
     showEnd() {
       this.$router.push("/end");

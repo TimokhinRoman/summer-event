@@ -36,6 +36,7 @@ public class PublicApiController {
         BriefingDto dto = new BriefingDto();
         dto.setEvent(event);
         dto.setUser(user);
+        dto.setTask(eventService.findSelectedTask(event.getId()));
 
         return dto;
     }
@@ -105,5 +106,12 @@ public class PublicApiController {
         } catch (Exception e) {
             return eventService.findSelectedTask(event.getId());
         }
+    }
+
+    @GetMapping("/task/current")
+    public TaskDto getCurrentTask() {
+        EventDto event = eventService.findActiveEvent();
+        TaskDto task = eventService.findSelectedTask(event.getId());
+        return eventService.findTask(event.getId(), task.getId());
     }
 }

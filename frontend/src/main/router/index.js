@@ -1,6 +1,7 @@
 import {createRouter, createWebHashHistory} from "vue-router"
 import LobbyView from "@/main/views/LobbyView";
 import MapView from "@/main/views/MapView";
+import TaskView from "@/main/views/TaskView";
 import EndView from "@/main/views/EndView";
 
 const routes = [
@@ -13,6 +14,11 @@ const routes = [
     path: "/map",
     name: "Map",
     component: MapView,
+  },
+  {
+    path: "/task/current",
+    name: "Task",
+    component: TaskView,
   },
   {
     path: "/end",

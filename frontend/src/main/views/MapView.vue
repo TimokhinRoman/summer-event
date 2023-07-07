@@ -70,7 +70,7 @@ export default {
       axios.post(`/api/task/${id}/select`)
       .then(response => {
         console.log(response);
-
+        this.$router.push("/task/current");
       })
     }
   }
