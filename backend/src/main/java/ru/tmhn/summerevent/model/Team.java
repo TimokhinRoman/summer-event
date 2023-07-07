@@ -10,7 +10,7 @@ import lombok.Setter;
 public class Team extends Entity {
 
     private String name;
-    private User owner;
+    private User captain;
 
     public Team(int id) {
         super(id);

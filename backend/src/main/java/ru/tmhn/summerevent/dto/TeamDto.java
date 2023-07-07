@@ -10,7 +10,7 @@ import java.util.List;
 public class TeamDto extends EntityDto {
 
     private String name;
-    private UserDto owner;
+    private UserDto captain;
     private List<UserDto> users;
     private Boolean chooser;
 }

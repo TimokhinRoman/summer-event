@@ -21,28 +21,28 @@ public class TeamRepository {
     }
 
     public int addTeam(Team team) {
-        return context.insertInto(TEAM, TEAM.NAME, TEAM.OWNER)
-                .values(team.getName(), team.getOwner().getId())
+        return context.insertInto(TEAM, TEAM.NAME, TEAM.USERID)
+                .values(team.getName(), team.getCaptain().getId())
                 .returning(TEAM.ID)
                 .fetchOne(TEAM.ID);
     }
 
     public Team findTeam(int id) {
-        return context.select(TEAM.ID, TEAM.NAME, TEAM.OWNER)
+        return context.select(TEAM.ID, TEAM.NAME, TEAM.USERID)
                 .from(TEAM)
                 .where(TEAM.ID.eq(id))
                 .fetchSingle(this::mapTeam);
     }
 
     public Team findTeamByName(String name) {
-        return context.select(TEAM.ID, TEAM.NAME, TEAM.OWNER)
+        return context.select(TEAM.ID, TEAM.NAME, TEAM.USERID)
                 .from(TEAM)
                 .where(TEAM.NAME.eq(name))
                 .fetchOne(this::mapTeam);
     }
 
     public List<Team> listTeams() {
-        return context.select(TEAM.ID, TEAM.NAME, TEAM.OWNER)
+        return context.select(TEAM.ID, TEAM.NAME, TEAM.USERID)
                 .from(TEAM)
                 .fetch(this::mapTeam);
     }
@@ -51,8 +51,8 @@ public class TeamRepository {
         Team team = new Team();
         team.setId(record.get(TEAM.ID));
         team.setName(record.get(TEAM.NAME));
-        team.setOwner(new User());
-        team.getOwner().setId(record.get(TEAM.OWNER));
+        team.setCaptain(new User());
+        team.getCaptain().setId(record.get(TEAM.USERID));
         return team;
     }
 }

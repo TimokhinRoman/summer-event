@@ -155,7 +155,7 @@ public class EventRepository {
     }
 
     public Team findUserTeam(int eventId, int userId) {
-        return context.select(TEAM.ID, TEAM.NAME)
+        return context.select(TEAM.ID, TEAM.NAME, TEAM.USERID)
                 .from(EVENTTEAMUSER)
                 .leftJoin(TEAM).on(EVENTTEAMUSER.TEAMID.eq(TEAM.ID))
                 .where(EVENTTEAMUSER.EVENTID.eq(eventId).and(EVENTTEAMUSER.USERID.eq(userId)))
@@ -163,7 +163,7 @@ public class EventRepository {
     }
 
     public List<Team> listTeams(int eventId) {
-        return context.selectDistinct(TEAM.ID, TEAM.NAME)
+        return context.selectDistinct(TEAM.ID, TEAM.NAME, TEAM.USERID)
                 .from(EVENTTEAMUSER)
                 .leftJoin(TEAM).on(EVENTTEAMUSER.TEAMID.eq(TEAM.ID))
                 .where(EVENTTEAMUSER.EVENTID.eq(eventId))
@@ -212,10 +212,15 @@ public class EventRepository {
     }
 
     public Team findTeamChooser(int eventId) {
-        return context.select(EVENTTEAMCHOOSER.TEAMID)
+        return context.select(EVENTTEAMCHOOSER.TEAMID, TEAM.USERID)
                 .from(EVENTTEAMCHOOSER)
+                .leftJoin(TEAM).on(EVENTTEAMCHOOSER.TEAMID.eq(TEAM.ID))
                 .where(EVENTTEAMCHOOSER.EVENTID.eq(eventId))
-                .fetchOne(record -> new Team(record.get(EVENTTEAMCHOOSER.TEAMID)));
+                .fetchOne(record -> {
+                    Team team = new Team(record.get(EVENTTEAMCHOOSER.TEAMID));
+                    team.setCaptain(new User(record.get(TEAM.USERID)));
+                    return team;
+                });
     }
 
     private Event mapEvent(Record record) {
@@ -245,6 +250,7 @@ public class EventRepository {
         Team team = new Team();
         team.setId(record.get(TEAM.ID));
         team.setName(record.get(TEAM.NAME));
+        team.setCaptain(new User(record.get(TEAM.USERID)));
         return team;
     }
 

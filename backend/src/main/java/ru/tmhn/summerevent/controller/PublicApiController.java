@@ -84,12 +84,7 @@ public class PublicApiController {
                 .collect(Collectors.toList()));
 
         UserDto user = userService.getCurrentUser();
-        TeamDto team = eventService.findUserTeam(event.getId(), user.getId());
-        TeamDto teamChooser = eventService.findTeamChooser(event.getId());
-
-        if (teamChooser != null && team.getId().equals(teamChooser.getId())) {
-            map.setCanSelect(true);
-        }
+        map.setCanSelect(eventService.isUserChooser(event.getId(), user.getId()));
 
         return map;
     }
@@ -97,6 +92,12 @@ public class PublicApiController {
     @PostMapping("/task/{taskId}/select")
     public TaskDto selectTask(@PathVariable int taskId) {
         EventDto event = eventService.findActiveEvent();
+        UserDto user = userService.getCurrentUser();
+
+        boolean canSelect = eventService.isUserChooser(event.getId(), user.getId());
+        if (!canSelect) {
+            throw new IllegalStateException("This user can't select a task");
+        }
 
         try {
             eventService.selectTask(event.getId(), taskId);

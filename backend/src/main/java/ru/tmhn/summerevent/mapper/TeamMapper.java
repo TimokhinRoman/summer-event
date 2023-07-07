@@ -20,7 +20,7 @@ public class TeamMapper {
         if (dto.getId() != null) {
             team.setId(dto.getId());
         }
-        team.setOwner(userMapper.map(dto.getOwner()));
+        team.setCaptain(userMapper.map(dto.getCaptain()));
         team.setName(dto.getName());
         return team;
     }
@@ -31,7 +31,7 @@ public class TeamMapper {
         TeamDto dto = new TeamDto();
         dto.setId(team.getId());
         dto.setName(team.getName());
-        dto.setOwner(userMapper.map(team.getOwner()));
+        dto.setCaptain(userMapper.map(team.getCaptain()));
         return dto;
     }
 }

@@ -184,6 +184,16 @@ public class EventService {
         return teamMapper.map(eventRepository.findTeamChooser(eventId));
     }
 
+    public boolean isUserChooser(int eventId, int userId) {
+        TeamDto team = findUserTeam(eventId, userId);
+        TeamDto teamChooser = findTeamChooser(eventId);
+        if (team != null && teamChooser != null && Objects.equals(team.getId(), teamChooser.getId())
+                && teamChooser.getCaptain() != null && Objects.equals(teamChooser.getCaptain().getId(), userId)) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean isTeamChooser(int eventId, int teamId) {
         Team team = eventRepository.findTeamChooser(eventId);
         return team != null && team.getId() == teamId;
@@ -203,7 +213,7 @@ public class EventService {
         if (team.getId() == null) {
             TeamDto existingTeam = teamService.findTeamByName(team.getName());
             if (existingTeam == null) {
-                team.setOwner(user);
+                team.setCaptain(user);
                 team = teamService.addTeam(team);
             } else {
                 team = existingTeam;

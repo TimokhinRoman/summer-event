@@ -3,7 +3,7 @@
     <template v-if="team">
       <div>
         <span class="text-3xl font-bold">{{ team.name }}</span>
-        <font-awesome-icon v-if="team.chooser" icon="fa-solid fa-dice" size="2xl" class="ml-2 vertical-align-top"/>
+        <font-awesome-icon v-if="team.chooser" icon="fa-solid fa-dice" size="xl" class="ml-2 vertical-align-sub"/>
       </div>
       <p class="text-xl">Участники</p>
       <ul v-if="team.users" class="list-none p-0 m-0">
@@ -11,6 +11,7 @@
           <span class="text-2xl font-medium">
             {{ user.name }}
           </span>
+          <font-awesome-icon v-if="isCaptain(user)" icon="fa-solid fa-crown" size="xl" class="ml-2 vertical-align-sub"/>
         </li>
       </ul>
     </template>
@@ -88,6 +89,9 @@ export default {
           eventId: this.eventId
         }
       })
+    },
+    isCaptain(user) {
+      return this.team && this.team.captain && this.team.captain.id === user.id;
     }
   }
 }

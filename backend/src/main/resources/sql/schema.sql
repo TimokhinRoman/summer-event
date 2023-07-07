@@ -55,10 +55,10 @@ CREATE TABLE Team
 (
     id    INT PRIMARY KEY AUTO_INCREMENT,
     name  VARCHAR(255) NOT NULL,
-    owner INT          NOT NULL,
+    userId INT          NOT NULL,
 
     UNIQUE (name),
-    FOREIGN KEY (owner) REFERENCES User (id)
+    FOREIGN KEY (userId) REFERENCES User (id)
 );
 
 CREATE TABLE EventTeamUser

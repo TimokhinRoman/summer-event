@@ -7,9 +7,10 @@
       <span class="text-xl">Твоя команда</span>
       <p class="selected-team-name">{{ selectedTeam.name }}</p>
       <span class="text-xl">Участники</span>
-      <div class="selected-team-user-list">
-        <div class="selected-team-user" v-for="user in selectedTeam.users" :key="user.id">
-          {{ user.name }}
+      <div>
+        <div class="my-1" v-for="user in selectedTeam.users" :key="user.id">
+          <span class="font-medium text-2xl">{{ user.name }}</span>
+          <font-awesome-icon v-if="isCaptain(user)" icon="fa-solid fa-crown" size="xl" class="ml-2 vertical-align-sub"/>
         </div>
       </div>
     </div>
@@ -92,6 +93,11 @@ function leaveTeam() {
   })
 }
 
+function isCaptain(user) {
+  const team = selectedTeam.value;
+  return team && team.captain && team.captain.id === user.id;
+}
+
 onMounted(() => {
   loadLobby();
 })
@@ -107,15 +113,5 @@ onMounted(() => {
 .selected-team-name {
   font-size: 1.75rem;
   font-weight: 700;
-}
-
-.selected-team-user-list {
-
-}
-
-.selected-team-user {
-  margin: 10px 0;
-  font-weight: 500;
-  font-size: 1.5rem;
 }
 </style>

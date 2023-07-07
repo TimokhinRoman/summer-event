@@ -12,9 +12,9 @@ import Button from "primevue/button";
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faLocationDot } from '@fortawesome/free-solid-svg-icons'
+import { faLocationDot, faCrown } from '@fortawesome/free-solid-svg-icons'
 
-library.add(faLocationDot)
+library.add(faLocationDot, faCrown)
 
 createApp(App)
   .use(store)
