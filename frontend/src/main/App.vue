@@ -30,6 +30,8 @@ export default {
           this.task = response.data.task;
         })
         .finally(() => {
+          this.$store.commit("init");
+
           if (!this.event) {
             console.log("There is no active event.");
           } else {

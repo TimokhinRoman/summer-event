@@ -3,6 +3,7 @@ import LobbyView from "@/main/views/LobbyView";
 import MapView from "@/main/views/MapView";
 import TaskView from "@/main/views/TaskView";
 import EndView from "@/main/views/EndView";
+import store from "../store/index"
 
 const routes = [
   {
@@ -30,6 +31,12 @@ const routes = [
 const router = createRouter({
   history: createWebHashHistory(),
   routes
+})
+
+router.beforeEach((to, from) => {
+  if (!store.state.inited) {
+    return false
+  }
 })
 
 export default router

@@ -2,17 +2,13 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    event: null,
-    user: null
+    inited: false
   },
   getters: {
   },
   mutations: {
-    event(state, event) {
-      state.event = event;
-    },
-    user(state, user) {
-      state.user = user;
+    init(state) {
+      state.inited = true;
     }
   },
   actions: {
