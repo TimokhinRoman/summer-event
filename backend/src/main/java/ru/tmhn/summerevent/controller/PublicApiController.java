@@ -78,6 +78,8 @@ public class PublicApiController {
     public MapDto getMapData() {
         EventDto event = eventService.findActiveEvent();
         List<TaskDto> tasks = eventService.listTasks(event.getId());
+        tasks = eventService.filterAvailableTasks(tasks);
+
         MapDto map = new MapDto();
         map.setPoints(tasks.stream()
                 .map(PointDto::create)

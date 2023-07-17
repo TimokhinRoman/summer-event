@@ -15,4 +15,6 @@ public class TaskDto extends EntityDto {
     private String answer;
     private int mapX;
     private int mapY;
+    private boolean completed;
+    private Integer parentTaskId;
 }

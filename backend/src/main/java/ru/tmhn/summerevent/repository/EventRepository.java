@@ -104,14 +104,14 @@ public class EventRepository {
     }
 
     public Task findTask(int eventId, int taskId) {
-        return context.select(TASK.ID, TASK.EVENTID, TASK.TYPE, TASK.NAME, TASK.DESCRIPTION, TASK.ANSWER, TASK.MAPX, TASK.MAPY)
+        return context.select(TASK.ID, TASK.EVENTID, TASK.TYPE, TASK.NAME, TASK.DESCRIPTION, TASK.ANSWER, TASK.MAPX, TASK.MAPY, TASK.COMPLETED, TASK.PARENTTASKID)
                 .from(TASK)
                 .where(TASK.EVENTID.eq(eventId).and(TASK.ID.eq(taskId)))
                 .fetchSingle(this::mapTask);
     }
 
     public List<Task> listTasks(int eventId) {
-        return context.select(TASK.ID, TASK.EVENTID, TASK.TYPE, TASK.NAME, TASK.DESCRIPTION, TASK.ANSWER, TASK.MAPX, TASK.MAPY)
+        return context.select(TASK.ID, TASK.EVENTID, TASK.TYPE, TASK.NAME, TASK.DESCRIPTION, TASK.ANSWER, TASK.MAPX, TASK.MAPY, TASK.COMPLETED, TASK.PARENTTASKID)
                 .from(TASK)
                 .where(TASK.EVENTID.eq(eventId))
                 .fetch(this::mapTask);
@@ -243,6 +243,11 @@ public class EventRepository {
         task.setAnswer(record.get(TASK.ANSWER));
         task.setMapX(record.get(TASK.MAPX));
         task.setMapY(record.get(TASK.MAPY));
+        task.setCompleted(record.get(TASK.COMPLETED) == 1);
+        Integer parentTaskId = record.get(TASK.PARENTTASKID);
+        if (parentTaskId != null) {
+            task.setParentTask(new Task(parentTaskId));
+        }
         return task;
     }
 

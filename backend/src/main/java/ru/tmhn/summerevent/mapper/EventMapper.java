@@ -83,6 +83,10 @@ public class EventMapper {
         dto.setAnswer(task.getAnswer());
         dto.setMapX(task.getMapX());
         dto.setMapY(task.getMapY());
+        dto.setCompleted(task.isCompleted());
+        if (task.getParentTask() != null) {
+            dto.setParentTaskId(task.getParentTask().getId());
+        }
         return dto;
     }
 }

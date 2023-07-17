@@ -17,7 +17,9 @@ import ru.tmhn.summerevent.repository.EventRepository;
 import ru.tmhn.summerevent.utils.Utils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -126,6 +128,22 @@ public class EventService {
     public List<TaskDto> listTasks(int eventId) {
         return eventRepository.listTasks(eventId).stream()
                 .map(eventMapper::toTaskDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<TaskDto> filterAvailableTasks(List<TaskDto> tasks) {
+        Map<Integer, TaskDto> taskMap = tasks.stream()
+                .collect(Collectors.toMap(TaskDto::getId, Function.identity()));
+
+        return tasks.stream()
+                .filter(task -> {
+                    if (task.isCompleted()) return false;
+                    if (task.getParentTaskId() != null) {
+                        TaskDto parentTask = taskMap.get(task.getParentTaskId());
+                        return parentTask == null || parentTask.isCompleted();
+                    }
+                    return true;
+                })
                 .collect(Collectors.toList());
     }
 

@@ -16,6 +16,8 @@ public class Task extends Entity {
     private String answer;
     private int mapX;
     private int mapY;
+    private boolean completed;
+    private Task parentTask;
 
     public Task(int id) {
         super(id);

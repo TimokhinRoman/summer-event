@@ -16,17 +16,20 @@ CREATE TABLE ActiveEvent
 
 CREATE TABLE Task
 (
-    id          INT PRIMARY KEY AUTO_INCREMENT,
-    eventId     INT                         NOT NULL,
-    type        ENUM ('ACTION', 'QUESTION') NOT NULL,
-    name        VARCHAR(255)                NOT NULL,
-    description MEDIUMTEXT   DEFAULT NULL,
-    answer      VARCHAR(255) DEFAULT NULL,
-    mapX        INT                         NOT NULL,
-    mapY        INT                         NOT NULL,
+    id           INT PRIMARY KEY AUTO_INCREMENT,
+    eventId      INT                         NOT NULL,
+    type         ENUM ('ACTION', 'QUESTION') NOT NULL,
+    name         VARCHAR(255)                NOT NULL,
+    description  MEDIUMTEXT                           DEFAULT NULL,
+    answer       VARCHAR(255)                         DEFAULT NULL,
+    mapX         INT                         NOT NULL,
+    mapY         INT                         NOT NULL,
+    completed    BOOLEAN                     NOT NULL DEFAULT 0,
+    parentTaskId INT                                  DEFAULT NULL,
 
     INDEX (eventId),
-    FOREIGN KEY (eventId) REFERENCES Event (id) ON DELETE CASCADE
+    FOREIGN KEY (eventId) REFERENCES Event (id) ON DELETE CASCADE,
+    FOREIGN KEY (parentTaskId) REFERENCES Task (id)
 );
 
 CREATE TABLE TaskSelected
@@ -53,8 +56,8 @@ CREATE TABLE User
 
 CREATE TABLE Team
 (
-    id    INT PRIMARY KEY AUTO_INCREMENT,
-    name  VARCHAR(255) NOT NULL,
+    id     INT PRIMARY KEY AUTO_INCREMENT,
+    name   VARCHAR(255) NOT NULL,
     userId INT          NOT NULL,
 
     UNIQUE (name),
