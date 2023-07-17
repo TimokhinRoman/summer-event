@@ -125,8 +125,12 @@ public class EventService {
         return eventMapper.toTaskDto(task);
     }
 
+    @Transactional
     public void setTaskCompleted(int eventId, int taskId, boolean completed) {
         eventRepository.updateTaskCompleted(eventId, taskId, completed);
+        if (completed) {
+            eventRepository.deleteTaskSelected(eventId);
+        }
     }
 
     public List<TaskDto> listTasks(int eventId) {
