@@ -3,11 +3,11 @@
     <p class="text-3xl font-bold">Команды</p>
     <template v-if="teams && teams.length > 0">
       <ul class="list-none p-0 w-full">
-        <li v-for="team in teams" :key="team.id" class="text-xl my-2">
+        <li v-for="team in teams" :key="team.id" class="my-2">
           <router-link :to="teamLink(team)" class="no-underline text-white">
-            {{ team.name }}
-            <font-awesome-icon v-if="team.chooser" icon="fa-solid fa-dice" size="lg" class="ml-1"/>
+            <span class="text-xl">{{ team.name }}</span>
           </router-link>
+          <font-awesome-icon v-if="team.chooser" icon="fa-solid fa-dice" size="xl" class="ml-2 vertical-align-sub"/>
         </li>
       </ul>
     </template>

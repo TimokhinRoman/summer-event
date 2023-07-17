@@ -125,6 +125,10 @@ public class EventService {
         return eventMapper.toTaskDto(task);
     }
 
+    public void setTaskCompleted(int eventId, int taskId, boolean completed) {
+        eventRepository.updateTaskCompleted(eventId, taskId, completed);
+    }
+
     public List<TaskDto> listTasks(int eventId) {
         return eventRepository.listTasks(eventId).stream()
                 .map(eventMapper::toTaskDto)

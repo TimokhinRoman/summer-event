@@ -110,6 +110,13 @@ public class EventRepository {
                 .fetchSingle(this::mapTask);
     }
 
+    public int updateTaskCompleted(int eventId, int taskId, boolean completed) {
+        return context.update(TASK)
+                .set(TASK.COMPLETED, (byte) (completed ? 1 : 0))
+                .where(TASK.EVENTID.eq(eventId).and(TASK.ID.eq(taskId)))
+                .execute();
+    }
+
     public List<Task> listTasks(int eventId) {
         return context.select(TASK.ID, TASK.EVENTID, TASK.TYPE, TASK.NAME, TASK.DESCRIPTION, TASK.ANSWER, TASK.MAPX, TASK.MAPY, TASK.COMPLETED, TASK.PARENTTASKID)
                 .from(TASK)

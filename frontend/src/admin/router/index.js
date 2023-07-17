@@ -3,6 +3,7 @@ import AdminView from "../views/admin/AdminView.vue"
 import EventListView from "../views/admin/EventListView.vue"
 import EventView from "../views/admin/EventView.vue"
 import EventTaskListView from "../views/admin/EventTaskListView.vue"
+import EventTaskView from "../views/admin/EventTaskView.vue"
 import EventTeamListView from "../views/admin/EventTeamListView.vue"
 import EventTeamView from "../views/admin/EventTeamView.vue"
 import EventUserListView from "../views/admin/EventUserListView.vue"
@@ -40,6 +41,11 @@ const routes = [
         path: "events/:eventId/tasks",
         name: "EventTaskList",
         component: EventTaskListView,
+      },
+      {
+        path: "events/:eventId/tasks/:taskId",
+        name: "EventTask",
+        component: EventTaskView,
       },
       {
         path: "events/:eventId/teams",

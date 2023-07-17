@@ -3,8 +3,11 @@
     <p class="text-3xl font-bold">Задания</p>
     <template v-if="tasks && tasks.length > 0">
       <ul class="list-none p-0">
-        <li v-for="task in tasks" :key="task.id" class="text-xl my-2">
-          {{ task.name }}
+        <li v-for="task in tasks" :key="task.id" class="my-2">
+          <router-link :to="taskLink(task)" class="no-underline text-white">
+            <span class="text-xl">{{ task.name }}</span>
+          </router-link>
+          <font-awesome-icon v-if="task.completed" icon="fa-solid fa-circle-check" size="xl" class="ml-2 vertical-align-sub"/>
         </li>
       </ul>
     </template>
@@ -40,6 +43,15 @@ export default {
           console.log(response);
           this.tasks = response.data;
         })
+    },
+    taskLink(task) {
+      return {
+        name: "EventTask",
+        params: {
+          eventId: this.eventId,
+          taskId: task.id
+        }
+      }
     },
     back() {
       this.$router.push({

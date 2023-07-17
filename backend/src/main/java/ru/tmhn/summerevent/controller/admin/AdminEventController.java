@@ -66,6 +66,11 @@ public class AdminEventController {
         return eventService.findEvent(eventId);
     }
 
+    @PostMapping("/{eventId}/tasks/{taskId}/complete")
+    public void completeTask(@PathVariable int eventId, @PathVariable int taskId, @RequestParam boolean completed) {
+        eventService.setTaskCompleted(eventId, taskId, completed);
+    }
+
     @GetMapping("/{eventId}/tasks")
     public List<TaskDto> listTasks(@PathVariable int eventId) {
         return eventService.listTasks(eventId);
