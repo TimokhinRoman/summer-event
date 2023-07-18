@@ -17,4 +17,5 @@ public class TaskDto extends EntityDto {
     private int mapY;
     private boolean completed;
     private Integer parentTaskId;
+    private Boolean selected;
 }

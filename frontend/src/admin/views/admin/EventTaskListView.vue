@@ -7,7 +7,8 @@
           <router-link :to="taskLink(task)" class="no-underline text-white">
             <span class="text-xl">{{ task.name }}</span>
           </router-link>
-          <font-awesome-icon v-if="task.completed" icon="fa-solid fa-circle-check" size="xl" class="ml-2 vertical-align-sub"/>
+          <font-awesome-icon v-if="task.selected" icon="fa-solid fa-circle-check" size="xl" class="ml-2 vertical-align-sub"/>
+          <font-awesome-icon v-if="task.completed" icon="fa-solid fa-flag-checkered" size="xl" class="ml-2 vertical-align-sub"/>
         </li>
       </ul>
     </template>

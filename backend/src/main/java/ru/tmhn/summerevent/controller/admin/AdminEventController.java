@@ -57,7 +57,12 @@ public class AdminEventController {
 
     @GetMapping("/{eventId}/tasks/{taskId}")
     public TaskDto getTask(@PathVariable int eventId, @PathVariable int taskId) {
-        return eventService.findTask(eventId, taskId);
+        TaskDto task = eventService.findTask(eventId, taskId);
+        TaskDto selectedTask = eventService.findSelectedTask(eventId);
+        if (selectedTask != null && selectedTask.getId().equals(task.getId())) {
+            task.setSelected(true);
+        }
+        return task;
     }
 
     @DeleteMapping("/{eventId}/tasks/{taskId}")
@@ -73,7 +78,17 @@ public class AdminEventController {
 
     @GetMapping("/{eventId}/tasks")
     public List<TaskDto> listTasks(@PathVariable int eventId) {
-        return eventService.listTasks(eventId);
+        List<TaskDto> tasks = eventService.listTasks(eventId);
+        TaskDto selectedTask = eventService.findSelectedTask(eventId);
+        if (selectedTask != null) {
+            for (TaskDto task : tasks) {
+                if (selectedTask.getId().equals(task.getId())) {
+                    task.setSelected(true);
+                    break;
+                }
+            }
+        }
+        return tasks;
     }
 
     @PostMapping("/{eventId}/activate")

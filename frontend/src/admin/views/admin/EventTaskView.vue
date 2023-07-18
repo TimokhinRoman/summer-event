@@ -3,8 +3,8 @@
     <template v-if="task">
       <div>
         <span class="text-3xl font-bold">{{ task.name }}</span>
-        <font-awesome-icon v-if="task.completed" icon="fa-solid fa-circle-check" size="xl"
-                           class="ml-2 vertical-align-sub"/>
+        <font-awesome-icon v-if="task.selected" icon="fa-solid fa-circle-check" size="xl" class="ml-2 vertical-align-sub"/>
+        <font-awesome-icon v-if="task.completed" icon="fa-solid fa-flag-checkered" size="xl" class="ml-2 vertical-align-sub"/>
       </div>
       <p>
         {{ task.description }}
@@ -55,6 +55,7 @@ export default {
         .then(response => {
           console.log(response);
           this.task.completed = completed;
+          this.task.selected = false;
         })
     },
     back() {

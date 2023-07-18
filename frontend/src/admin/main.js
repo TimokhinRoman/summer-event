@@ -13,10 +13,10 @@ import Button from "primevue/button";
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faUser, faUsersLine, faCalendarDays, faDice, faCrown, faCircleCheck } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faUsersLine, faCalendarDays, faDice, faCrown, faCircleCheck, faFlagCheckered } from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
-library.add(faUser, faUsersLine, faCalendarDays, faDice, faCrown, faCircleCheck)
+library.add(faUser, faUsersLine, faCalendarDays, faDice, faCrown, faCircleCheck, faFlagCheckered)
 
 const app = createApp(App)
   .use(store)
