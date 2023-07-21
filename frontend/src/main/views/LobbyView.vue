@@ -48,6 +48,7 @@
 import {onMounted, ref} from 'vue';
 import {object, string} from 'yup';
 import axios from 'axios';
+import router from "@/main/router";
 
 import {Form} from 'vee-validate';
 import InputTextField from '@/admin/components/InputTextField';
@@ -56,6 +57,7 @@ const loading = ref(true);
 const user = ref(null);
 const selectedTeam = ref(null);
 const teams = ref([]);
+const waitingForStart = ref(null);
 
 const schema = object({
   name: string()
@@ -76,6 +78,10 @@ function loadLobby() {
       selectedTeam.value = response.data.selectedTeam;
       teams.value = response.data.teams;
       loading.value = false;
+
+      if (selectedTeam.value) {
+        waitForStart();
+      }
     });
 }
 
@@ -84,10 +90,13 @@ function joinTeam(team) {
   axios.post("/api/team/join", team).then(response => {
     console.log(response);
     selectedTeam.value = response.data;
+
+    waitForStart();
   })
 }
 
 function leaveTeam() {
+  cancelWaitingForStart();
   axios.delete("/api/team/leave").then(() => {
     loadLobby();
   })
@@ -96,6 +105,22 @@ function leaveTeam() {
 function isCaptain(user) {
   const team = selectedTeam.value;
   return team && team.captain && team.captain.id === user.id;
+}
+
+function waitForStart() {
+  waitingForStart.value = setInterval(() => {
+    axios.get("/api/event").then(response => {
+      let event = response.data;
+      if (event.status === 'STARTED') {
+        cancelWaitingForStart();
+        router.push("/map");
+      }
+    })
+  }, 2000)
+}
+
+function cancelWaitingForStart() {
+  clearTimeout(waitingForStart.value);
 }
 
 onMounted(() => {

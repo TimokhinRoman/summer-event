@@ -61,17 +61,6 @@ public class EventService {
 
     public EventDto findEvent(int id) {
         Event event = eventRepository.findEvent(id);
-        // todo: вынести в отдельный метод
-        /*event.setTasks(eventRepository.listTasks(id));
-        List<EventTeamUser> eventTeamUsers = eventRepository.listTeamsAndUsers(id);
-        event.setTeams(eventTeamUsers.stream()
-                .map(EventTeamUser::getTeam)
-                .distinct()
-                .collect(Collectors.toList()));
-        event.setUsers(eventTeamUsers.stream()
-                .map(EventTeamUser::getUser)
-                .distinct()
-                .collect(Collectors.toList()));*/
         return eventMapper.toEventDto(event);
     }
 
