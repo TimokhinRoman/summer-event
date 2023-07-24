@@ -36,7 +36,6 @@ export default {
     loadMap() {
       axios.get("/api/map")
         .then(response => {
-          console.log(response);
           this.points = response.data.points;
           this.canSelect = response.data.canSelect;
 
@@ -58,6 +57,8 @@ export default {
       return styles;
     },
     selectPoint(point) {
+      if (!this.canSelect) return;
+
       if (this.selectedPoint && this.selectedPoint !== point) {
         this.selectedPoint.selected = false;
       }
