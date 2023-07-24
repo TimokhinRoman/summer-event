@@ -115,6 +115,7 @@ public class PublicApiController {
     public TaskDto getCurrentTask() {
         EventDto event = eventService.findActiveEvent();
         TaskDto task = eventService.findSelectedTask(event.getId());
+        if (task == null) return null;
         return eventService.findTask(event.getId(), task.getId());
     }
 }

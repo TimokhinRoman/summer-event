@@ -25,7 +25,8 @@ export default {
     return {
       points: [],
       selectedPoint: null,
-      canSelect: false
+      canSelect: false,
+      listeningToTaskStart: null
     }
   },
   created() {
@@ -38,6 +39,10 @@ export default {
           console.log(response);
           this.points = response.data.points;
           this.canSelect = response.data.canSelect;
+
+          if (!this.canSelect) {
+            this.listenToTaskStart();
+          }
         })
     },
     pointStyles(point) {
@@ -72,6 +77,23 @@ export default {
         console.log(response);
         this.$router.push("/task/current");
       })
+    },
+    listenToTaskStart() {
+      this.listeningToTaskStart = setInterval(() => {
+        axios.get("/api/task/current").then(response => {
+          let task = response.data;
+          if (task) {
+            this.cancelListeningToTaskStart();
+            this.$router.push("/task/current");
+          }
+        })
+      }, 2000)
+    },
+    cancelListeningToTaskStart() {
+      if (this.listeningToTaskStart) {
+        clearInterval(this.listeningToTaskStart);
+        this.listeningToTaskStart = null;
+      }
     }
   }
 }

@@ -120,7 +120,10 @@ function waitForStart() {
 }
 
 function cancelWaitingForStart() {
-  clearTimeout(waitingForStart.value);
+  if (waitingForStart.value) {
+    clearInterval(waitingForStart.value);
+    waitingForStart.value = null;
+  }
 }
 
 onMounted(() => {
