@@ -16,7 +16,8 @@ export default {
   name: "TaskView",
   data() {
     return {
-      task: null
+      task: null,
+      listeningToTaskEnd: null
     }
   },
   created() {
@@ -24,12 +25,29 @@ export default {
   },
   methods: {
     loadTask() {
-
       axios.get(`/api/task/current`)
         .then(response => {
-          console.log(response);
           this.task = response.data;
+
+          this.listenToTaskEnd();
         })
+    },
+    listenToTaskEnd() {
+      this.listeningToTaskEnd = setInterval(() => {
+        axios.get("/api/task/current").then(response => {
+          let task = response.data;
+          if (!task) {
+            this.cancelListeningToTaskEnd();
+            this.$router.push("/map");
+          }
+        })
+      }, 2000)
+    },
+    cancelListeningToTaskEnd() {
+      if (this.listeningToTaskEnd) {
+        clearInterval(this.listeningToTaskEnd);
+        this.listeningToTaskEnd = null;
+      }
     }
   }
 }
