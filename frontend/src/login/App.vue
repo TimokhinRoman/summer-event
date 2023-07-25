@@ -64,8 +64,12 @@ const onSubmit = handleSubmit((values) => {
 });
 </script>
 
-<style scoped>
+<style>
 @import "../assets/app.css";
+
+body {
+  background: center no-repeat url("~@/assets/img/tree.jpg");
+}
 
 .form-container a {
   color: #868C9B;
