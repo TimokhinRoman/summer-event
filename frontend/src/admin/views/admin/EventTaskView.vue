@@ -13,6 +13,8 @@
   </div>
   <div class="w-full">
     <template v-if="task">
+      <Button class="my-1" v-if="!task.selected" label="Выбрать" @click="setSelected(true)"/>
+      <Button class="my-1" v-if="task.selected" label="Развыбрать" @click="setSelected(false)"/>
       <Button class="my-1" v-if="!task.completed" label="Завершить" @click="setCompleted(true)"/>
       <Button class="my-1" v-if="task.completed" label="Развершить" @click="setCompleted(false)"/>
     </template>
@@ -50,10 +52,15 @@ export default {
           this.task = response.data;
         })
     },
+    setSelected(selected) {
+      axios.post(`/api/admin/events/${this.eventId}/tasks/${this.taskId}/select?selected=${selected}`)
+        .then(response => {
+          this.task.selected = selected;
+        })
+    },
     setCompleted(completed) {
       axios.post(`/api/admin/events/${this.eventId}/tasks/${this.taskId}/complete?completed=${completed}`)
         .then(response => {
-          console.log(response);
           this.task.completed = completed;
           this.task.selected = false;
         })

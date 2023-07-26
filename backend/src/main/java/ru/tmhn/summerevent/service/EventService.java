@@ -150,6 +150,10 @@ public class EventService {
         eventRepository.addTaskSelected(eventId, taskId);
     }
 
+    public void unselectTask(int eventId) {
+        eventRepository.deleteTaskSelected(eventId);
+    }
+
     public TaskDto findSelectedTask(int eventId) {
         return eventMapper.toTaskDto(eventRepository.findTaskSelected(eventId));
     }

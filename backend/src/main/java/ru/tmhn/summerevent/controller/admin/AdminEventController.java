@@ -71,8 +71,16 @@ public class AdminEventController {
         return eventService.findEvent(eventId);
     }
 
+    @PostMapping("/{eventId}/tasks/{taskId}/select")
+    public void setTaskSelected(@PathVariable int eventId, @PathVariable int taskId, @RequestParam boolean selected) {
+        eventService.unselectTask(eventId);
+        if (selected) {
+            eventService.selectTask(eventId, taskId);
+        }
+    }
+
     @PostMapping("/{eventId}/tasks/{taskId}/complete")
-    public void completeTask(@PathVariable int eventId, @PathVariable int taskId, @RequestParam boolean completed) {
+    public void setTaskCompleted(@PathVariable int eventId, @PathVariable int taskId, @RequestParam boolean completed) {
         eventService.setTaskCompleted(eventId, taskId, completed);
     }
 
