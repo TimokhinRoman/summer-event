@@ -1,47 +1,54 @@
 <template>
-  <template v-if="loading">
-    <p class="m-auto">загрузка...</p>
-  </template>
-  <template v-else-if="selectedTeam">
-    <div class="content">
-      <span class="text-xl">Твоя команда</span>
-      <p class="selected-team-name">{{ selectedTeam.name }}</p>
-      <span class="text-xl">Участники</span>
-      <div>
-        <div class="my-1" v-for="user in selectedTeam.users" :key="user.id">
-          <span class="font-medium text-2xl">{{ user.name }}</span>
-          <font-awesome-icon v-if="isCaptain(user)" icon="fa-solid fa-crown" size="xl" class="ml-2 vertical-align-sub"/>
-        </div>
+  <div class="background">
+    <div class="container">
+      <div class="content p-fluid">
+        <template v-if="loading">
+          <p class="m-auto">загрузка...</p>
+        </template>
+        <template v-else-if="selectedTeam">
+          <div class="content">
+            <span class="text-xl">Твоя команда</span>
+            <p class="selected-team-name">{{ selectedTeam.name }}</p>
+            <span class="text-xl">Участники</span>
+            <div>
+              <div class="my-1" v-for="user in selectedTeam.users" :key="user.id">
+                <span class="font-medium text-2xl">{{ user.name }}</span>
+                <font-awesome-icon v-if="isCaptain(user)" icon="fa-solid fa-crown" size="xl"
+                                   class="ml-2 vertical-align-sub"/>
+              </div>
+            </div>
+          </div>
+          <div>
+            ожидайте начала...
+          </div>
+          <div class="w-full mt-4">
+            <Button type="button" label="Покинуть команду" class="text-lg font-medium" @click="leaveTeam"/>
+          </div>
+        </template>
+        <template v-else>
+          <div>
+            <p class="text-3xl">Привет, <b>{{ user.name }}</b>!</p>
+            <p>введи название своей команды</p>
+          </div>
+          <Form ref="form" @submit="onSubmit" :validation-schema="schema" class="w-full">
+            <div class="form-container mt-2">
+              <input-text-field type="text" name="name" label="Название команды"/>
+            </div>
+            <div class="button-container mt-3">
+              <Button type="submit" label="Присоединиться" class="text-xl font-medium"/>
+            </div>
+          </Form>
+          <div class="team-list" v-if="teams && teams.length > 0">
+            <p>или выбери одну из списка</p>
+            <template v-for="team in teams" :key="team.id">
+              <Button :label="team.name" plain text class="text-2xl text-white font-medium"
+                      @click="joinTeam({id: team.id})"/>
+            </template>
+          </div>
+        </template>
       </div>
     </div>
-    <div>
-      ожидайте начала...
-    </div>
-    <div class="w-full mt-4">
-      <Button type="button" label="Покинуть команду" class="text-lg font-medium" @click="leaveTeam"/>
-    </div>
-  </template>
-  <template v-else>
-    <div>
-      <p class="text-3xl">Привет, <b>{{ user.name }}</b>!</p>
-      <p>введи название своей команды</p>
-    </div>
-    <Form ref="form" @submit="onSubmit" :validation-schema="schema" class="w-full">
-      <div class="form-container mt-2">
-        <input-text-field type="text" name="name" label="Название команды"/>
-      </div>
-      <div class="button-container mt-3">
-        <Button type="submit" label="Присоединиться" class="text-xl font-medium"/>
-      </div>
-    </Form>
-    <div class="team-list" v-if="teams && teams.length > 0">
-      <p>или выбери одну из списка</p>
-      <template v-for="team in teams" :key="team.id">
-        <Button :label="team.name" plain text class="text-2xl text-white font-medium"
-                @click="joinTeam({id: team.id})"/>
-      </template>
-    </div>
-  </template>
+  </div>
 </template>
 
 <script setup>
@@ -133,6 +140,12 @@ onMounted(() => {
 
 <style scoped>
 @import "../../assets/app.css";
+
+.background {
+  display: flex;
+  flex: 1;
+  background: center no-repeat url("~@/assets/img/tree.jpg");
+}
 
 .team-list {
   margin-top: 20px;

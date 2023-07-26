@@ -1,19 +1,23 @@
 <template>
-  <div style="position: absolute; width: 360px; height: 820px">
-    <font-awesome-icon v-for="point in points" :key="point.id"
-                       icon="fa-solid fa-location-dot"
-                       size="2xl"
-                       :style="pointStyles(point)"
-                       @click="selectPoint(point)"
-    />
-  </div>
-  <template v-if="canSelect">
-    <div class="mb-auto text-2xl font-bold">
-      Выберите задание
+  <div class="container">
+    <div class="content p-fluid">
+      <div style="position: absolute; width: 360px; height: 820px">
+        <font-awesome-icon v-for="point in points" :key="point.id"
+                           icon="fa-solid fa-location-dot"
+                           size="2xl"
+                           :style="pointStyles(point)"
+                           @click="selectPoint(point)"
+        />
+      </div>
+      <template v-if="canSelect">
+        <div class="mb-auto text-2xl font-bold">
+          Выберите задание
+        </div>
+        <Button v-show="selectedPoint" label="Выбрать" class="mt-auto text-xl font-medium"
+                @click="selectTask(selectedPoint.id)"/>
+      </template>
     </div>
-    <Button v-show="selectedPoint" label="Выбрать" class="mt-auto text-xl font-medium"
-            @click="selectTask(selectedPoint.id)"/>
-  </template>
+  </div>
 </template>
 
 <script>
@@ -74,10 +78,10 @@ export default {
     selectTask(id) {
       console.log(id);
       axios.post(`/api/task/${id}/select`)
-      .then(response => {
-        console.log(response);
-        this.$router.push("/task/current");
-      })
+        .then(response => {
+          console.log(response);
+          this.$router.push("/task/current");
+        })
     },
     listenToTaskStart() {
       this.listeningToTaskStart = setInterval(() => {

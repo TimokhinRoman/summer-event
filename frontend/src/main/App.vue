@@ -1,9 +1,5 @@
 <template>
-  <div class="container">
-    <div class="content p-fluid">
-      <router-view/>
-    </div>
-  </div>
+  <router-view/>
 </template>
 
 <script>

@@ -1,5 +1,9 @@
 <template>
-  <p>End</p>
+  <div class="container">
+    <div class="content p-fluid">
+      <p>End</p>
+    </div>
+  </div>
 </template>
 
 <script>

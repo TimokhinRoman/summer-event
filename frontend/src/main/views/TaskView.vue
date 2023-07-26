@@ -1,11 +1,15 @@
 <template>
-  <template v-if="task">
-    <div class="mb-auto text-2xl font-bold">
-      {{task.name}}
+  <div class="container">
+    <div class="content p-fluid">
+      <template v-if="task">
+        <div class="mb-auto text-2xl font-bold">
+          {{ task.name }}
+        </div>
+      </template>
+      <div v-else>
+        loading...
+      </div>
     </div>
-  </template>
-  <div v-else>
-    loading...
   </div>
 </template>
 
