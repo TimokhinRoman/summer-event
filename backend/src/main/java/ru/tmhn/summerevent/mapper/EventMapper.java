@@ -87,6 +87,7 @@ public class EventMapper {
         if (task.getParentTask() != null) {
             dto.setParentTaskId(task.getParentTask().getId());
         }
+        dto.setImage(task.getImage());
         return dto;
     }
 }

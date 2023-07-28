@@ -1,9 +1,13 @@
 <template>
+  <div v-if="task && task.image" class="relative">
+    <img :src="imageUrl" alt="" class="background">
+  </div>
   <div class="container">
     <div class="content p-fluid">
       <template v-if="task">
-        <div class="mb-auto text-2xl font-bold">
-          {{ task.name }}
+        <div class="mb-auto">
+          <p class="text-2xl font-bold">{{ task.name }}</p>
+          <p>{{ task.description }}</p>
         </div>
       </template>
       <div v-else>
@@ -22,6 +26,11 @@ export default {
     return {
       task: null,
       listeningToTaskEnd: null
+    }
+  },
+  computed: {
+    imageUrl() {
+      return require(`@/assets/img/${this.task.image}.png`);
     }
   },
   created() {
@@ -58,5 +67,10 @@ export default {
 </script>
 
 <style scoped>
-
+.background {
+  z-index: -1;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+}
 </style>

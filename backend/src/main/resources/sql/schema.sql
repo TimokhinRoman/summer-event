@@ -26,6 +26,7 @@ CREATE TABLE Task
     mapY         INT                         NOT NULL,
     completed    BOOLEAN                     NOT NULL DEFAULT 0,
     parentTaskId INT                                  DEFAULT NULL,
+    image        VARCHAR(100)                         DEFAULT NULL,
 
     INDEX (eventId),
     FOREIGN KEY (eventId) REFERENCES Event (id) ON DELETE CASCADE,

@@ -104,7 +104,7 @@ public class EventRepository {
     }
 
     public Task findTask(int eventId, int taskId) {
-        return context.select(TASK.ID, TASK.EVENTID, TASK.TYPE, TASK.NAME, TASK.DESCRIPTION, TASK.ANSWER, TASK.MAPX, TASK.MAPY, TASK.COMPLETED, TASK.PARENTTASKID)
+        return context.select()
                 .from(TASK)
                 .where(TASK.EVENTID.eq(eventId).and(TASK.ID.eq(taskId)))
                 .fetchSingle(this::mapTask);
@@ -118,7 +118,7 @@ public class EventRepository {
     }
 
     public List<Task> listTasks(int eventId) {
-        return context.select(TASK.ID, TASK.EVENTID, TASK.TYPE, TASK.NAME, TASK.DESCRIPTION, TASK.ANSWER, TASK.MAPX, TASK.MAPY, TASK.COMPLETED, TASK.PARENTTASKID)
+        return context.select()
                 .from(TASK)
                 .where(TASK.EVENTID.eq(eventId))
                 .fetch(this::mapTask);
@@ -255,6 +255,7 @@ public class EventRepository {
         if (parentTaskId != null) {
             task.setParentTask(new Task(parentTaskId));
         }
+        task.setImage(record.get(TASK.IMAGE));
         return task;
     }
 

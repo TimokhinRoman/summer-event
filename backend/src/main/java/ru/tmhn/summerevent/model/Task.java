@@ -18,6 +18,7 @@ public class Task extends Entity {
     private int mapY;
     private boolean completed;
     private Task parentTask;
+    private String image;
 
     public Task(int id) {
         super(id);

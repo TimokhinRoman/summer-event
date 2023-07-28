@@ -18,4 +18,5 @@ public class TaskDto extends EntityDto {
     private boolean completed;
     private Integer parentTaskId;
     private Boolean selected;
+    private String image;
 }
