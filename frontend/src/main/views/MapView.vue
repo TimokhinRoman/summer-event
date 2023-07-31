@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="content p-fluid">
-      <div style="position: absolute; width: 360px; height: 820px">
+      <div id="map" style="position: absolute; width: 360px; height: 820px">
         <font-awesome-icon v-for="point in points" :key="point.id"
                            icon="fa-solid fa-location-dot"
                            size="2xl"
@@ -15,6 +15,10 @@
         </div>
         <Button v-show="selectedPoint" label="Выбрать" class="mt-auto text-xl font-medium"
                 @click="selectTask(selectedPoint.id)"/>
+      </template>
+      <template v-if="taskInProgress">
+        <Button label="К заданию" class="mt-auto text-xl font-medium"
+                @click="showTask"/>
       </template>
     </div>
   </div>
@@ -30,6 +34,7 @@ export default {
       points: [],
       selectedPoint: null,
       canSelect: false,
+      taskInProgress: false,
       listeningToTaskStart: null
     }
   },
@@ -42,8 +47,13 @@ export default {
         .then(response => {
           this.points = response.data.points;
           this.canSelect = response.data.canSelect;
+          this.taskInProgress = response.data.taskInProgress;
 
-          if (!this.canSelect) {
+          if (this.taskInProgress) {
+            this.selectedPoint = this.points[0];
+          }
+
+          if (!this.canSelect && !this.taskInProgress) {
             this.listenToTaskStart();
           }
         })
@@ -76,12 +86,13 @@ export default {
       }
     },
     selectTask(id) {
-      console.log(id);
       axios.post(`/api/task/${id}/select`)
         .then(response => {
-          console.log(response);
           this.$router.push("/task/current");
         })
+    },
+    showTask() {
+      this.$router.push("/task/current");
     },
     listenToTaskStart() {
       this.listeningToTaskStart = setInterval(() => {

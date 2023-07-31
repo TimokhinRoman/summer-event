@@ -9,6 +9,8 @@
           <p class="text-2xl font-bold">{{ task.name }}</p>
           <p>{{ task.description }}</p>
         </div>
+        <Button label="К карте" class="mt-auto text-xl font-medium"
+                @click="showMap"/>
       </template>
       <div v-else>
         loading...
@@ -61,6 +63,9 @@ export default {
         clearInterval(this.listeningToTaskEnd);
         this.listeningToTaskEnd = null;
       }
+    },
+    showMap() {
+      this.$router.push("/map");
     }
   }
 }

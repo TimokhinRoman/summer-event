@@ -11,4 +11,5 @@ public class MapDto {
 
     private List<PointDto> points;
     private boolean canSelect;
+    private boolean taskInProgress;
 }

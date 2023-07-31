@@ -6,6 +6,7 @@ import ru.tmhn.summerevent.service.EventService;
 import ru.tmhn.summerevent.service.TeamService;
 import ru.tmhn.summerevent.service.UserService;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -77,16 +78,26 @@ public class PublicApiController {
     @GetMapping("/map")
     public MapDto getMapData() {
         EventDto event = eventService.findActiveEvent();
-        List<TaskDto> tasks = eventService.listTasks(event.getId());
-        tasks = eventService.filterAvailableTasks(tasks);
-
         MapDto map = new MapDto();
+        List<TaskDto> tasks;
+
+        TaskDto selectedTask = eventService.findSelectedTask(event.getId());
+        if (selectedTask != null) {
+            selectedTask = eventService.findTask(event.getId(), selectedTask.getId());
+            selectedTask.setSelected(true);
+            tasks = Collections.singletonList(selectedTask);
+            map.setTaskInProgress(true);
+        } else {
+            tasks = eventService.listTasks(event.getId());
+            tasks = eventService.filterAvailableTasks(tasks);
+
+            UserDto user = userService.getCurrentUser();
+            map.setCanSelect(eventService.isUserChooser(event.getId(), user.getId()));
+        }
+
         map.setPoints(tasks.stream()
                 .map(PointDto::create)
                 .collect(Collectors.toList()));
-
-        UserDto user = userService.getCurrentUser();
-        map.setCanSelect(eventService.isUserChooser(event.getId(), user.getId()));
 
         return map;
     }
