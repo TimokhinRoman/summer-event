@@ -1,7 +1,4 @@
 <template>
-  <div v-if="task && task.image" class="relative">
-    <img :src="imageUrl" alt="" class="background">
-  </div>
   <div class="container">
     <div class="content p-fluid">
       <template v-if="task">
@@ -9,7 +6,10 @@
           <p class="text-2xl font-bold">{{ task.name }}</p>
           <p>{{ task.description }}</p>
         </div>
-        <Button label="К карте" class="mt-auto text-xl font-medium"
+        <div v-if="task.image" class="flex mt-auto" style="width: 100vw">
+          <img :src="imageUrl" alt="" class="ml-auto">
+        </div>
+        <Button label="К карте" class="mt-2 text-xl font-medium"
                 @click="showMap"/>
       </template>
       <div v-else>
