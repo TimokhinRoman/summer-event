@@ -88,20 +88,31 @@ export default {
     selectTask(id) {
       axios.post(`/api/task/${id}/select`)
         .then(response => {
-          this.$router.push("/task/current");
+          this.$router.push("/task");
         })
     },
     showTask() {
-      this.$router.push("/task/current");
+      this.$router.push("/task");
     },
     listenToTaskStart() {
       this.listeningToTaskStart = setInterval(() => {
-        axios.get("/api/task/current").then(response => {
-          let task = response.data;
-          if (task) {
-            this.cancelListeningToTaskStart();
-            this.$router.push("/task/current");
+        axios.get("/api/event").then(response => {
+          let event = response.data;
+          if (event) {
+            switch (event.status) {
+              case "TASK_SELECTION":
+                return;
+              case "TASK_IN_PROGRESS":
+                this.$router.push("/task");
+                break;
+              default:
+                this.$router.push("/");
+                break;
+            }
+          } else {
+            this.$router.push("/");
           }
+          this.cancelListeningToTaskStart();
         })
       }, 2000)
     },

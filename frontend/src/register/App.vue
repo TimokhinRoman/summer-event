@@ -1,4 +1,5 @@
 <template>
+  <div class="background"/>
   <div class="container">
     <div class="content p-fluid">
       <form class="w-full" @submit="onSubmit">
@@ -65,10 +66,6 @@ const onSubmit = handleSubmit((values) => {
 
 <style>
 @import "../assets/app.css";
-
-body {
-  background: center no-repeat url("~@/assets/img/tree.jpg");
-}
 
 .form-container a {
   color: #868C9B;

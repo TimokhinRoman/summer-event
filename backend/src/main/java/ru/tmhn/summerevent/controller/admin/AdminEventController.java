@@ -117,11 +117,12 @@ public class AdminEventController {
         return eventService.findEvent(eventId);
     }
 
-    @PostMapping("/{eventId}/started")
+    // TODO: переделать
+    /*@PostMapping("/{eventId}/started")
     public EventDto setEventStarted(@PathVariable int eventId) {
         eventService.updateEventStatus(eventId, EventStatus.STARTED);
         return eventService.findEvent(eventId);
-    }
+    }*/
 
     @PostMapping("/{eventId}/ended")
     public EventDto setEventEnded(@PathVariable int eventId) {

@@ -49,12 +49,23 @@ export default {
     },
     listenToTaskEnd() {
       this.listeningToTaskEnd = setInterval(() => {
-        axios.get("/api/task/current").then(response => {
-          let task = response.data;
-          if (!task) {
-            this.cancelListeningToTaskEnd();
-            this.$router.push("/map");
+        axios.get("/api/event").then(response => {
+          let event = response.data;
+          if (event) {
+            switch (event.status) {
+              case "TASK_IN_PROGRESS":
+                return;
+              case "DRAW":
+                this.$router.push("/draw");
+                break;
+              default:
+                this.$router.push("/");
+                break;
+            }
+          } else {
+            this.$router.push("/");
           }
+          this.cancelListeningToTaskEnd();
         })
       }, 2000)
     },

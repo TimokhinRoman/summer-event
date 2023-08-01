@@ -8,19 +8,20 @@ main {
     min-height: 100dvh;
 }
 
+.background {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: center no-repeat url("~@/assets/img/tree.jpg");
+    z-index: -1;
+}
+
 .container {
     display: flex;
     flex-direction: column;
-    /*margin: 0 auto;*/
     width: 100%;
     padding: 2rem;
 }
-
-/*@media (max-width: 991px) {
-    .container {
-        padding: 20px 10px;
-    }
-}*/
 
 .content {
     display: flex;
@@ -30,4 +31,8 @@ main {
     align-items: center;
     width: 100%;
     text-align: center;
+}
+
+.shadow-outline {
+    text-shadow: black 0 0 0.5em;
 }

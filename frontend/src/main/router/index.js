@@ -1,6 +1,7 @@
 import {createRouter, createWebHashHistory} from "vue-router"
 import App from "@/main/App"
 import LobbyView from "@/main/views/LobbyView";
+import DrawView from "@/main/views/DrawView";
 import MapView from "@/main/views/MapView";
 import TaskView from "@/main/views/TaskView";
 import EndView from "@/main/views/EndView";
@@ -18,12 +19,17 @@ const routes = [
     component: LobbyView,
   },
   {
+    path: "/draw",
+    name: "Draw",
+    component: DrawView,
+  },
+  {
     path: "/map",
     name: "Map",
     component: MapView,
   },
   {
-    path: "/task/current",
+    path: "/task",
     name: "Task",
     component: TaskView,
   },

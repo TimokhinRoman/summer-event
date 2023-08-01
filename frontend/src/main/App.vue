@@ -1,5 +1,15 @@
 <template>
-  <router-view/>
+  <template v-if="!loading">
+    <template v-if="!event || event.status === 'CREATED'">
+      <div class="background"/>
+      <div class="container">
+        <div class="content p-fluid">
+          <p class="text-xl shadow-outline">Здесь скоро что-то будет...</p>
+        </div>
+      </div>
+    </template>
+    <router-view v-else/>
+  </template>
 </template>
 
 <script>
@@ -13,50 +23,55 @@ export default {
     return {
       user: null,
       event: null,
-      task: null
+      task: null,
+      loading: true
     }
   },
   methods: {
     loadBriefing() {
       axios.get("/api/briefing")
         .then(response => {
-          console.log(response);
           this.user = response.data.user;
           this.event = response.data.event;
           this.task = response.data.task;
         })
         .finally(() => {
+          this.loading = false;
+
+          if (!this.event || this.event.status === 'CREATED') return;
+
           this.$store.commit("init");
 
-          if (!this.event) {
-            console.log("There is no active event.");
-          } else {
-            switch (this.event.status) {
-              case "CREATED":
-                console.log("There is no active event.");
-                break;
-              case "PENDING":
-                this.showLobby();
-                break;
-              case "STARTED":
-                this.showEvent();
-                break;
-              case "ENDED":
-                this.showEnd();
-                break;
-            }
+          switch (this.event.status) {
+            case "PENDING":
+              this.showLobby();
+              break;
+            case "DRAW":
+              this.showDraw();
+              break;
+            case "TASK_SELECTION":
+              this.showMap();
+              break;
+            case "TASK_IN_PROGRESS":
+              this.showTask();
+              break;
+            case "ENDED":
+              this.showEnd();
+              break;
           }
         })
     },
     showLobby() {
       this.$router.push("/lobby");
     },
-    showEvent() {
-      if (this.task) {
-        this.$router.push("/task/current");
-      } else {
-        this.$router.push("/map");
-      }
+    showDraw() {
+      this.$router.push("/draw");
+    },
+    showMap() {
+      this.$router.push("/map");
+    },
+    showTask() {
+      this.$router.push("/task");
     },
     showEnd() {
       this.$router.push("/end");
@@ -64,3 +79,7 @@ export default {
   }
 }
 </script>
+
+<style>
+@import "../assets/app.css";
+</style>
