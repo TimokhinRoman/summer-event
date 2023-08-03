@@ -1,8 +1,10 @@
+# noinspection SqlNoDataSourceInspectionForFile
+
 CREATE TABLE Event
 (
     id          INT PRIMARY KEY AUTO_INCREMENT,
-    name        VARCHAR(255)                                    NOT NULL,
-    description MEDIUMTEXT                                      NOT NULL,
+    name        VARCHAR(255)                                                            NOT NULL,
+    description MEDIUMTEXT                                                              NOT NULL,
     status      ENUM ('PENDING', 'DRAW', 'TASK_SELECTION', 'TASK_IN_PROGRESS', 'ENDED') NOT NULL DEFAULT 'PENDING'
 );
 
@@ -21,6 +23,7 @@ CREATE TABLE Task
     type         ENUM ('ACTION', 'QUESTION') NOT NULL,
     name         VARCHAR(255)                NOT NULL,
     description  MEDIUMTEXT                           DEFAULT NULL,
+    preview      MEDIUMTEXT                           DEFAULT NULL,
     answer       VARCHAR(255)                         DEFAULT NULL,
     mapX         INT                         NOT NULL,
     mapY         INT                         NOT NULL,

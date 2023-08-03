@@ -56,6 +56,7 @@ public class EventMapper {
         task.setType(dto.getType());
         task.setName(dto.getName());
         task.setDescription(dto.getDescription());
+        task.setPreview(dto.getPreview());
         task.setAnswer(dto.getAnswer());
         task.setMapX(dto.getMapX());
         task.setMapY(dto.getMapY());
@@ -80,6 +81,7 @@ public class EventMapper {
         dto.setType(task.getType());
         dto.setName(task.getName());
         dto.setDescription(task.getDescription());
+        dto.setPreview(task.getPreview());
         dto.setAnswer(task.getAnswer());
         dto.setMapX(task.getMapX());
         dto.setMapY(task.getMapY());

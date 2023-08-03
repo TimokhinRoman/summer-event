@@ -11,6 +11,7 @@ public class PointDto {
     private int x;
     private int y;
     private String name;
+    private String text;
     private Boolean selected;
 
     public static PointDto create(TaskDto task) {
@@ -19,6 +20,7 @@ public class PointDto {
         point.x = task.getMapX();
         point.y = task.getMapY();
         point.name = task.getName();
+        point.text = task.getPreview();
         point.selected = task.getSelected();
         return point;
     }

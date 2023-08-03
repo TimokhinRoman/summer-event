@@ -13,6 +13,7 @@ public class Task extends Entity {
     private TaskType type;
     private String name;
     private String description;
+    private String preview;
     private String answer;
     private int mapX;
     private int mapY;

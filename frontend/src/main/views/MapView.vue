@@ -22,13 +22,18 @@
       </template>
     </div>
   </div>
+
+  <DynamicDialog/>
 </template>
 
 <script>
 import axios from "axios";
+import DynamicDialog from 'primevue/dynamicdialog';
+import DialogText from "@/main/components/DialogText";
 
 export default {
   name: "MapView",
+  components: {DynamicDialog, DialogText},
   data() {
     return {
       points: [],
@@ -71,19 +76,36 @@ export default {
       return styles;
     },
     selectPoint(point) {
-      if (!this.canSelect) return;
-
       if (this.selectedPoint && this.selectedPoint !== point) {
         this.selectedPoint.selected = false;
       }
 
-      point.selected = !point.selected;
+      //point.selected = !point.selected;
+      point.selected = true;
 
       if (point.selected) {
         this.selectedPoint = point;
+        this.showTaskPreview(point);
       } else {
         this.selectedPoint = null;
       }
+    },
+    showTaskPreview(point) {
+      this.$dialog.open(DialogText, {
+        props: {
+          modal: true,
+          style: {
+            width: '50vw',
+          },
+          breakpoints:{
+            '960px': '75vw',
+            '640px': '90vw'
+          },
+        },
+        data: {
+          text: point.text
+        }
+      });
     },
     selectTask(id) {
       axios.post(`/api/task/${id}/select`)

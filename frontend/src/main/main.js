@@ -9,6 +9,7 @@ import "primevue/resources/themes/bootstrap4-dark-blue/theme.css";
 import "primeicons/primeicons.css"
 import "primeflex/primeflex.css"
 import Button from "primevue/button";
+import DialogService from 'primevue/dialogservice';
 
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -20,6 +21,7 @@ createApp(App)
   .use(store)
   .use(router)
   .use(PrimeVue)
+  .use(DialogService)
   .component("Button", Button)
   .component('font-awesome-icon', FontAwesomeIcon)
   .mount('#app')

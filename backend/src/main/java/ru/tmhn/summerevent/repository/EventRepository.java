@@ -247,6 +247,7 @@ public class EventRepository {
         task.setType(ru.tmhn.summerevent.model.TaskType.valueOf(record.get(TASK.TYPE).name()));
         task.setName(record.get(TASK.NAME));
         task.setDescription(record.get(TASK.DESCRIPTION));
+        task.setPreview(record.get(TASK.PREVIEW));
         task.setAnswer(record.get(TASK.ANSWER));
         task.setMapX(record.get(TASK.MAPX));
         task.setMapY(record.get(TASK.MAPY));
