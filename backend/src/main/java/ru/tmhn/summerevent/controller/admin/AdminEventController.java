@@ -111,22 +111,9 @@ public class AdminEventController {
         return eventService.findEvent(eventId);
     }
 
-    @PostMapping("/{eventId}/pending")
-    public EventDto setEventPending(@PathVariable int eventId) {
-        eventService.updateEventStatus(eventId, EventStatus.PENDING);
-        return eventService.findEvent(eventId);
-    }
-
-    // TODO: переделать
-    /*@PostMapping("/{eventId}/started")
-    public EventDto setEventStarted(@PathVariable int eventId) {
-        eventService.updateEventStatus(eventId, EventStatus.STARTED);
-        return eventService.findEvent(eventId);
-    }*/
-
-    @PostMapping("/{eventId}/ended")
-    public EventDto setEventEnded(@PathVariable int eventId) {
-        eventService.updateEventStatus(eventId, EventStatus.ENDED);
+    @PostMapping("/{eventId}/status")
+    public EventDto setEventStatus(@PathVariable int eventId, @RequestParam EventStatus status) {
+        eventService.updateEventStatus(eventId, status);
         return eventService.findEvent(eventId);
     }
 

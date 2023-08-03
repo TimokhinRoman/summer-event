@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -11,12 +11,34 @@ import "primeflex/primeflex.css"
 import Button from "primevue/button";
 
 
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { faUser, faUsersLine, faCalendarDays, faDice, faCrown, faCircleCheck, faFlagCheckered } from '@fortawesome/free-solid-svg-icons'
+import {library} from '@fortawesome/fontawesome-svg-core'
+import {FontAwesomeIcon} from '@fortawesome/vue-fontawesome'
+import {
+  faUser,
+  faUsersLine,
+  faCalendarDays,
+  faDice,
+  faCrown,
+  faCircleCheck,
+  faFlagCheckered,
+  faMapLocationDot,
+  faUsers,
+  faPersonRunning
+} from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
-library.add(faUser, faUsersLine, faCalendarDays, faDice, faCrown, faCircleCheck, faFlagCheckered)
+library.add(
+  faUser,
+  faUsersLine,
+  faCalendarDays,
+  faDice,
+  faCrown,
+  faCircleCheck,
+  faFlagCheckered,
+  faMapLocationDot,
+  faUsers,
+  faPersonRunning
+)
 
 const app = createApp(App)
   .use(store)

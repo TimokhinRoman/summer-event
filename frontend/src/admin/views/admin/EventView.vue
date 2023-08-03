@@ -7,9 +7,23 @@
     <div class="flex flex-column">
       <Button v-if="!event.active" label="Сделать активным" class="my-1" @click="activateEvent"/>
       <Button v-if="event.active" label="Сделать неактивным" class="my-1" @click="deactivateEvent"/>
-      <Button label="Подготовка" class="my-1" @click="setPending"/>
-      <Button label="Начать" class="my-1" @click="setStarted"/>
-      <Button label="Завершить" class="my-1" @click="setEnded"/>
+      <span class="p-buttonset my-1">
+        <Button class="justify-content-center" @click="setEventStatus('PENDING')">
+          <font-awesome-icon icon="fa-solid fa-users" size="xl"/>
+        </Button>
+        <Button class="justify-content-center" @click="setEventStatus('DRAW')">
+          <font-awesome-icon icon="fa-solid fa-dice" size="xl"/>
+        </Button>
+        <Button class="justify-content-center" @click="setEventStatus('TASK_SELECTION')">
+          <font-awesome-icon icon="fa-solid fa-map-location-dot" size="xl"/>
+        </Button>
+        <Button class="justify-content-center" @click="setEventStatus('TASK_IN_PROGRESS')">
+          <font-awesome-icon icon="fa-solid fa-person-running" size="xl"/>
+        </Button>
+        <Button class="justify-content-center" @click="setEventStatus('ENDED')">
+          <font-awesome-icon icon="fa-solid fa-flag-checkered" size="xl"/>
+        </Button>
+      </span>
       <div class="mt-4"/>
       <Button label="Список заданий" class="my-1" @click="showTaskList"/>
       <Button label="Список команд" class="my-1" @click="showTeamList"/>
@@ -42,19 +56,12 @@ export default {
     deactivateEvent() {
       this.handleEventRequest(axios.post(`/api/admin/events/${this.event.id}/deactivate`));
     },
-    setPending() {
-      this.handleEventRequest(axios.post(`/api/admin/events/${this.event.id}/pending`));
-    },
-    setStarted() {
-      this.handleEventRequest(axios.post(`/api/admin/events/${this.event.id}/started`));
-    },
-    setEnded() {
-      this.handleEventRequest(axios.post(`/api/admin/events/${this.event.id}/ended`));
+    setEventStatus(status) {
+      this.handleEventRequest(axios.post(`/api/admin/events/${this.event.id}/status?status=${status}`));
     },
     handleEventRequest(promise) {
       return promise
         .then(response => {
-          console.log(response);
           this.event = response.data;
         })
     },
