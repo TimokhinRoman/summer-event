@@ -1,7 +1,8 @@
 <template>
   <div class="container">
     <div class="content p-fluid">
-      <div id="map" style="position: absolute; width: 360px; height: 820px">
+      <div class="sky"/>
+      <div id="map" class="map">
         <font-awesome-icon v-for="point in points" :key="point.id"
                            icon="fa-solid fa-location-dot"
                            size="2xl"
@@ -97,7 +98,7 @@ export default {
           style: {
             width: '50vw',
           },
-          breakpoints:{
+          breakpoints: {
             '960px': '75vw',
             '640px': '90vw'
           },
@@ -149,5 +150,19 @@ export default {
 </script>
 
 <style scoped>
+.sky {
+  position: absolute;
+  width: 1024px;
+  height: 1024px;
+  background: url("~@/assets/img/sky.png") center;
+  z-index: -1;
+}
 
+.map {
+  position: absolute;
+  width: 1024px;
+  height: 1024px;
+  background: url("~@/assets/img/map.png") center;
+  z-index: -2;
+}
 </style>
