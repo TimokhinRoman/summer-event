@@ -148,6 +148,7 @@ public class EventService {
     public void selectTask(int eventId, int taskId) {
         //eventRepository.deleteTaskSelected(eventId);
         eventRepository.addTaskSelected(eventId, taskId);
+        updateEventStatus(eventId, EventStatus.TASK_IN_PROGRESS);
     }
 
     public void unselectTask(int eventId) {
