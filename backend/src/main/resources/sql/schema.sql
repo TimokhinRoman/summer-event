@@ -3,7 +3,7 @@ CREATE TABLE Event
     id          INT PRIMARY KEY AUTO_INCREMENT,
     name        VARCHAR(255)                                    NOT NULL,
     description MEDIUMTEXT                                      NOT NULL,
-    status      ENUM ('CREATED', 'PENDING', 'DRAW', 'TASK_SELECTION', 'TASK_IN_PROGRESS', 'ENDED') NOT NULL DEFAULT 'CREATED'
+    status      ENUM ('PENDING', 'DRAW', 'TASK_SELECTION', 'TASK_IN_PROGRESS', 'ENDED') NOT NULL DEFAULT 'PENDING'
 );
 
 CREATE TABLE ActiveEvent

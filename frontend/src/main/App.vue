@@ -1,6 +1,6 @@
 <template>
   <template v-if="!loading">
-    <template v-if="!event || event.status === 'CREATED'">
+    <template v-if="!event">
       <div class="background"/>
       <div class="container">
         <div class="content p-fluid">
@@ -38,7 +38,7 @@ export default {
         .finally(() => {
           this.loading = false;
 
-          if (!this.event || this.event.status === 'CREATED') return;
+          if (!this.event) return;
 
           this.$store.commit("init");
 
