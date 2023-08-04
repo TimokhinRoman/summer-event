@@ -1,28 +1,37 @@
 <template>
-  <div class="container">
-    <div class="content p-fluid">
-      <div class="sky"/>
-      <div id="map" class="map">
-        <font-awesome-icon v-for="point in points" :key="point.id"
-                           icon="fa-solid fa-location-dot"
-                           size="2xl"
-                           :style="pointStyles(point)"
-                           @click="selectPoint(point)"
-        />
-      </div>
-      <template v-if="canSelect">
-        <div class="mb-auto text-2xl font-bold">
-          Выберите задание
-        </div>
-        <Button v-show="selectedPoint" label="Выбрать" class="mt-auto text-xl font-medium"
-                @click="selectTask(selectedPoint.id)"/>
-      </template>
-      <template v-if="taskInProgress">
-        <Button label="К заданию" class="mt-auto text-xl font-medium"
-                @click="showTask"/>
-      </template>
+
+  <!--div class="sky"/-->
+  <!--div class="full-fixed">
+    <img src="@/assets/img/map.png" alt=""/>
+    <div class="map-points">
+      <font-awesome-icon v-for="point in points" :key="point.id"
+                         icon="fa-solid fa-location-dot"
+                         size="2xl"
+                         :style="pointStyles(point)"
+                         @click="selectPoint(point)"
+      />
     </div>
+  </div-->
+
+  <div ref="map" class="map-container">
+    <img src="@/assets/img/map.png" alt="" @load="centerMap"/>
   </div>
+
+  <div class="sky"/>
+
+  <!--template v-if="canSelect">
+    <div class="mb-auto text-2xl font-bold">
+      Выберите задание
+    </div>
+  </template>
+
+  <div class="bottom-fixed">
+    <Button v-if="canSelect" v-show="selectedPoint" label="Выбрать" class="text-xl font-medium"
+            @click="selectTask(selectedPoint.id)"/>
+
+    <Button v-if="taskInProgress" label="К заданию" class="text-xl font-medium"
+            @click="showTask"/>
+  </div-->
 
   <DynamicDialog/>
 </template>
@@ -63,6 +72,11 @@ export default {
             this.listenToTaskStart();
           }
         })
+    },
+    centerMap() {
+      const map = this.$refs.map;
+      map.scrollLeft = (map.scrollWidth - map.clientWidth) / 2;
+      map.scrollTop = (map.scrollHeight - map.clientHeight) / 2;
     },
     pointStyles(point) {
       const styles = {
@@ -150,18 +164,49 @@ export default {
 </script>
 
 <style scoped>
-.sky {
+
+@media screen and (orientation:portrait) {
+}
+
+@media screen and (orientation:landscape) {
+}
+
+.map-container {
   position: absolute;
-  width: 1024px;
-  height: 1024px;
-  background: url("~@/assets/img/sky.png") center;
-  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: calc(100% - 1px);
+  max-height: calc(100% - 1px);
+  overflow: auto;
+}
+
+.full-fixed {
+  position:fixed;
+  width: 100dvw;
+  height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sky {
+  position: fixed;
+  width: 100dvw;
+  height: 100dvh;
+  background: url("~@/assets/img/sky.png") no-repeat fixed center;
+  pointer-events: none;
 }
 
 .map {
   position: absolute;
-  width: 1024px;
-  height: 1024px;
+  width: 611px;
+  height: 700px;
+}
+
+.map-image {
+  width: 100%;
+  height: 100%;
   background: url("~@/assets/img/map.png") center;
   z-index: -2;
 }
