@@ -1,6 +1,6 @@
 <template>
   <div ref="map" class="map-container">
-    <div ref="mapImg" class="map">
+    <div ref="mapImg" class="map-img">
       <font-awesome-icon v-for="point in points" :key="point.id"
                          icon="fa-solid fa-location-dot"
                          size="2xl"
@@ -16,15 +16,15 @@
     <div class="mb-auto text-2xl font-bold">
       Выберите задание
     </div>
-  </template>
+  </template-->
 
   <div class="bottom-fixed">
-    <Button v-if="canSelect" v-show="selectedPoint" label="Выбрать" class="text-xl font-medium"
+    <Button v-if="canSelect" v-show="selectedPoint" label="Выбрать" class="text-xl font-medium w-full"
             @click="selectTask(selectedPoint.id)"/>
 
-    <Button v-if="taskInProgress" label="К заданию" class="text-xl font-medium"
+    <Button v-if="taskInProgress" label="К заданию" class="text-xl font-medium w-full"
             @click="showTask"/>
-  </div-->
+  </div>
 
   <DynamicDialog/>
 </template>
@@ -180,6 +180,8 @@ export default {
   transform: translate(-50%, -50%);
   max-width: calc(100% - 1px);
   max-height: calc(100% - 1px);
+  width: 600px;
+  height: 600px;
   overflow: auto;
 }
 
@@ -191,14 +193,17 @@ export default {
   pointer-events: none;
 }
 
-.map {
+.map-img {
   width: 611px;
   height: 700px;
 }
 
 .bottom-fixed {
   position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: 2rem;
   width: calc(100% - 4rem);
+  max-width: 500px;
 }
 </style>
