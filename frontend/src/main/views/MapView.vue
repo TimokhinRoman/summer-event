@@ -1,9 +1,6 @@
 <template>
-
-  <!--div class="sky"/-->
-  <!--div class="full-fixed">
-    <img src="@/assets/img/map.png" alt=""/>
-    <div class="map-points">
+  <div ref="map" class="map-container">
+    <div ref="mapImg" class="map">
       <font-awesome-icon v-for="point in points" :key="point.id"
                          icon="fa-solid fa-location-dot"
                          size="2xl"
@@ -11,10 +8,6 @@
                          @click="selectPoint(point)"
       />
     </div>
-  </div-->
-
-  <div ref="map" class="map-container">
-    <img src="@/assets/img/map.png" alt="" @load="centerMap"/>
   </div>
 
   <div class="sky"/>
@@ -55,6 +48,7 @@ export default {
   },
   created() {
     this.loadMap();
+    this.loadMapImage();
   },
   methods: {
     loadMap() {
@@ -72,6 +66,14 @@ export default {
             this.listenToTaskStart();
           }
         })
+    },
+    loadMapImage() {
+      let img = new Image();
+      img.onload = () => {
+        this.$refs.mapImg.style.backgroundImage = `url('${img.src}')`;
+        this.centerMap();
+      }
+      img.src = require("@/assets/img/map.png");
     },
     centerMap() {
       const map = this.$refs.map;
@@ -91,6 +93,7 @@ export default {
       return styles;
     },
     selectPoint(point) {
+      console.log("!");
       if (this.selectedPoint && this.selectedPoint !== point) {
         this.selectedPoint.selected = false;
       }
@@ -164,7 +167,6 @@ export default {
 </script>
 
 <style scoped>
-
 @media screen and (orientation:portrait) {
 }
 
@@ -181,15 +183,6 @@ export default {
   overflow: auto;
 }
 
-.full-fixed {
-  position:fixed;
-  width: 100dvw;
-  height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .sky {
   position: fixed;
   width: 100dvw;
@@ -199,15 +192,13 @@ export default {
 }
 
 .map {
-  position: absolute;
   width: 611px;
   height: 700px;
 }
 
-.map-image {
-  width: 100%;
-  height: 100%;
-  background: url("~@/assets/img/map.png") center;
-  z-index: -2;
+.bottom-fixed {
+  position: fixed;
+  bottom: 2rem;
+  width: calc(100% - 4rem);
 }
 </style>
