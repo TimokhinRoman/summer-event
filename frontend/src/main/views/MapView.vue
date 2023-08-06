@@ -12,13 +12,13 @@
 
   <div class="sky"/>
 
-  <!--template v-if="canSelect">
-    <div class="mb-auto text-2xl font-bold">
-      Выберите задание
+  <template v-if="canSelect">
+    <div class="header text-center">
+      <span class="text-2xl font-bold text-primary-900">Выберите задание</span>
     </div>
-  </template-->
+  </template>
 
-  <div class="bottom-fixed">
+  <div class="footer">
     <Button v-if="canSelect" v-show="selectedPoint" label="Выбрать" class="text-xl font-medium w-full"
             @click="selectTask(selectedPoint.id)"/>
 
@@ -198,12 +198,21 @@ export default {
   height: 700px;
 }
 
-.bottom-fixed {
+.header {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 2rem;
+  width: calc(100% - 4rem);
+  max-width: calc(545px - 4rem);
+}
+
+.footer {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
   bottom: 2rem;
   width: calc(100% - 4rem);
-  max-width: 500px;
+  max-width: calc(545px - 4rem);
 }
 </style>

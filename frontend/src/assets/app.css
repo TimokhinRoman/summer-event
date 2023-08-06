@@ -21,6 +21,8 @@ main {
     flex-direction: column;
     width: 100%;
     padding: 2rem;
+    justify-content: center;
+    align-items: center;
 }
 
 .content {
@@ -31,6 +33,7 @@ main {
     align-items: center;
     width: 100%;
     text-align: center;
+    max-width: calc(545px - 4rem);
 }
 
 .shadow-outline {

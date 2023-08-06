@@ -4,9 +4,9 @@
       <template v-if="task">
         <div class="mb-auto">
           <p class="text-2xl font-bold">{{ task.name }}</p>
-          <p>{{ task.description }}</p>
+          <div class="my-4 text-left" v-html="task.description"/>
         </div>
-        <div v-if="task.image" class="flex mt-auto" style="width: 100vw">
+        <div v-if="task.image" class="img-footer">
           <img :src="imageUrl" alt="" class="ml-auto">
         </div>
         <Button label="К карте" class="mt-2 text-xl font-medium"
@@ -83,10 +83,10 @@ export default {
 </script>
 
 <style scoped>
-.background {
-  z-index: -1;
-  position: fixed;
-  bottom: 0;
-  right: 0;
+.img-footer {
+  width: 100%;
+  max-width: calc(545px - 4rem);
+  margin-top: auto;
+  display: flex;
 }
 </style>
