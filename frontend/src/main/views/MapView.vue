@@ -194,7 +194,7 @@ export default {
 }
 
 .map-img {
-  width: 611px;
+  width: 700px;
   height: 700px;
 }
 
