@@ -1,30 +1,39 @@
 <template>
-  <div ref="map" class="map-container">
-    <div ref="mapImg" class="map-img">
-      <font-awesome-icon v-for="point in points" :key="point.id"
-                         icon="fa-solid fa-location-dot"
-                         size="2xl"
-                         :style="pointStyles(point)"
-                         @click="selectPoint(point)"
-      />
-    </div>
-  </div>
-
-  <div class="sky"/>
-
-  <template v-if="canSelect">
-    <div class="header text-center">
-      <span class="text-2xl font-bold text-primary-900">Выберите задание</span>
+  <template class="text-center" v-if="loading">
+    <div class="container">
+      <div class="content p-fluid">
+        <span class="text-2xl">загрузка...</span>
+      </div>
     </div>
   </template>
+  <template v-else>
+    <div ref="map" class="map-container">
+      <div ref="mapImg" class="map-img">
+        <font-awesome-icon v-for="point in points" :key="point.id"
+                           icon="fa-solid fa-location-dot"
+                           size="2xl"
+                           :style="pointStyles(point)"
+                           @click="selectPoint(point)"
+        />
+      </div>
+    </div>
 
-  <div class="footer">
-    <Button v-if="canSelect" v-show="selectedPoint" label="Выбрать" class="text-xl font-medium w-full"
-            @click="selectTask(selectedPoint.id)"/>
+    <div class="sky"/>
 
-    <Button v-if="taskInProgress" label="К заданию" class="text-xl font-medium w-full"
-            @click="showTask"/>
-  </div>
+    <template v-if="canSelect">
+      <div class="header text-center">
+        <span class="text-2xl font-bold text-primary-900">Выберите задание</span>
+      </div>
+    </template>
+
+    <div class="footer">
+      <Button v-if="canSelect" v-show="selectedPoint" label="Выбрать" class="text-xl font-medium w-full"
+              @click="selectTask(selectedPoint.id)"/>
+
+      <Button v-if="taskInProgress" label="К заданию" class="text-xl font-medium w-full"
+              @click="showTask"/>
+    </div>
+  </template>
 
   <DynamicDialog/>
 </template>
@@ -33,6 +42,7 @@
 import axios from "axios";
 import DynamicDialog from 'primevue/dynamicdialog';
 import DialogText from "@/main/components/DialogText";
+import {nextTick} from "vue";
 
 export default {
   name: "MapView",
@@ -43,7 +53,9 @@ export default {
       selectedPoint: null,
       canSelect: false,
       taskInProgress: false,
-      listeningToTaskStart: null
+      listeningToTaskStart: null,
+      loading: true,
+      dialogOpened: false
     }
   },
   created() {
@@ -70,8 +82,11 @@ export default {
     loadMapImage() {
       let img = new Image();
       img.onload = () => {
-        this.$refs.mapImg.style.backgroundImage = `url('${img.src}')`;
-        this.centerMap();
+        this.loading = false;
+        nextTick(() => {
+          this.$refs.mapImg.style.backgroundImage = `url('${img.src}')`;
+          this.centerMap();
+        })
       }
       img.src = require("@/assets/img/map.png");
     },
@@ -93,7 +108,8 @@ export default {
       return styles;
     },
     selectPoint(point) {
-      console.log("!");
+      if (this.dialogOpened) return;
+
       if (this.selectedPoint && this.selectedPoint !== point) {
         this.selectedPoint.selected = false;
       }
@@ -109,11 +125,14 @@ export default {
       }
     },
     showTaskPreview(point) {
+      this.dialogOpened = true;
+
       this.$dialog.open(DialogText, {
         props: {
-          modal: true,
+          modal: false,
           style: {
-            width: '50vw',
+            'width': '50vw',
+            'max-width': '350px'
           },
           breakpoints: {
             '960px': '75vw',
@@ -122,6 +141,9 @@ export default {
         },
         data: {
           text: point.text
+        },
+        onClose: () => {
+          this.dialogOpened = false;
         }
       });
     },

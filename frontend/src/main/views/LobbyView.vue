@@ -3,7 +3,7 @@
   <div class="container">
     <div class="content p-fluid">
       <template v-if="loading">
-        <p class="m-auto shadow-outline">загрузка...</p>
+        <p class="m-auto shadow-outline text-2xl">загрузка...</p>
       </template>
       <template v-else-if="selectedTeam">
         <div class="content">

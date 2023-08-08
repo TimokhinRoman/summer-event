@@ -6,9 +6,7 @@
         <font-awesome-icon v-if="task.selected" icon="fa-solid fa-circle-check" size="xl" class="ml-2 vertical-align-sub"/>
         <font-awesome-icon v-if="task.completed" icon="fa-solid fa-flag-checkered" size="xl" class="ml-2 vertical-align-sub"/>
       </div>
-      <p>
-        {{ task.description }}
-      </p>
+      <div class="my-2" v-html="task.description"/>
     </template>
   </div>
   <div class="w-full">

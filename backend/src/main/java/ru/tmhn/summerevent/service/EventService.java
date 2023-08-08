@@ -119,6 +119,8 @@ public class EventService {
         eventRepository.updateTaskCompleted(eventId, taskId, completed);
         if (completed) {
             eventRepository.deleteTaskSelected(eventId);
+            eventRepository.deleteTeamChooser(eventId);
+            eventRepository.updateEventStatus(eventId, EventStatus.DRAW);
         }
     }
 
@@ -148,11 +150,12 @@ public class EventService {
     public void selectTask(int eventId, int taskId) {
         //eventRepository.deleteTaskSelected(eventId);
         eventRepository.addTaskSelected(eventId, taskId);
-        updateEventStatus(eventId, EventStatus.TASK_IN_PROGRESS);
+        eventRepository.updateEventStatus(eventId, EventStatus.TASK_IN_PROGRESS);
     }
 
     public void unselectTask(int eventId) {
         eventRepository.deleteTaskSelected(eventId);
+        eventRepository.updateEventStatus(eventId, EventStatus.TASK_SELECTION);
     }
 
     public TaskDto findSelectedTask(int eventId) {

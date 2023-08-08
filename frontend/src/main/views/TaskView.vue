@@ -13,7 +13,7 @@
                 @click="showMap"/>
       </template>
       <div v-else>
-        loading...
+        <span class="text-2xl">загрузка...</span>
       </div>
     </div>
   </div>
