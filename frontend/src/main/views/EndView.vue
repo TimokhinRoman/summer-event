@@ -1,6 +1,6 @@
 <template>
   <div class="background"/>
-  <div class="container">
+  <div class="container end-view">
     <div class="content p-fluid">
       <template v-if="loading">
         <span class="text-2xl">загрузка...</span>
@@ -105,31 +105,31 @@ export default {
   border-bottom: none;
 }
 
-.p-panel-header {
+.end-view .p-panel-header {
   justify-content: center !important;
   border-bottom: none !important;
 }
 
-.p-panel-title {
+.end-view .p-panel-title {
   font-size: 1.25rem !important;
 }
 
-.p-panel-header, .p-panel-content {
+.end-view .p-panel-header, .p-panel-content {
   background-color: rgba(63, 75, 91, 0.8) !important;
 }
 
-.p-panel-content {
+.end-view .p-panel-content {
   padding-top: 0 !important;
 }
 
-.team-name {
+.end-view .team-name {
   width: 50px;
   padding-left: 2px;
   padding-right: 2px;
   word-break: break-all;
 }
 
-span {
+.end-view span {
   color: white;
 }
 </style>
