@@ -2,9 +2,13 @@ package ru.tmhn.summerevent.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.tmhn.summerevent.dto.EventDto;
+import ru.tmhn.summerevent.dto.ScoreDto;
 import ru.tmhn.summerevent.dto.TaskDto;
+import ru.tmhn.summerevent.dto.TeamDto;
 import ru.tmhn.summerevent.model.Event;
+import ru.tmhn.summerevent.model.Score;
 import ru.tmhn.summerevent.model.Task;
+import ru.tmhn.summerevent.model.Team;
 
 import java.util.List;
 import java.util.Objects;
@@ -12,6 +16,12 @@ import java.util.stream.Collectors;
 
 @Component
 public class EventMapper {
+
+    private final UserMapper userMapper;
+
+    public EventMapper(UserMapper userMapper) {
+        this.userMapper = userMapper;
+    }
 
     public Event toEvent(EventDto dto) {
         if (dto == null) return null;
@@ -91,5 +101,45 @@ public class EventMapper {
         }
         dto.setImage(task.getImage());
         return dto;
+    }
+
+    public Team toTeam(TeamDto dto) {
+        if (dto == null) return null;
+
+        Team team = new Team();
+        if (dto.getId() != null) {
+            team.setId(dto.getId());
+        }
+        team.setCaptain(userMapper.map(dto.getCaptain()));
+        team.setName(dto.getName());
+        return team;
+    }
+
+    public TeamDto toTeamDto(Team team) {
+        if (team == null) return null;
+
+        TeamDto dto = new TeamDto();
+        dto.setId(team.getId());
+        dto.setName(team.getName());
+        dto.setCaptain(userMapper.map(team.getCaptain()));
+        return dto;
+    }
+
+    public ScoreDto toScoreDto(Score score) {
+        if (score == null) return null;
+        ScoreDto dto = new ScoreDto();
+        dto.setTask(toTaskDto(score.getTask()));
+        dto.setTeam(toTeamDto(score.getTeam()));
+        dto.setScore(score.getScore());
+        return dto;
+    }
+
+    public Score toScore(ScoreDto dto) {
+        if (dto == null) return null;
+        Score score = new Score();
+        score.setTask(toTask(dto.getTask()));
+        score.setTeam(toTeam(dto.getTeam()));
+        score.setScore(dto.getScore());
+        return score;
     }
 }

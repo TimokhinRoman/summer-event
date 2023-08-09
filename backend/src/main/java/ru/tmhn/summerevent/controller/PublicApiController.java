@@ -7,7 +7,9 @@ import ru.tmhn.summerevent.service.TeamService;
 import ru.tmhn.summerevent.service.UserService;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -37,7 +39,9 @@ public class PublicApiController {
         BriefingDto dto = new BriefingDto();
         dto.setEvent(event);
         dto.setUser(user);
-        dto.setTask(eventService.findSelectedTask(event.getId()));
+        if (event != null) {
+            dto.setTask(eventService.findSelectedTask(event.getId()));
+        }
 
         return dto;
     }
@@ -128,5 +132,28 @@ public class PublicApiController {
         TaskDto task = eventService.findSelectedTask(event.getId());
         if (task == null) return null;
         return eventService.findTask(event.getId(), task.getId());
+    }
+
+    @GetMapping("/scores")
+    public EventScoreDto getEventScore() {
+        EventDto event = eventService.findActiveEvent();
+        List<TeamDto> teams = eventService.listTeams(event.getId());
+        List<TaskDto> tasks = eventService.listTasks(event.getId());
+        List<ScoreDto> scores = eventService.listEventScore(event.getId());
+
+        EventScoreDto eventScore = new EventScoreDto();
+        eventScore.setTasks(tasks);
+        eventScore.setTeams(teams);
+
+        Map<Integer, Map<Integer, Integer>> scoreMap = new HashMap<>();
+
+        for (ScoreDto score : scores) {
+            Map<Integer, Integer> teamScoreMap = scoreMap.computeIfAbsent(score.getTask().getId(), k -> new HashMap<>());
+            teamScoreMap.put(score.getTeam().getId(), score.getScore());
+        }
+
+        eventScore.setScores(scoreMap);
+
+        return eventScore;
     }
 }

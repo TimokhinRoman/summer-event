@@ -23,7 +23,8 @@ import {
   faFlagCheckered,
   faMapLocationDot,
   faUsers,
-  faPersonRunning
+  faPersonRunning,
+  faFloppyDisk
 } from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
@@ -37,7 +38,8 @@ library.add(
   faFlagCheckered,
   faMapLocationDot,
   faUsers,
-  faPersonRunning
+  faPersonRunning,
+  faFloppyDisk
 )
 
 const app = createApp(App)

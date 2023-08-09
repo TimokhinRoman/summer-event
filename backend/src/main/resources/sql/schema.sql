@@ -92,3 +92,16 @@ CREATE TABLE EventTeamChooser
     FOREIGN KEY (eventId) REFERENCES Event (id) ON DELETE CASCADE,
     FOREIGN KEY (teamId) REFERENCES Team (id) ON DELETE CASCADE
 );
+
+CREATE TABLE TaskTeamScore
+(
+    id     INT PRIMARY KEY AUTO_INCREMENT,
+    taskId INT NOT NULL,
+    teamId INT NOT NULL,
+    score  INT NOT NULL DEFAULT 0,
+
+    UNIQUE (taskId, teamId),
+
+    FOREIGN KEY (taskId) REFERENCES Task (id) ON DELETE CASCADE,
+    FOREIGN KEY (teamId) REFERENCES Team (id) ON DELETE CASCADE
+);

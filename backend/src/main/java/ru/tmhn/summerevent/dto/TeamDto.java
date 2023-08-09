@@ -13,4 +13,5 @@ public class TeamDto extends EntityDto {
     private UserDto captain;
     private List<UserDto> users;
     private Boolean chooser;
+    private List<ScoreDto> scores;
 }

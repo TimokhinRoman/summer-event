@@ -2,17 +2,10 @@ package ru.tmhn.summerevent.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.tmhn.summerevent.dto.EventDto;
-import ru.tmhn.summerevent.dto.TaskDto;
-import ru.tmhn.summerevent.dto.TeamDto;
-import ru.tmhn.summerevent.dto.UserDto;
+import ru.tmhn.summerevent.dto.*;
 import ru.tmhn.summerevent.mapper.EventMapper;
-import ru.tmhn.summerevent.mapper.TeamMapper;
 import ru.tmhn.summerevent.mapper.UserMapper;
-import ru.tmhn.summerevent.model.Event;
-import ru.tmhn.summerevent.model.EventStatus;
-import ru.tmhn.summerevent.model.Task;
-import ru.tmhn.summerevent.model.Team;
+import ru.tmhn.summerevent.model.*;
 import ru.tmhn.summerevent.repository.EventRepository;
 import ru.tmhn.summerevent.utils.Utils;
 
@@ -29,20 +22,17 @@ public class EventService {
     private final TeamService teamService;
     private final UserService userService;
     private final EventMapper eventMapper;
-    private final TeamMapper teamMapper;
     private final UserMapper userMapper;
 
     public EventService(EventRepository eventRepository,
                         TeamService teamService,
                         UserService userService,
                         EventMapper eventMapper,
-                        TeamMapper teamMapper,
                         UserMapper userMapper) {
         this.eventRepository = eventRepository;
         this.teamService = teamService;
         this.userService = userService;
         this.eventMapper = eventMapper;
-        this.teamMapper = teamMapper;
         this.userMapper = userMapper;
     }
 
@@ -164,12 +154,12 @@ public class EventService {
 
     public TeamDto findUserTeam(int eventId, int userId) {
         Team team = eventRepository.findUserTeam(eventId, userId);
-        return teamMapper.map(team);
+        return eventMapper.toTeamDto(team);
     }
 
     public List<TeamDto> listTeams(int eventId) {
         return eventRepository.listTeams(eventId).stream()
-                .map(teamMapper::map)
+                .map(eventMapper::toTeamDto)
                 .collect(Collectors.toList());
     }
 
@@ -204,7 +194,7 @@ public class EventService {
     }
 
     public TeamDto findTeamChooser(int eventId) {
-        return teamMapper.map(eventRepository.findTeamChooser(eventId));
+        return eventMapper.toTeamDto(eventRepository.findTeamChooser(eventId));
     }
 
     public boolean isUserChooser(int eventId, int userId) {
@@ -255,5 +245,25 @@ public class EventService {
         UserDto user = userService.getCurrentUser();
 
         eventRepository.deleteEventTeamUser(event.getId(), user.getId());
+    }
+
+    public void addTeamScore(int taskId, int teamId, int score) {
+        eventRepository.addTeamScore(taskId, teamId, score);
+    }
+
+    public void setTeamScore(int taskId, int teamId, int score) {
+        eventRepository.setTeamScore(taskId, teamId, score);
+    }
+
+    public List<ScoreDto> listTeamScore(int eventId, int teamId) {
+        return eventRepository.listTeamScore(eventId, teamId).stream()
+                .map(eventMapper::toScoreDto)
+                .collect(Collectors.toList());
+    }
+
+    public List<ScoreDto> listEventScore(int eventId) {
+        return eventRepository.listEventScore(eventId)
+                .stream().map(eventMapper::toScoreDto)
+                .collect(Collectors.toList());
     }
 }

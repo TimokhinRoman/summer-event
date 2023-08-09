@@ -138,6 +138,7 @@ public class AdminEventController {
         if (team != null) {
             team.setUsers(eventService.listTeamUsers(eventId, teamId));
             team.setChooser(eventService.isTeamChooser(eventId, teamId));
+            team.setScores(eventService.listTeamScore(eventId, teamId));
         }
         ResponseDto response = new ResponseDto();
         response.setEvent(event);
@@ -163,5 +164,16 @@ public class AdminEventController {
     @DeleteMapping("/{eventId}/teams/{teamId}/choose")
     public void deleteTeamChooser(@PathVariable int eventId, @PathVariable int teamId) {
         eventService.deleteTeamChooser(eventId, teamId);
+    }
+
+    @GetMapping("/{eventId}/teams/{teamId}/score")
+    public List<ScoreDto> listTeamScore(@PathVariable int eventId, @PathVariable int teamId) {
+        return eventService.listTeamScore(eventId, teamId);
+    }
+
+    @PostMapping("/{eventId}/teams/{teamId}/score")
+    public List<ScoreDto> addTeamScore(@PathVariable int eventId, @PathVariable int teamId, @RequestBody ScoreDto score) {
+        eventService.addTeamScore(score.getTask().getId(), teamId, score.getScore());
+        return eventService.listTeamScore(eventId, teamId);
     }
 }

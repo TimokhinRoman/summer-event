@@ -14,9 +14,25 @@
           <font-awesome-icon v-if="isCaptain(user)" icon="fa-solid fa-crown" size="xl" class="ml-2 vertical-align-sub"/>
         </li>
       </ul>
+
+      <p class="text-xl mt-4">Очки</p>
+      <ul v-if="team.scores" class="list-none p-0 m-0 w-full">
+        <li class="flex flex-row my-1" v-for="score in team.scores" :key="score.task.id">
+          <div class="flex flex-1 align-items-center">
+            <div class="flex-1 text-left">{{ score.task.name }}</div>
+            <div>{{ score.score }}</div>
+          </div>
+          <div class="flex flex-row ml-2">
+            <InputText v-model="score.scoreDelta" type="text" size="small" style="width: 55px"/>
+            <Button class="justify-content-center ml-1" @click="saveTaskScore(score)">
+              <font-awesome-icon icon="fa-solid fa-floppy-disk" size="xl"/>
+            </Button>
+          </div>
+        </li>
+      </ul>
     </template>
   </div>
-  <div class="w-full">
+  <div class="w-full mt-4">
     <template v-if="team">
       <Button class="my-1" v-if="!team.chooser" label="Дать право выбора" @click="choose"/>
       <Button class="my-1" v-if="team.chooser" label="Забрать право выбора" @click="unchoose"/>
@@ -25,16 +41,18 @@
         <Button class="my-1" v-if="event.status === 'PENDING'" label="Исключить" @click="kick"/>
       </template>
     </template>
-    <div class="mt-4"/>
+    <div class="mt-1"/>
     <Button label="Назад" @click="back"/>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import InputText from "primevue/inputtext";
 
 export default {
   name: "EventTeamView",
+  components: {InputText},
   data() {
     return {
       event: null,
@@ -56,29 +74,25 @@ export default {
     loadTeam() {
       axios.get(`/api/admin/events/${this.eventId}/teams/${this.teamId}`)
         .then(response => {
-          console.log(response);
           this.event = response.data.event;
           this.team = response.data.team;
         })
     },
     kick() {
       axios.delete(`/api/admin/events/${this.eventId}/teams/${this.teamId}`)
-        .then(response => {
-          console.log(response);
+        .then(_ => {
           this.back();
         })
     },
     choose() {
       axios.post(`/api/admin/events/${this.eventId}/teams/${this.teamId}/choose`)
-        .then(response => {
-          console.log(response);
+        .then(_ => {
           this.team.chooser = true;
         })
     },
     unchoose() {
       axios.delete(`/api/admin/events/${this.eventId}/teams/${this.teamId}/choose`)
-        .then(response => {
-          console.log(response);
+        .then(_ => {
           this.team.chooser = false;
         })
     },
@@ -92,6 +106,18 @@ export default {
     },
     isCaptain(user) {
       return this.team && this.team.captain && this.team.captain.id === user.id;
+    },
+    saveTaskScore(score) {
+      const data = {
+        task: {
+          id: score.task.id
+        },
+        score: score.scoreDelta
+      }
+      axios.post(`/api/admin/events/${this.eventId}/teams/${this.teamId}/score`, data)
+        .then(response => {
+          this.team.scores = response.data;
+        })
     }
   }
 }

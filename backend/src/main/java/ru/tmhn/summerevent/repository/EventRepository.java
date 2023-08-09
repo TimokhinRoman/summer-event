@@ -230,6 +230,38 @@ public class EventRepository {
                 });
     }
 
+    public void addTeamScore(int taskId, int teamId, int score) {
+        context.insertInto(TASKTEAMSCORE, TASKTEAMSCORE.TASKID, TASKTEAMSCORE.TEAMID, TASKTEAMSCORE.SCORE)
+                .values(taskId, teamId, score)
+                .onDuplicateKeyUpdate()
+                .set(TASKTEAMSCORE.SCORE, TASKTEAMSCORE.SCORE.plus(score))
+                .execute();
+    }
+
+    public void setTeamScore(int taskId, int teamId, int score) {
+        context.insertInto(TASKTEAMSCORE, TASKTEAMSCORE.TASKID, TASKTEAMSCORE.TEAMID, TASKTEAMSCORE.SCORE)
+                .values(taskId, teamId, score)
+                .onDuplicateKeyUpdate()
+                .set(TASKTEAMSCORE.SCORE, score)
+                .execute();
+    }
+
+    public List<Score> listTeamScore(int eventId, int teamId) {
+        return context.select(TASK.ID, TASK.NAME, TASKTEAMSCORE.SCORE)
+                .from(TASK)
+                .leftJoin(TASKTEAMSCORE).on(TASKTEAMSCORE.TASKID.eq(TASK.ID).and(TASKTEAMSCORE.TEAMID.eq(teamId)))
+                .where(TASK.EVENTID.eq(eventId))
+                .fetch(this::mapTeamScore);
+    }
+
+    public List<Score> listEventScore(int eventId) {
+        return context.select(TASKTEAMSCORE.TASKID, TASKTEAMSCORE.TEAMID, TASKTEAMSCORE.SCORE)
+                .from(TASKTEAMSCORE)
+                .leftJoin(TASK).on(TASKTEAMSCORE.TASKID.eq(TASK.ID))
+                .where(TASK.EVENTID.eq(eventId))
+                .fetch(this::mapEventScore);
+    }
+
     private Event mapEvent(Record record) {
         Event event = new Event();
         event.setId(record.get(EVENT.ID));
@@ -285,5 +317,21 @@ public class EventRepository {
         eventTeamUser.setUser(new User());
         eventTeamUser.getUser().setId(record.get(EVENTTEAMUSER.USERID));
         return eventTeamUser;
+    }
+
+    private Score mapTeamScore(Record record) {
+        Score score = new Score();
+        score.setTask(new Task(record.get(TASK.ID)));
+        score.getTask().setName(record.get(TASK.NAME));
+        score.setScore(record.get(TASKTEAMSCORE.SCORE));
+        return score;
+    }
+
+    private Score mapEventScore(Record record) {
+        Score score = new Score();
+        score.setTask(new Task(record.get(TASKTEAMSCORE.TASKID)));
+        score.setTeam(new Team(record.get(TASKTEAMSCORE.TEAMID)));
+        score.setScore(record.get(TASKTEAMSCORE.SCORE));
+        return score;
     }
 }

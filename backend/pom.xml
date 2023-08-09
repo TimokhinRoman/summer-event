@@ -131,8 +131,8 @@
                 <configuration>
                     <jdbc>
                         <url>jdbc:mysql://localhost:3306/summer_event</url>
-                        <user>root</user>
-                        <password>12345</password>
+                        <user>bdad</user>
+                        <password>Aj4Rn8nV</password>
                     </jdbc>
                     <generator>
                         <database>
