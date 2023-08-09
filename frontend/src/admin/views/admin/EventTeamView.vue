@@ -38,7 +38,7 @@
       <Button class="my-1" v-if="team.chooser" label="Забрать право выбора" @click="unchoose"/>
 
       <template v-if="event">
-        <Button class="my-1" v-if="event.status === 'PENDING'" label="Исключить" @click="kick"/>
+        <Button class="my-1" v-if="event.status === 'PENDING'" label="Удалить" @click="remove"/>
       </template>
     </template>
     <div class="mt-1"/>
@@ -78,7 +78,7 @@ export default {
           this.team = response.data.team;
         })
     },
-    kick() {
+    remove() {
       axios.delete(`/api/admin/events/${this.eventId}/teams/${this.teamId}`)
         .then(_ => {
           this.back();

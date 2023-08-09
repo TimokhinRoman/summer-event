@@ -47,6 +47,12 @@ public class TeamRepository {
                 .fetch(this::mapTeam);
     }
 
+    public int deleteTeam(int id) {
+        return context.deleteFrom(TEAM)
+                .where(TEAM.ID.eq(id))
+                .execute();
+    }
+
     private Team mapTeam(Record record) {
         Team team = new Team();
         team.setId(record.get(TEAM.ID));

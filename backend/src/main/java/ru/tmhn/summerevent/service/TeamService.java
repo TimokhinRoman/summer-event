@@ -42,4 +42,8 @@ public class TeamService {
                 .map(eventMapper::toTeamDto)
                 .collect(Collectors.toList());
     }
+
+    public int deleteTeam(int id) {
+        return teamRepository.deleteTeam(id);
+    }
 }

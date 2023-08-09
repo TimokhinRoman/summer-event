@@ -178,7 +178,8 @@ public class EventService {
     public int deleteTeam(int eventId, int teamId) {
         EventDto event = findEvent(eventId);
         if (event != null && event.getStatus() == EventStatus.PENDING) {
-            return eventRepository.deleteEventTeam(eventId, teamId);
+            return teamService.deleteTeam(teamId);
+            //return eventRepository.deleteEventTeam(eventId, teamId);
         }
         return 0;
     }

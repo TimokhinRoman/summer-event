@@ -147,7 +147,7 @@ public class AdminEventController {
     }
 
     @DeleteMapping("/{eventId}/teams/{teamId}")
-    public int deleteEventTeam(@PathVariable int eventId, @PathVariable int teamId) {
+    public int deleteTeam(@PathVariable int eventId, @PathVariable int teamId) {
         return eventService.deleteTeam(eventId, teamId);
     }
 
