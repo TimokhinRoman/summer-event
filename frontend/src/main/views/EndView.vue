@@ -6,27 +6,30 @@
         <span class="text-2xl">загрузка...</span>
       </template>
       <template v-else>
-        <p class="text-2xl shadow-outline">Таблица результатов</p>
-        <table class="w-full score-table">
-          <thead>
-          <tr>
-            <td></td>
-            <td v-for="team in teams" :key="team.id">
-              <span class="shadow-outline">{{ team.name }}</span>
-            </td>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="task in tasks" :key="task.id">
-            <td class="text-left">
-              <span class="shadow-outline">{{ task.name }}</span>
-            </td>
-            <td v-for="team in teams" :key="team.id">
-              <span class="shadow-outline">{{ getScore(task, team) }}</span>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+        <Panel header="Таблица результатов">
+          <table class="w-full score-table">
+            <thead>
+            <tr>
+              <td></td>
+              <td v-for="team in teams" :key="team.id">
+                <div class="team-name">
+                  <span>{{ getTeamName(team) }}</span>
+                </div>
+              </td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="task in tasks" :key="task.id">
+              <td class="text-left">
+                <span>{{ task.name }}</span>
+              </td>
+              <td v-for="team in teams" :key="team.id">
+                <span>{{ getScore(task, team) }}</span>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </Panel>
       </template>
     </div>
   </div>
@@ -34,9 +37,11 @@
 
 <script>
 import axios from "axios";
+import Panel from "primevue/panel";
 
 export default {
   name: "EndView",
+  components: {Panel},
   data() {
     return {
       tasks: null,
@@ -61,6 +66,10 @@ export default {
     },
     getScore(task, team) {
       return this.scores[task.id]?.[team.id];
+    },
+    getTeamName(team) {
+      return team.name;
+      //return team.name.substring(0, 3);
     }
   }
 }
@@ -71,7 +80,56 @@ export default {
   border-collapse: collapse;
 }
 
-.score-table, .score-table th, .score-table td {
-  border: 1px solid;
+.score-table th, .score-table td {
+  border: 1px solid #3f4b5b;
+}
+
+.score-table td:first-child {
+  border-left: none
+}
+
+.score-table td:last-child {
+  border-right: none;
+}
+
+.score-table td {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.score-table thead tr:first-child td {
+  border-top: none;
+}
+
+.score-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.p-panel-header {
+  justify-content: center !important;
+  border-bottom: none !important;
+}
+
+.p-panel-title {
+  font-size: 1.25rem !important;
+}
+
+.p-panel-header, .p-panel-content {
+  background-color: rgba(63, 75, 91, 0.8) !important;
+}
+
+.p-panel-content {
+  padding-top: 0 !important;
+}
+
+.team-name {
+  width: 50px;
+  padding-left: 2px;
+  padding-right: 2px;
+  word-break: break-all;
+}
+
+span {
+  color: white;
 }
 </style>
