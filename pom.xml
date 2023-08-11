@@ -5,7 +5,7 @@
 
     <groupId>ru.tmhn</groupId>
     <artifactId>summer-event-application</artifactId>
-    <version>0.0.1</version>
+    <version>1.0</version>
     <name>summer-event-application</name>
     <description>Summer event</description>
     <packaging>pom</packaging>

@@ -188,6 +188,7 @@ public class EventService {
     public void setTeamChooser(int eventId, int teamId) {
         eventRepository.deleteTeamChooser(eventId);
         eventRepository.addTeamChooser(eventId, teamId);
+        eventRepository.updateEventStatus(eventId, EventStatus.TASK_SELECTION);
     }
 
     public void deleteTeamChooser(int eventId, int teamId) {

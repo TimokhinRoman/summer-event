@@ -23,7 +23,7 @@
             <div>{{ score.score }}</div>
           </div>
           <div class="flex flex-row ml-2">
-            <InputText v-model="score.scoreDelta" type="text" size="small" style="width: 55px"/>
+            <InputText v-model="score.scoreDelta" type="number" size="small" style="width: 55px"/>
             <Button class="justify-content-center ml-1" @click="saveTaskScore(score)">
               <font-awesome-icon icon="fa-solid fa-floppy-disk" size="xl"/>
             </Button>

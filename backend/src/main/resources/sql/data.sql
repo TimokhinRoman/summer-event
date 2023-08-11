@@ -1,8 +1,10 @@
 START TRANSACTION;
 
-INSERT INTO Event (id, name, description, status) VALUES (1, '2023', 'Боги всех времён и народов', 'PENDING');
+INSERT INTO Event (id, name, description, status)
+VALUES (1, '2023', 'Боги всех времён и народов', 'PENDING');
 
-INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview) VALUES (1, 1, 'ACTION', 'Поджигай', 222, 171, '<div class="my-3">
+INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview)
+VALUES (1, 1, 'ACTION', 'Поджигай', 222, 171, '<div class="my-3">
     <span class="font-bold">Задача:</span>
     <span>с помощью выданного снаряжения получить огонь и зажечь бумагу.</span>
 </div>
@@ -13,7 +15,13 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
 <div class="my-3">
     <span class="font-bold">Критерий, по которому определяется победитель:</span>
     <span>задача выполнена быстрее другой команды.</span>
-</div>', null, 0, null, 'fire', '<div class="poem">
+    <ul>
+        <li><b>15</b> баллов - команда, которая первая разожгла огонь;</li>
+        <li><b>10</b> баллов - команда, которая вторая разожгла огонь;</li>
+        <li><b>5</b> баллов - команда, которая последняя разожгла огонь;</li>
+        <li><b>0</b> баллов - если ты не разжег огонь.</li>
+    </ul>
+</div>', NULL, 0, NULL, 'fire', '<div class="poem">
     <p>
         Мой путь устлан пеплом - безжизненным, серым,<br>
         растущим день ото дня.<br>
@@ -39,11 +47,12 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
         огонь для меня разбуди.<br>
     </p>
 </div>');
-INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview) VALUES (2, 1, 'ACTION', 'Кидай быстрей', 484, 380, '<div class="my-3">
+INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview)
+VALUES (2, 1, 'ACTION', 'Кидай быстрей', 484, 380, '<div class="my-3">
     <span class="font-bold">Условия:</span>
     <div>
         <ul>
-            <li>каждая команда встает выстраивается в собственный круг;</li>
+            <li>каждая команда выстраивается в собственный круг;</li>
             <li>круги всех команд должны быть одинакового размера;</li>
             <li>между членами команд должно быть не меньше 3 метров (точный промежуток определят организаторы на месте);</li>
             <li>фрисби отдается капитану, капитан делает первый бросок.</li>
@@ -65,7 +74,13 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
 <div class="my-3">
     <span class="font-bold">Критерий, по которому определяется победитель:</span>
     <span>при выполнении задачи за отведенное время команда проходит больше кругов, чем команда-соперник.</span>
-</div>', null, 0, null, 'wind', '<div class="poem">
+
+<ul>
+        <li><b>15</b> баллов - команда, у которой пройдено больше всего кругов;</li>
+        <li><b>10</b> баллов - команда, которая прошла чуть меньше кругов;</li>
+        <li><b>5</b> баллов - команда, которая прошла меньше всего кругов.</li>
+    </ul>
+</div>', NULL, 0, NULL, 'wind', '<div class="poem">
     <p>
         Пора оседлать вам стихию!<br>
         Сказал я ворвавшись в ваш круг.<br>
@@ -91,7 +106,8 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
         тем больший ты мой кумир.<br>
     </p>
 </div>');
-INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview) VALUES (3, 1, 'ACTION', 'Дикая охота', 193, 215, '<div class="my-3">
+INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview)
+VALUES (3, 1, 'ACTION', 'Дикая охота', 193, 215, '<div class="my-3">
     <span class="font-bold">Условия:</span>
     <div>
         <ul>
@@ -116,7 +132,14 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
 <div class="my-3">
     <span class="font-bold">Критерий, по которому определяется победитель:</span>
     <span>задача выполнена быстрее другой команды.</span>
-</div>', null, 0, null, 'hunt', '<div class="poem">
+
+    <ul>
+        <li><b>15</b> баллов - самая быстрая рука на диком западе;</li>
+        <li><b>10</b> баллов - старательный ковбой;</li>
+        <li><b>5</b> баллов - вялая ловля;</li>
+        <li><b>0</b> баллов - мазила.</li>
+    </ul>
+</div>', NULL, 0, NULL, 'hunt', '<div class="poem">
     <p>
         Я охочусь в лесу, и в горах,
         верный спутник мой - праведный лук
@@ -136,11 +159,12 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
         Артемидой меня назови.
     </p>
 </div>');
-INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview) VALUES (4, 1, 'ACTION', 'Отгадай, откопай', 121, 467, '<div class="my-3">
+INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview)
+VALUES (4, 1, 'ACTION', 'Отгадай, откопай', 121, 467, '<div class="my-3">
     <span class="font-bold">Условия:</span>
     <div>
         <ul>
-            <li>подсказка, где именно искать клад спрятана в криптекс;</li>
+            <li>подсказка, где именно искать клад, спрятана в криптекс;</li>
             <li>команда должна первой угадать кодовое слово из композиции, зашифрованной задом-наперед, и открыть криптекс;</li>
             <li>команда, которая считает, что угадала слово, подходит к организаторам и просит криптекс;</li>
             <li>по одной попытке подряд у каждой команды;</li>
@@ -154,7 +178,7 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
     <span class="font-bold">Задача:</span>
     <div>
         <ul>
-            <li>найти клад.</li>
+            <li>найти клад и откапать клад.</li>
         </ul>
     </div>
 </div>
@@ -165,7 +189,12 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
 <div class="my-3">
     <span class="font-bold">Критерий, по которому определяется победитель:</span>
     <span>быстрее всех нашел клад.</span>
-</div>', null, 0, null, 'earth', '<div class="poem">
+
+<ul>
+        <li><b>10</b> баллов - команда, которая нашла и откапала клад;</li>
+        <li>не клада - нет балла</li>
+    </ul>
+</div>', NULL, 0, NULL, 'earth', '<div class="poem">
     <p>
         Я хожу через скалы и землю
         словно это живая вода,
@@ -191,13 +220,13 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
         меня звали Элементаль.
     </p>
 </div>');
-INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview) VALUES (5, 1, 'ACTION', 'В яблочко', 344, 523, '<div class="my-3">
+INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview)
+VALUES (5, 1, 'ACTION', 'В яблочко', 344, 523, '<div class="my-3">
     <span class="font-bold">Условия:</span>
     <div>
         <ul>
             <li>напротив каждой команды своя мишень;</li>
-            <li>у команды есть по 15 бросков;</li>
-            <li>за каждое попадание команде начисляются очки: 50 - центр, 25 - внутренний круг и 10 - внешний круг.</li>
+            <li>у команды есть по 15 бросков.</li>
         </ul>
     </div>
 </div>
@@ -205,7 +234,7 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
     <span class="font-bold">Задача:</span>
     <div>
         <ul>
-            <li>кинуть топор и воткнуть его в мишень;</li>
+            <li>кинуть топор и воткнуть его в мишень.</li>
         </ul>
     </div>
 </div>
@@ -216,7 +245,14 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
 <div class="my-3">
     <span class="font-bold">Критерий, по которому определяется победитель:</span>
     <span>команда, которая набрала больше всего очков.</span>
-</div>', null, 0, null, 'war', '<div class="poem">
+
+    <ul>
+        <li><b>15</b> баллов за попадание в центр;</li>
+        <li><b>10</b> баллов за попадание во внутренний круг</li>
+        <li><b>5</b> баллов за попадание во внешний круг;</li>
+        <li><b>0</b> баллов - мазила.</li>
+    </ul>
+</div>', NULL, 0, NULL, 'war', '<div class="poem">
     <p>
         Воинственный хитрец - азартный и суровый,
         сторонник жарких драк, агрессии в бою.
@@ -236,7 +272,8 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
         и только укрепляет неуязвимый дух.
     </p>
 </div>');
-INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview) VALUES (6, 1, 'ACTION', 'Освежись', 374, 557, '<div class="my-3">
+INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview)
+VALUES (6, 1, 'ACTION', 'Освежись', 374, 557, '<div class="my-3">
     <span class="font-bold">Задача:</span>
     <span>водная перестрелка из пушек. Команды перестреливаются цветной водой, стараясь уворачиваться от выстрелов соперников. Игра продолжается до тех пор, пока не закончится цветная вода.</span>
 </div>
@@ -247,7 +284,14 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
 <div class="my-3">
     <span class="font-bold">Критерий, по которому определяется победитель:</span>
     <span>команда, которая меньше всего была разукрашена.</span>
-</div>', null, 0, null, 'water', '<div class="poem">
+
+<ul>
+        <li><b>15</b> баллов - самые чистые;</li>
+        <li><b>10</b> баллов - запятнанные;</li>
+        <li><b>5</b> баллов - грязнули;</li>
+        <li><b>0</b> баллов - если команда отказалась участвовать.</li>
+    </ul>
+</div>', NULL, 0, NULL, 'water', '<div class="poem">
     <p>
         Я - тихая радость Шалассы
         и мой безмятежен покой,
@@ -268,12 +312,16 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
     </p>
 </div>
 ');
-INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview) VALUES (7, 1, 'ACTION', 'Смотри, что пьёшь!', 392, 515, '<div class="my-3">
+INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview)
+VALUES (7, 1, 'ACTION', 'Смотри, что пьёшь!', 392, 515, '<div class="my-3">
     <span class="font-bold">Условия:</span>
-    <span>стаканы пронумерованы и стоят на горизонтальной плоскости;</span>
-    <span>в конкурсе 10 раундов (по количеству напитков);</span><span>на один раунд выделяется по одному человеку от команды;</span>
-    <span>каждый доброволец пробует напиток;</span>
-    <span>новый раунд - следующий напиток.</span>
+    <ul>
+        <li>стаканы пронумерованы и стоят на горизонтальной плоскости;</li>
+        <li>в конкурсе 10 раундов (по количеству напитков);</li>
+        <li>на один раунд выделяется по одному человеку от команды;</span>
+        <li>каждый доброволец пробует напиток;</li>
+        <li>новый раунд - следующий напиток.</li>
+    </ul>
 </div>
 <div class="my-3">
     <span class="font-bold">Задача:</span>
@@ -286,7 +334,12 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
 <div class="my-3">
     <span class="font-bold">Критерий, по которому определяется победитель:</span>
     <span>команда, которая больше всего дала правильных ответов.</span>
-</div>', null, 0, null, 'wine', '<div class="poem">
+
+    <ul>
+        <li><b>1</b> балл за правильный ответ;</li>
+        <li><b>0</b> баллов за неправильный.</li>
+    </ul>
+</div>', NULL, 0, NULL, 'wine', '<div class="poem">
     <p>
         Экстатический культ и блаженство
         винограда горячная власть
@@ -306,16 +359,18 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
         но противник твой - я, Дионис.
     </p>
 </div>');
-INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview) VALUES (8, 1, 'ACTION', 'Это шок', 160, 264, '<div class="my-3">
+INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview)
+VALUES (8, 1, 'ACTION', 'Это шок', 160, 264, '<div class="my-3">
     <span class="font-bold">Условия:</span>
     <div>
         <ul>
             <li>по одному участнику от команды;</li>
-            <li>учатник надевает шокер-браслет;</li>
+            <li>участник надевает шокер-браслет;</li>
             <li>в ходе конкурса задаются вопросы по божественной теме;</li>
             <li>озвучивается вопрос, если участник знает ответ, он должен поднять руку;</li>
             <li>если ответ неправильный - участника бьет током;</li>
             <li>далее возможность ответить получает участник другой команды, если ответ неправильный - его бьет током;</li>
+            <li>если все участники отказываются отвечать, то всех ждёт стимулирующий удар током;</li>
             <li>на каждый вопрос по две попытки на ответ, если один из участников дал правильный ответ, то второй не получает баллов за ответ.</li>
         </ul>
     </div>
@@ -335,8 +390,15 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
 <div class="my-3">
     <span class="font-bold">Критерий, по которому определяется победитель:</span>
     <span>команда, которая дала больше всего правильных ответов.</span>
-</div>', null, 0, null, 'shock', null);
-INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview) VALUES (9, 1, 'ACTION', 'Остренькое', 364, 492, '<div class="my-3">
+
+<ul>
+        <li><b>2</b> балла - за полностью правильный ответ;</li>
+        <li><b>1</b> балл - за частично правильный ответ;</li>
+        <li><b>0</b> баллов - за неправильный ответ.</li>
+    </ul>
+</div>', NULL, 0, NULL, 'shock', NULL);
+INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview)
+VALUES (9, 1, 'ACTION', 'Остренькое', 364, 492, '<div class="my-3">
     <span class="font-bold">Условия:</span>
     <span>определить двоих участников от команды.</span>
 </div>
@@ -351,15 +413,24 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
 <div class="my-3">
     <span class="font-bold">Критерий, по которому определяется победитель:</span>
     <span>побеждает команда, лапша которой съедена быстрее всего.</span>
-</div>', null, 0, 4, 'trick', null);
-INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview) VALUES (10, 1, 'ACTION', 'Лучше не шуми', 39, 524, '<div class="my-3">
+
+    <ul>
+        <li><b>15</b> баллов - если съели всё;</li>
+        <li><b>10</b> баллов - если съели половину или больше;</li>
+        <li><b>5</b> баллов - если съели меньше половины;</li>
+        <li><b>0</b> баллов - если не стали есть.</li>
+    </ul>
+</div>', NULL, 0, 4, 'trick', NULL);
+INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview)
+VALUES (10, 1, 'ACTION', 'Лучше не шуми', 39, 524, '<div class="my-3">
     <span class="font-bold">Условия:</span>
     <div>
         <ul>
             <li>по одному добровольцу от команды;</li>
             <li>добровольцу завязывают глаза и дают в руки веник;</li>
             <li>члены команды соперника встают вокруг противника;</li>
-            <li>у каждого из них на одну ногу привязано по пищащей курице.</li>
+            <li>у каждого из них на одну ногу привязано по пищащей курице;</li>
+            <li>засаленный игрок выбывает из игры.</li>
         </ul>
     </div>
 </div>
@@ -378,8 +449,16 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
 <div class="my-3">
     <span class="font-bold">Критерий, по которому определяется победитель:</span>
     <span>побеждает команда, чей доброволец засалил как можно больше участников команды противника.</span>
-</div>', null, 0, null, 'music', null);
-INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview) VALUES (11, 1, 'ACTION', 'Кто тут красавчик', 384, 463, '<div class="my-3">
+
+    <ul>
+        <li><b>15</b> баллов - если засалены все игроки;</li>
+        <li><b>10</b> баллов - если засалено половина игроков или больше;</li>
+        <li><b>5</b> баллов - если меньше половины;</li>
+        <li><b>0</b> баллов - если никто не засален.</li>
+    </ul>
+</div>', NULL, 0, NULL, 'music', NULL);
+INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, completed, parentTaskId, image, preview)
+VALUES (11, 1, 'ACTION', 'Кто тут красавчик', 384, 463, '<div class="my-3">
     <span class="font-bold">Условия:</span>
     <div>
         <ul>
@@ -402,6 +481,6 @@ INSERT INTO Task (id, eventId, type, name, mapX, mapY, description, answer, comp
 <div class="my-3">
     <span class="font-bold">Критерий, по которому определяется победитель:</span>
     <span>побеждает команда, где больше всего людей в костюмах, а также где больше участников прошлось по подиуму.</span>
-</div>', null, 0, null, 'beauty', null);
+</div>', NULL, 0, NULL, 'beauty', NULL);
 
 COMMIT;

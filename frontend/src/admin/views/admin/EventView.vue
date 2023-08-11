@@ -8,19 +8,19 @@
       <Button v-if="!event.active" label="Сделать активным" class="my-1" @click="activateEvent"/>
       <Button v-if="event.active" label="Сделать неактивным" class="my-1" @click="deactivateEvent"/>
       <span class="p-buttonset my-1">
-        <Button class="justify-content-center" @click="setEventStatus('PENDING')">
+        <Button class="justify-content-center" @click="setEventStatus('PENDING')" :class="{'selected-status': event.status === 'PENDING'}">
           <font-awesome-icon icon="fa-solid fa-users" size="xl"/>
         </Button>
-        <Button class="justify-content-center" @click="setEventStatus('DRAW')">
+        <Button class="justify-content-center" @click="setEventStatus('DRAW')" :class="{'selected-status': event.status === 'DRAW'}">
           <font-awesome-icon icon="fa-solid fa-dice" size="xl"/>
         </Button>
-        <Button class="justify-content-center" @click="setEventStatus('TASK_SELECTION')">
+        <Button class="justify-content-center" @click="setEventStatus('TASK_SELECTION')" :class="{'selected-status': event.status === 'TASK_SELECTION'}">
           <font-awesome-icon icon="fa-solid fa-map-location-dot" size="xl"/>
         </Button>
-        <Button class="justify-content-center" @click="setEventStatus('TASK_IN_PROGRESS')">
+        <Button class="justify-content-center" @click="setEventStatus('TASK_IN_PROGRESS')" :class="{'selected-status': event.status === 'TASK_IN_PROGRESS'}">
           <font-awesome-icon icon="fa-solid fa-person-running" size="xl"/>
         </Button>
-        <Button class="justify-content-center" @click="setEventStatus('ENDED')">
+        <Button class="justify-content-center" @click="setEventStatus('ENDED')" :class="{'selected-status': event.status === 'ENDED'}">
           <font-awesome-icon icon="fa-solid fa-flag-checkered" size="xl"/>
         </Button>
       </span>
@@ -85,3 +85,15 @@ export default {
   }
 }
 </script>
+
+<style>
+.selected-status {
+  background: var(--green-400);
+  border-color: var(--green-400);
+}
+
+.selected-status:enabled:hover {
+  background: var(--green-500);
+  border-color: var(--green-500);
+}
+</style>
