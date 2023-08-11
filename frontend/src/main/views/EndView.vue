@@ -27,6 +27,14 @@
                 <span>{{ getScore(task, team) }}</span>
               </td>
             </tr>
+            <tr class="font-bold">
+              <td class="text-left">
+                <span>Итог</span>
+              </td>
+              <td v-for="team in teams" :key="team.id">
+                <span>{{ getTotalScore(team) }}</span>
+              </td>
+            </tr>
             </tbody>
           </table>
         </Panel>
@@ -66,6 +74,12 @@ export default {
     },
     getScore(task, team) {
       return this.scores[task.id]?.[team.id];
+    },
+    getTotalScore(team) {
+      return Object.values(this.scores)
+        .map(teamScores => teamScores[team.id])
+        .filter(score => Number.isInteger(score))
+        .reduce((total, score) => total + score, 0);
     },
     getTeamName(team) {
       return team.name;

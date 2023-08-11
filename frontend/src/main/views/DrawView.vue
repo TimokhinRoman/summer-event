@@ -2,7 +2,7 @@
   <div class="background"/>
   <div class="container">
     <div class="content p-fluid">
-      <font-awesome-icon icon="fa-solid fa-dice fa-shake" class="draw-dice"/>
+      <img src="@/assets/img/dice3.png" alt="">
     </div>
   </div>
 </template>

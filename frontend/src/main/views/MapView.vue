@@ -22,7 +22,12 @@
 
     <template v-if="canSelect">
       <div class="header text-center">
-        <span class="text-2xl font-bold text-primary-900">Выберите задание</span>
+        <span class="text-2xl font-bold header-text">Выберите задание</span>
+      </div>
+    </template>
+    <template v-else>
+      <div class="header text-center">
+        <span class="text-2xl font-bold header-text">Капитан выбирает задание</span>
       </div>
     </template>
 
@@ -227,6 +232,11 @@ export default {
   top: 2rem;
   width: calc(100% - 4rem);
   max-width: calc(545px - 4rem);
+}
+
+.header-text {
+  color: #8dd0ff;
+  text-shadow: 1px 1px 2px #151515;
 }
 
 .footer {
